@@ -21,18 +21,26 @@ import java.util.Locale;
 
 public class AddActivity extends AppCompatActivity {
 
+    Spinner spnConditions;
+    Spinner spnQtd;
+
+    EditText etCotacaoDolar;
+    EditText etBaseFreteDolar;
+    EditText etBaseFreteRealCalculado;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
-        final Spinner spnConditions = findViewById(R.id.spn_conditions);
-        final Spinner spnQtd        = findViewById(R.id.spn_qtd);
+        spnConditions = findViewById(R.id.spn_conditions);
+        spnQtd        = findViewById(R.id.spn_qtd);
 
-        final EditText etCotacaoDolar   =  findViewById(R.id.et_cotacao_dolar);
-        final EditText etBaseFreteDolar =  findViewById(R.id.et_base_frete_dolar);
-        final EditText etBaseFreteRealCalculado  =  findViewById(R.id.et_base_frete_real);
+        etCotacaoDolar            =  findViewById(R.id.et_cotacao_dolar);
+        etBaseFreteDolar          =  findViewById(R.id.et_base_frete_dolar);
+        etBaseFreteRealCalculado  =  findViewById(R.id.et_base_frete_real);
 
 
         List<EditText> listaCamposCalculados = new ArrayList<>();
@@ -137,17 +145,12 @@ public class AddActivity extends AppCompatActivity {
                     campo.removeTextChangedListener(this);
                     String cleanString = s.toString().replaceAll(regex, "");
 
-                    //TODO APLICAR A FORMULA COM BIGDECIMAL
-                    //BigDecimal parsed = new BigDecimal(cleanString);
-                    //String formatted = NumberFormat.getCurrencyInstance(myLocale).format((parsed.compareTo(new BigDecimal(100))));
-
                     Double parsed = Double.parseDouble(cleanString);
                     String formatted = NumberFormat.getCurrencyInstance(myLocale).format((parsed / 100));
 
                     current = formatted;
                     campo.setText(formatted);
                     campo.setSelection(formatted.length());
-                    String qtde = campo.getText().toString();
                     campo.addTextChangedListener(this);
                 }
             }

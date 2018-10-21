@@ -87,7 +87,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar" />
 
             <TextView
-                android:id="@+id/textView9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="72dp"
@@ -159,7 +158,6 @@
                 tools:targetApi="o" />
 
             <EditText
-                android:id="@+id/et_valor_lance_real"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -373,15 +371,14 @@
             <View
                 android:id="@+id/divider"
                 android:layout_width="0dp"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:layout_marginTop="16dp"
-                android:background="@android:color/holo_red_dark"
+                android:background="?android:attr/dividerHorizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
             <View
-                android:id="@+id/divider2"
                 android:layout_width="395dp"
                 android:layout_height="3dp"
                 android:layout_marginStart="8dp"
@@ -423,7 +420,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <View
-                android:id="@+id/divider4"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginStart="8dp"
@@ -455,23 +451,22 @@
             <View
                 android:id="@+id/divider3"
                 android:layout_width="0dp"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:layout_marginTop="16dp"
-                android:background="@android:color/holo_red_dark"
+                android:background="?android:attr/dividerHorizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_base_frete_dolar" />
 
             <View
-                android:id="@+id/divider6"
                 android:layout_width="0dp"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:background="@android:color/holo_red_dark"
+                android:background="?android:attr/dividerHorizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editText" />

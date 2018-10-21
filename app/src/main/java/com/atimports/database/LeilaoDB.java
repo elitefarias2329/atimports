@@ -9,31 +9,28 @@ import android.content.Context;
 import com.atimports.dao.LeilaoDAO;
 import com.atimports.model.Leilao;
 
-import static com.atimports.database.MyDataBase.DATABASE_VERSION;
+import static com.atimports.database.LeilaoDB.DATABASE_VERSION;
 
 
-@Database(entities = Leilao.class, version = DATABASE_VERSION)
-public abstract class MyDataBase extends RoomDatabase {
+@Database(entities = Leilao.class, version = DATABASE_VERSION, exportSchema = false)
+public abstract class LeilaoDB extends RoomDatabase {
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "myDataBase";
 
-    private static MyDataBase myDatabaseInstance;
+    private static LeilaoDB dbInstance;
 
     public abstract LeilaoDAO leilaoDAO();
 
 
+    public static LeilaoDB getInstance(Context context){
 
-    public static MyDataBase getInstance(Context context){
-
-        if(null == myDatabaseInstance){
-
-            myDatabaseInstance = Room.databaseBuilder(context, MyDataBase.class, DATABASE_NAME)
+        if(null == dbInstance){
+                    dbInstance = Room.databaseBuilder(context, LeilaoDB.class, DATABASE_NAME)
                                 .fallbackToDestructiveMigration()
                                 .build();
         }
-
-        return myDatabaseInstance;
+        return dbInstance;
     }
 
 

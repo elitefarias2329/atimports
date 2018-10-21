@@ -18,15 +18,15 @@ public class Leilao {
 
     @NonNull
     @ColumnInfo(name = "VALOR_COTACAO_DOLAR")
-    private BigDecimal valorCotacaoDolar;
+    private Double valorCotacaoDolar;
 
     @NonNull
     @ColumnInfo(name = "VALOR_FRETE_USA_DOLAR")
-    private BigDecimal valorFreteUsaDolar;
+    private Double valorFreteUsaDolar;
 
     @NonNull
     @ColumnInfo(name = "VALOR_FRETE_USA_REAL")
-    private BigDecimal valorFreteUsaReal;
+    private Double valorFreteUsaReal;
 
     @NonNull
     @ColumnInfo(name = "NOME_PRODUTO")
@@ -43,6 +43,10 @@ public class Leilao {
 
 
 
+    public String toString() {
+        return this.id + ". " + this.nomeProduto + " [$" + this.valorCotacaoDolar + "]";
+    }
+
 
 
     //GETTERS E SETTERS
@@ -55,27 +59,27 @@ public class Leilao {
         this.id = id;
     }
 
-    public BigDecimal getValorCotacaoDolar() {
+    public Double getValorCotacaoDolar() {
         return valorCotacaoDolar;
     }
 
-    public void setValorCotacaoDolar(BigDecimal valorCotacaoDolar) {
+    public void setValorCotacaoDolar(Double valorCotacaoDolar) {
         this.valorCotacaoDolar = valorCotacaoDolar;
     }
 
-    public BigDecimal getValorFreteUsaDolar() {
+    public Double getValorFreteUsaDolar() {
         return valorFreteUsaDolar;
     }
 
-    public void setValorFreteUsaDolar(BigDecimal valorFreteUsaDolar) {
+    public void setValorFreteUsaDolar(Double valorFreteUsaDolar) {
         this.valorFreteUsaDolar = valorFreteUsaDolar;
     }
 
-    public BigDecimal getValorFreteUsaReal() {
+    public Double getValorFreteUsaReal() {
         return valorFreteUsaReal;
     }
 
-    public void setValorFreteUsaReal(BigDecimal valorFreteUsaReal) {
+    public void setValorFreteUsaReal(Double valorFreteUsaReal) {
         this.valorFreteUsaReal = valorFreteUsaReal;
     }
 
