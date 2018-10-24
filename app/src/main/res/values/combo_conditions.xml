@@ -1,6 +1,7 @@
 <resources>
     <string-array name="conditions">
         <item>@string/selecione</item>
+        <item>Lacrado</item>
         <item>Novo</item>
         <item>Recondicionado</item>
         <item>Usado</item>

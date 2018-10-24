@@ -22,6 +22,42 @@
 
 
             <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="32dp"
+                android:drawableStart="@drawable/status_ordem18"
+                android:drawablePadding="8dp"
+                android:drawingCacheQuality="high"
+                android:text="Status da Ordem de Compra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_data_ordem" />
+
+            <EditText
+                android:id="@+id/edt_data_ordem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:drawablePadding="@dimen/fab_margin"
+                android:drawingCacheQuality="high"
+                android:ems="10"
+                android:hint="Selecione a data da ordem de compra"
+                android:importantForAutofill="no"
+                android:inputType="date"
+                android:maxLength="30"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView9"
+                tools:targetApi="o" />
+
+            <TextView
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -34,6 +70,20 @@
                 android:text="Ordem de Compra"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar2" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="32dp"
+                android:drawableStart="@drawable/calendario18"
+                android:drawablePadding="8dp"
+                android:drawingCacheQuality="high"
+                android:text="Data da Ordem de Compra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editText" />
 
             <EditText
                 android:id="@+id/editText"
@@ -286,6 +336,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:drawingCacheQuality="high"
+                android:gravity="center_horizontal"
                 android:text="Escolha a foto do produto"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -313,14 +364,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:drawableStart="@drawable/produto18"
                 android:drawableEnd="@drawable/asterisco18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
                 android:text="Produto"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider3" />
+                app:layout_constraintTop_toBottomOf="@+id/et_base_frete_dolar" />
 
             <TextView
                 android:id="@+id/textView6"
@@ -448,28 +499,25 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spn_qtd" />
 
-            <View
-                android:id="@+id/divider3"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="16dp"
-                android:background="?android:attr/dividerHorizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_base_frete_dolar" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
+            <Switch
+                android:id="@+id/switch1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="?android:attr/dividerHorizontal"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp"
+                android:checked="false"
+                android:showText="true"
+                android:textAllCaps="false"
+                android:textOff="Não Paga"
+                android:textOn="Paga"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText" />
+                app:layout_constraintTop_toBottomOf="@+id/textView11"
+                tools:checked="false"
+
+                android:textColorPrimaryDisableOnly=""
+
+                />
 
 
         </android.support.constraint.ConstraintLayout>
