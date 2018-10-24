@@ -1,13 +1,16 @@
 package com.atimports.activity;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import com.atimports.R;
 import com.atimports.constantes.Constantes;
@@ -28,6 +31,8 @@ public class AddActivity extends AppCompatActivity {
     EditText etBaseFreteDolar;
     EditText etBaseFreteRealCalculado;
 
+    Switch   swStatusOrdem;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +46,7 @@ public class AddActivity extends AppCompatActivity {
         etCotacaoDolar            =  findViewById(R.id.et_cotacao_dolar);
         etBaseFreteDolar          =  findViewById(R.id.et_base_frete_dolar);
         etBaseFreteRealCalculado  =  findViewById(R.id.et_base_frete_real);
-
+        swStatusOrdem             =  findViewById(R.id.sw_status_ordem);
 
         List<EditText> listaCamposCalculados = new ArrayList<>();
         listaCamposCalculados.add(etBaseFreteRealCalculado);
@@ -74,6 +79,23 @@ public class AddActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+        swStatusOrdem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton cb, boolean on){
+                if(on){
+                    //Do something when Switch button is on/checked
+                    swStatusOrdem.setText(R.string.paga);
+                    swStatusOrdem.setTextColor(getResources().getColor(R.color.material_green));
+                }
+                else{
+                    swStatusOrdem.setText(R.string.nao_paga);
+                    swStatusOrdem.setTextColor(getResources().getColor(R.color.dark_red));
+                }
+            }
+        });
+
 
     }//FIM onCreate
 

@@ -22,7 +22,8 @@
 
 
         <activity android:name="com.atimports.activity.AddActivity"
-                  android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+                  android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+                  android:windowSoftInputMode="stateAlwaysHidden" />
 
 
 

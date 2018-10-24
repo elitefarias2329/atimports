@@ -18,8 +18,208 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             tools:context=".com.atimports.activity.AddActivity">
 
+
+            <EditText
+                android:id="@+id/et_valor_lance_dolar6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:drawablePadding="@dimen/fab_margin"
+                android:drawingCacheQuality="high"
+                android:ems="10"
+                android:hint="Digite o valor em Real"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="9"
+                app:layout_constraintEnd_toStartOf="@+id/editText7"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView16"
+                tools:targetApi="o" />
+
+            <EditText
+                android:id="@+id/editText7"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:ems="10"
+                android:focusable="false"
+                android:hint="$"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:textColor="@android:color/holo_red_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="32dp"
+                android:drawableStart="@drawable/cambio18"
+                android:drawableEnd="@drawable/asterisco18"
+                android:drawablePadding="8dp"
+                android:drawingCacheQuality="high"
+                android:text="Taxas de Câmbio (R$)"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar5" />
+
+            <EditText
+                android:id="@+id/et_valor_lance_dolar5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:drawablePadding="@dimen/fab_margin"
+                android:drawingCacheQuality="high"
+                android:ems="10"
+                android:hint="Digite o valor em Dólar"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="9"
+                app:layout_constraintEnd_toStartOf="@+id/editText5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView14"
+                tools:targetApi="o" />
+
+            <EditText
+                android:id="@+id/editText5"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:ems="10"
+                android:focusable="false"
+                android:hint="R$"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:textColor="@android:color/holo_red_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="32dp"
+                android:drawableStart="@drawable/frete18"
+                android:drawableEnd="@drawable/asterisco18"
+                android:drawablePadding="8dp"
+                android:drawingCacheQuality="high"
+                android:text="Frete do Fornecedor ($)"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar4" />
+
+            <EditText
+                android:id="@+id/et_valor_lance_dolar4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:drawablePadding="@dimen/fab_margin"
+                android:drawingCacheQuality="high"
+                android:ems="10"
+                android:hint="Digite o valor em Dólar"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="9"
+                app:layout_constraintEnd_toStartOf="@+id/editText3"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView13"
+                tools:targetApi="o" />
+
+            <EditText
+                android:id="@+id/editText3"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:ems="10"
+                android:focusable="false"
+                android:hint="R$"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:textColor="@android:color/holo_red_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="32dp"
+                android:drawableStart="@drawable/fornecedor18"
+                android:drawableEnd="@drawable/asterisco18"
+                android:drawablePadding="8dp"
+                android:drawingCacheQuality="high"
+                android:text="Fornecedor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sw_status_ordem" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="32dp"
+                android:drawableStart="@drawable/dolar18"
+                android:drawableEnd="@drawable/asterisco18"
+                android:drawablePadding="8dp"
+                android:drawingCacheQuality="high"
+                android:text="Comissão do Fornecedor ($)"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editText2" />
+
+            <EditText
+                android:id="@+id/editText2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:drawablePadding="@dimen/fab_margin"
+                android:drawingCacheQuality="high"
+                android:ems="10"
+                android:hint="Digite o nome do fornecedor"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLength="30"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView12"
+                tools:targetApi="o" />
 
             <TextView
                 android:id="@+id/textView11"
@@ -29,6 +229,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="32dp"
                 android:drawableStart="@drawable/status_ordem18"
+                android:drawableEnd="@drawable/asterisco18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
                 android:text="Status da Ordem de Compra"
@@ -68,6 +269,20 @@
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
                 android:text="Ordem de Compra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editText6" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="32dp"
+                android:drawableStart="@drawable/frete18"
+                android:drawablePadding="8dp"
+                android:drawingCacheQuality="high"
+                android:text="Frete USA/Brasil"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar2" />
 
@@ -117,7 +332,7 @@
                 android:drawableEnd="@drawable/asterisco18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
-                android:text="Valor do Lance"
+                android:text="Valor do Lance ($)"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider5" />
 
@@ -227,6 +442,23 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
             <EditText
+                android:id="@+id/editText6"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:focusable="false"
+                android:hint="R$"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:textColor="@android:color/holo_red_dark"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+            <EditText
                 android:id="@+id/et_cotacao_dolar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -246,7 +478,6 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView"
-
                 tools:drawingCacheQuality="high" />
 
             <EditText
@@ -354,7 +585,7 @@
                 android:drawableEnd="@drawable/asterisco18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
-                android:text="Frete por KG - Valor USA ($)"
+                android:text="Frete por Kilo ($)"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_cotacao_dolar" />
 
@@ -500,17 +731,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/spn_qtd" />
 
             <Switch
-                android:id="@+id/switch1"
+                android:id="@+id/sw_status_ordem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:checked="false"
-                android:showText="true"
+                android:switchPadding="10dp"
+                android:text="@string/nao_paga"
                 android:textAllCaps="false"
-                android:textOff="Não Paga"
-                android:textOn="Paga"
+                android:textColor="@color/dark_red"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView11"
                 tools:checked="false" />

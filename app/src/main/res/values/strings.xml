@@ -3,6 +3,8 @@
 
 
     <string name="selecione">...Selecione...</string>
+    <string name="nao_paga">Não Paga</string>
+    <string name="paga">Paga \u0020 \u0020 \u0020 \u0020 </string>
 
 
 </resources>
