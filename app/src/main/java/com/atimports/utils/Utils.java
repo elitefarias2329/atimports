@@ -6,12 +6,6 @@ import java.math.BigDecimal;
 
 public abstract class Utils {
 
-
-    public static boolean isBlank(String texto){
-        return null == texto || "".equals(texto.trim());
-    }
-
-
     public static String desformatarMascaraMoeda(String texto, String simboloMoeda){
         String desformatado = texto;
 
@@ -23,7 +17,6 @@ public abstract class Utils {
             desformatado = desformatado.replace(Constantes.SIMBOLO_DOLAR, Constantes.VAZIO);
             desformatado = desformatado.replace(Constantes.VIRGULA , Constantes.VAZIO);
         }
-
         return desformatado;
     }
 
@@ -34,13 +27,19 @@ public abstract class Utils {
         if(simboloMoeda.equals(Constantes.SIMBOLO_REAL)){
             formatado = formatado.replace(Constantes.PONTO, Constantes.VIRGULA);
         }
-
         return formatado;
+    }
+
+
+    public static boolean isBlank(String texto){
+        return null == texto || "".equals(texto.trim());
     }
 
     public static boolean isNullOrZero(BigDecimal valor){
         return null == valor || valor.compareTo(BigDecimal.ZERO) == 0;
     }
+
+
 
 
 }

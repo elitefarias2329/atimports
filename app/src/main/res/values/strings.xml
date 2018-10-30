@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">ATimports</string>
 
-
     <string name="selecione">...Selecione...</string>
+
     <string name="nao_paga">Não Paga</string>
     <string name="paga">Paga \u0020 \u0020 \u0020 \u0020 </string>
+
+    <string name="medida_kg">KG</string>
+    <string name="medida_libra">Libra</string>
 
 
 </resources>

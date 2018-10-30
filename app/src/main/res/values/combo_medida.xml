@@ -1,0 +1,6 @@
+<resources>
+    <string-array name="medidas">
+        <item>@string/medida_kg</item>
+        <item>@string/medida_libra</item>
+    </string-array>
+</resources>
