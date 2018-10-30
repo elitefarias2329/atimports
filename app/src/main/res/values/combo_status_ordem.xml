@@ -1,0 +1,10 @@
+<resources>
+    <string-array name="status_ordem">
+        <item>@string/selecione</item>
+        <item>Não Paga</item>
+        <item>Paga</item>
+        <item>Enviada</item>
+        <item>Entregue</item>
+        <item>Recebida no Brasil</item>
+    </string-array>
+</resources>

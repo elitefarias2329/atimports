@@ -1,13 +1,18 @@
 package com.atimports.activity;
 
+import android.app.DatePickerDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -20,6 +25,7 @@ import com.atimports.utils.Utils;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,6 +34,7 @@ public class AddActivity extends AppCompatActivity {
     Spinner spnConditions;
     Spinner spnQtd;
     Spinner spnMedida;
+    Spinner spnStatusOrdem;
 
     EditText etCotacaoDolar;
 
@@ -40,10 +47,14 @@ public class AddActivity extends AppCompatActivity {
     EditText etValorLanceDolar;
     EditText etValorLanceRealCalculado;
 
+    EditText etDataOrdem;
+
     TextView tvMedidaFinal;
+    TextView tvFreteUsaBrasil;
 
-    Switch   swStatusOrdem;
 
+
+    //private DatePickerDialog
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +69,9 @@ public class AddActivity extends AppCompatActivity {
         spnConditions    = findViewById(R.id.spn_conditions);
         spnQtd           = findViewById(R.id.spn_qtd);
         spnMedida        = findViewById(R.id.spn_medida);
+        spnStatusOrdem   = findViewById(R.id.spn_status_ordem);
+
+
 
         etCotacaoDolar            =  findViewById(R.id.et_cotacao_dolar);
 
@@ -70,9 +84,15 @@ public class AddActivity extends AppCompatActivity {
         etValorLanceDolar         =  findViewById(R.id.et_valor_lance_dolar);
         etValorLanceRealCalculado =  findViewById(R.id.et_valor_lance_real_calculado);
 
-        tvMedidaFinal             =  findViewById(R.id.tv_medida_final);
+        etDataOrdem               =  findViewById(R.id.et_data_ordem);
 
-        swStatusOrdem   =  findViewById(R.id.sw_status_ordem);
+
+
+        tvMedidaFinal             =  findViewById(R.id.tv_medida_final);
+        tvFreteUsaBrasil          =  findViewById(R.id.tv_frete_usa_brasil);
+
+
+
         //***************************
         //FIM INICIALIZAÇÃO DAS VIEWS
         //***************************
@@ -80,8 +100,9 @@ public class AddActivity extends AppCompatActivity {
         //**************
         //POPULAR COMBOS
         //**************
-        popularCombosValorFixo(spnConditions, R.array.conditions);
-        popularCombosValorFixo(spnMedida, R.array.medidas);
+        popularCombosValorFixo(spnConditions,  R.array.conditions);
+        popularCombosValorFixo(spnMedida,      R.array.medidas);
+        popularCombosValorFixo(spnStatusOrdem, R.array.status_ordem);
         popularComboQuantidade(spnQtd);
         //******************
         //FIM POPULAR COMBOS
@@ -91,9 +112,6 @@ public class AddActivity extends AppCompatActivity {
         //****************
         //APLICAR MÁSCARAS
         //****************
-        //List<EditText> listaCamposCalculados = new ArrayList<>();
-        //listaCamposCalculados.add(etBaseFreteRealCalculado);
-
         aplicarMascaraMoeda(etCotacaoDolar,    Constantes.SIMBOLO_REAL);
         aplicarMascaraMoeda(etBaseFreteDolar,  Constantes.SIMBOLO_DOLAR);
         aplicarMascaraMoeda(etValorLanceDolar, Constantes.SIMBOLO_DOLAR);
@@ -116,6 +134,7 @@ public class AddActivity extends AppCompatActivity {
 
                 calcularValorBaseadoNaCotacaoDolar(etBaseFreteDolar,  Constantes.SIMBOLO_DOLAR, etBaseFreteRealCalculado,  Constantes.SIMBOLO_REAL);
                 calcularValorBaseadoNaCotacaoDolar(etValorLanceDolar, Constantes.SIMBOLO_DOLAR, etValorLanceRealCalculado, Constantes.SIMBOLO_REAL);
+                calcularFreteUsaBrasil();
 
 
             }
@@ -139,6 +158,7 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 calcularValorBaseadoNaCotacaoDolar(etBaseFreteDolar, Constantes.SIMBOLO_DOLAR, etBaseFreteRealCalculado, Constantes.SIMBOLO_REAL);
+                calcularFreteUsaBrasil();
             }
             @Override
             public void afterTextChanged(Editable s) {
@@ -164,6 +184,7 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 calcularMedidasDePeso();
+                calcularFreteUsaBrasil();
             }
             @Override
             public void afterTextChanged(Editable s) {
@@ -175,6 +196,7 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 calcularMedidasDePeso();
+                calcularFreteUsaBrasil();
             }
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -183,6 +205,7 @@ public class AddActivity extends AppCompatActivity {
         //*******************************
         //FIM CALCULO DAS MEDIDAS DE PESO
         //*******************************
+
 
 
         //*************************
@@ -201,36 +224,54 @@ public class AddActivity extends AppCompatActivity {
             }
         });
         //*****************************
-        //FIM CÁLCULO DA BASE DA FRETE
+        //FIM CÁLCULO DO VALOR DO LANCE
         //*****************************
 
 
+        //********************************
+        //DATE PICKER DIALOG - DATA ORDEM
+        //********************************
 
-
-
-        //**************************************
-        //STATUS DE PAGAMENTO DA ORDEM DE COMPRA
-        //**************************************
-        swStatusOrdem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+        etDataOrdem.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton cb, boolean on){
-                if(on){
-                    //Do something when Switch button is on/checked
-                    swStatusOrdem.setText(R.string.paga);
-                    swStatusOrdem.setTextColor(getResources().getColor(R.color.material_green));
-                }
-                else{
-                    swStatusOrdem.setText(R.string.nao_paga);
-                    swStatusOrdem.setTextColor(getResources().getColor(R.color.dark_red));
-                }
+            public void onClick(View v) {
+
+               Calendar cal = Calendar.getInstance() ;
+               int year = cal.get(Calendar.YEAR);
+               int month = cal.get(Calendar.MONTH);
+               int day = cal.get(Calendar.DAY_OF_MONTH);
+
+               DatePickerDialog dpDataOrdemDialog = new DatePickerDialog(AddActivity.this,
+                                                                                 android.R.style.Theme_DeviceDefault_Dialog,
+
+                                                                                 new DatePickerDialog.OnDateSetListener() {
+                                                                                    @Override
+                                                                                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                                                                                        String dia = String.valueOf(dayOfMonth);
+                                                                                        if(dia.length() < 2){
+                                                                                            dia = "0" + dia;
+                                                                                        }
+
+                                                                                        String mes = String.valueOf(month + 1);
+                                                                                        if(mes.length() < 2){
+                                                                                            mes = "0" + mes;
+                                                                                        }
+
+                                                                                        etDataOrdem.setText(dia + "/" + mes + "/" + year);
+                                                                                    }
+                                                                                 },
+
+                                                                                year, month, day
+                                                                        );
+
+               dpDataOrdemDialog.show();
+
             }
         });
-        //******************************************
-        //FIM STATUS DE PAGAMENTO DA ORDEM DE COMPRA
-        //******************************************
-
-
-
+        //***********************************
+        //FIM DATE PICKER DIALOG - DATA ORDEM
+        //***********************************
 
 
 
@@ -276,27 +317,6 @@ public class AddActivity extends AppCompatActivity {
     }
 
 
-    private void calcularBaseFrete(){
-
-        if(!Utils.isBlank(etCotacaoDolar.getText().toString()) && !Utils.isBlank(etBaseFreteDolar.getText().toString())){
-
-            try{
-                BigDecimal valorCotacaoDolar   = new BigDecimal(Utils.desformatarMascaraMoeda(etCotacaoDolar.getText().toString(),   Constantes.SIMBOLO_REAL));
-                BigDecimal valorBaseFreteDolar = new BigDecimal(Utils.desformatarMascaraMoeda(etBaseFreteDolar.getText().toString(), Constantes.SIMBOLO_DOLAR));
-                BigDecimal valorBaseFreteReal  = valorCotacaoDolar.multiply(valorBaseFreteDolar).setScale(2,BigDecimal.ROUND_HALF_UP);
-
-                etBaseFreteRealCalculado.setText(Utils.formatarMascaraMoeda(valorBaseFreteReal.toString(), Constantes.SIMBOLO_REAL));
-
-            }
-            catch(NumberFormatException | ArithmeticException e){
-                etBaseFreteRealCalculado.setText(Constantes.VAZIO);
-            }
-        }
-        else{
-            etBaseFreteRealCalculado.setText(Constantes.VAZIO);
-        }
-    }
-
     private void calcularMedidasDePeso(){
 
         String valorMedidaInicial = etMedidaInicial.getText().toString();
@@ -334,6 +354,37 @@ public class AddActivity extends AppCompatActivity {
         }
     }
 
+    private void calcularFreteUsaBrasil(){
+
+        String tipoMedidaSelecionada = spnMedida.getSelectedItem().toString();
+        String medidaKG = null;
+
+        if(tipoMedidaSelecionada.equals(getString(R.string.medida_kg))){
+            medidaKG = etMedidaInicial.getText().toString();
+        }
+        else{
+            medidaKG = etMedidaFinal.getText().toString();
+        }
+
+        if(!Utils.isBlank(medidaKG) && !Utils.isBlank(etBaseFreteRealCalculado.getText().toString())){
+
+            try{
+                BigDecimal valorFreteRealCalculado = new BigDecimal(Utils.desformatarMascaraMoeda(etBaseFreteRealCalculado.getText().toString(), Constantes.SIMBOLO_REAL));
+                BigDecimal valorMedidaKG = new BigDecimal(medidaKG.replace(Constantes.VIRGULA, Constantes.PONTO));
+                BigDecimal valorFreteUsaBrasil  = valorFreteRealCalculado.multiply(valorMedidaKG).setScale(2,BigDecimal.ROUND_HALF_UP);
+                tvFreteUsaBrasil.setText(Utils.formatarMascaraMoeda(valorFreteUsaBrasil.toString(), Constantes.SIMBOLO_REAL));
+
+            }
+            catch(NumberFormatException | ArithmeticException e){
+                tvFreteUsaBrasil.setText(Constantes.VAZIO);
+            }
+        }
+        else{
+            tvFreteUsaBrasil.setText(Constantes.VAZIO);
+        }
+    }
+
+
     private void popularComboQuantidade(Spinner spinner){
 
         List<String> itensArray = new ArrayList<>();
@@ -368,20 +419,13 @@ public class AddActivity extends AppCompatActivity {
 
 
     private void aplicarMascaraMoeda(final EditText campo, final String simboloMoeda){
-
-        campo.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-//                //ZERAR CAMPOS CALCULADOS
-//                for(EditText edt: listaCamposcalculados){
-//                    edt.setText(Constantes.VAZIO);
-//                }
-            }
+                                     campo.addTextChangedListener(new TextWatcher(){
 
             private String current = Constantes.VAZIO;
 
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 

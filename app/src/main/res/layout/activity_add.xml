@@ -40,13 +40,14 @@
                 android:id="@+id/textView32"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
                 android:text="R$:900,00"
                 android:textColor="@color/material_green"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/textView31"
-                app:layout_constraintStart_toStartOf="@+id/textView31"
-                app:layout_constraintTop_toBottomOf="@+id/textView31" />
+                app:layout_constraintStart_toEndOf="@+id/textView31"
+                app:layout_constraintTop_toBottomOf="@+id/textView29" />
 
             <TextView
                 android:id="@+id/textView31"
@@ -54,38 +55,39 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:drawableStart="@drawable/real18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
-                android:text="Lucro Total por Unidade (R$)"
-                android:textColor="@color/material_green"
+                android:text="Lucro Total por Unidade"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView29" />
+                app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
             <TextView
                 android:id="@+id/textView28"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="32dp"
                 android:text="R$:900,00"
                 android:textColor="@color/dark_red"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/textView26"
-                app:layout_constraintStart_toStartOf="@+id/textView26"
-                app:layout_constraintTop_toBottomOf="@+id/textView26" />
+                app:layout_constraintStart_toEndOf="@+id/textView26"
+                app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar10" />
 
             <TextView
                 android:id="@+id/textView29"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="R$:900,00"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                android:text="R$:100,00"
                 android:textColor="@color/dark_red"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/textView27"
-                app:layout_constraintStart_toStartOf="@+id/textView27"
-                app:layout_constraintTop_toBottomOf="@+id/textView27" />
+                app:layout_constraintStart_toEndOf="@+id/textView27"
+                app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
             <TextView
                 android:id="@+id/textView26"
@@ -97,7 +99,7 @@
                 android:drawableStart="@drawable/real18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
-                android:text="Custo Total (R$)"
+                android:text="Custo Total"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar10" />
 
@@ -110,10 +112,10 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:drawableStart="@drawable/real18"
+                android:drawableStart="@drawable/lucro24"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
-                android:text="Lucro Total (R$)"
+                android:text="Lucro Total"
                 android:textColor="@color/material_green"
                 android:textSize="21sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -125,18 +127,15 @@
                 android:id="@+id/textView27"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
                 android:drawableStart="@drawable/real18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
-                android:text="Custo Bruto por Unidade (R$)"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView26"
-                app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar10" />
+                android:text="Custo Total por Unidade"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView26" />
 
             <TextView
                 android:id="@+id/textView25"
@@ -148,7 +147,7 @@
                 android:drawableStart="@drawable/frete18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
-                android:text="Frete do Revendedor por Unidade ($)"
+                android:text="Frete do Revendedor por Unidade (R$)"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar8" />
 
@@ -164,32 +163,14 @@
                 android:drawablePadding="@dimen/fab_margin"
                 android:drawingCacheQuality="high"
                 android:ems="10"
-                android:hint="Digite o valor em Dólar"
+                android:hint="Digite o valor em Real"
                 android:importantForAutofill="no"
                 android:inputType="numberDecimal"
                 android:maxLength="9"
-                app:layout_constraintEnd_toStartOf="@+id/editText8"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView25"
                 tools:targetApi="o" />
-
-            <EditText
-                android:id="@+id/editText8"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:ems="10"
-                android:focusable="false"
-                android:hint="R$"
-                android:importantForAutofill="no"
-                android:inputType="numberDecimal"
-                android:maxLength="10"
-                android:textColor="@android:color/holo_red_dark"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView25" />
 
             <TextView
                 android:id="@+id/textView24"
@@ -213,6 +194,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:drawablePadding="@dimen/fab_margin"
                 android:drawingCacheQuality="high"
                 android:ems="10"
@@ -220,6 +203,7 @@
                 android:importantForAutofill="no"
                 android:inputType="numberDecimal"
                 android:maxLength="9"
+                app:layout_constraintEnd_toStartOf="@+id/editText6"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView24"
                 tools:targetApi="o" />
@@ -242,16 +226,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
             <TextView
-                android:id="@+id/textView23"
+                android:id="@+id/tv_frete_usa_brasil"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="R$:300,00"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="32dp"
                 android:textColor="@color/dark_red"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/textView15"
-                app:layout_constraintStart_toStartOf="@+id/textView15"
-                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+                app:layout_constraintStart_toEndOf="@+id/textView15"
+                app:layout_constraintTop_toBottomOf="@+id/spn_medida" />
 
             <EditText
                 android:id="@+id/et_valor_lance_dolar7"
@@ -269,6 +253,7 @@
                 android:importantForAutofill="no"
                 android:inputType="numberDecimal"
                 android:maxLength="9"
+                android:textColor="@color/material_green"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -322,10 +307,9 @@
                 android:drawableEnd="@drawable/asterisco18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
-                android:text="Valor de venda (R$)"
-                android:textColor="@color/material_green"
+                android:text="Valor de venda por Unidade (R$)"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView19" />
+                app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar6" />
 
             <EditText
                 android:id="@+id/et_valor_lance_dolar6"
@@ -381,37 +365,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar9" />
 
-            <TextView
-                android:id="@+id/textView17"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="32dp"
-                android:drawableStart="@drawable/real18"
-                android:drawablePadding="8dp"
-                android:drawingCacheQuality="high"
-                android:text="Custo Bruto (R$)"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar6" />
-
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:drawableStart="@drawable/real18"
-                android:drawablePadding="8dp"
-                android:drawingCacheQuality="high"
-                android:text="Custo Bruto por Unidade (R$)"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView17"
-                app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar6" />
-
             <EditText
                 android:id="@+id/et_valor_lance_dolar4"
                 android:layout_width="0dp"
@@ -464,7 +417,7 @@
                 android:drawingCacheQuality="high"
                 android:text="Fornecedor"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sw_status_ordem" />
+                app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
             <TextView
                 android:id="@+id/textView13"
@@ -511,15 +464,14 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="32dp"
                 android:drawableStart="@drawable/status_ordem18"
-                android:drawableEnd="@drawable/asterisco18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
                 android:text="Status da Ordem de Compra"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_data_ordem" />
+                app:layout_constraintTop_toBottomOf="@+id/et_data_ordem" />
 
             <EditText
-                android:id="@+id/edt_data_ordem"
+                android:id="@+id/et_data_ordem"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -530,6 +482,7 @@
                 android:drawablePadding="@dimen/fab_margin"
                 android:drawingCacheQuality="high"
                 android:ems="10"
+                android:focusable="false"
                 android:hint="Selecione a data da ordem de compra"
                 android:importantForAutofill="no"
                 android:inputType="date"
@@ -552,7 +505,7 @@
                 android:drawingCacheQuality="high"
                 android:text="Ordem de Compra"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView23" />
+                app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
             <TextView
                 android:id="@+id/textView15"
@@ -954,6 +907,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
+            <Spinner
+                android:id="@+id/spn_status_ordem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="1dp"
@@ -983,45 +950,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spn_qtd" />
 
-            <Switch
-                android:id="@+id/sw_status_ordem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:checked="false"
-                android:switchPadding="10dp"
-                android:text="@string/nao_paga"
-                android:textAllCaps="false"
-                android:textColor="@color/dark_red"
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@color/dark_grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView11"
-                tools:checked="false" />
-
-            <TextView
-                android:id="@+id/textView19"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="R$:900,00"
-                android:textColor="@color/dark_red"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/textView17"
-                app:layout_constraintStart_toStartOf="@+id/textView17"
-                app:layout_constraintTop_toBottomOf="@+id/textView17" />
-
-            <TextView
-                android:id="@+id/textView20"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="R$:300,00"
-                android:textColor="@color/dark_red"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/textView18"
-                app:layout_constraintStart_toStartOf="@+id/textView18"
-                app:layout_constraintTop_toBottomOf="@+id/textView18" />
+                app:layout_constraintTop_toBottomOf="@+id/spn_status_ordem" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline"
