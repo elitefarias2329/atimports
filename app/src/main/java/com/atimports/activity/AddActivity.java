@@ -30,16 +30,19 @@ public class AddActivity extends AppCompatActivity {
     Spinner spnMedida;
 
     EditText etCotacaoDolar;
+
     EditText etBaseFreteDolar;
     EditText etBaseFreteRealCalculado;
 
     EditText etMedidaInicial;
     EditText etMedidaFinal;
+
+    EditText etValorLanceDolar;
+    EditText etValorLanceRealCalculado;
+
     TextView tvMedidaFinal;
 
     Switch   swStatusOrdem;
-
-
 
 
     @Override
@@ -48,58 +51,108 @@ public class AddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
+
+        //***********************
         //INICIALIZAÇÃO DAS VIEWS
+        //***********************
         spnConditions    = findViewById(R.id.spn_conditions);
         spnQtd           = findViewById(R.id.spn_qtd);
         spnMedida        = findViewById(R.id.spn_medida);
 
         etCotacaoDolar            =  findViewById(R.id.et_cotacao_dolar);
+
         etBaseFreteDolar          =  findViewById(R.id.et_base_frete_dolar);
         etBaseFreteRealCalculado  =  findViewById(R.id.et_base_frete_real);
+
         etMedidaInicial           =  findViewById(R.id.et_medida_inicial);
         etMedidaFinal             =  findViewById(R.id.et_medida_final);
+
+        etValorLanceDolar         =  findViewById(R.id.et_valor_lance_dolar);
+        etValorLanceRealCalculado =  findViewById(R.id.et_valor_lance_real_calculado);
+
         tvMedidaFinal             =  findViewById(R.id.tv_medida_final);
 
-
         swStatusOrdem   =  findViewById(R.id.sw_status_ordem);
+        //***************************
+        //FIM INICIALIZAÇÃO DAS VIEWS
+        //***************************
 
-        List<EditText> listaCamposCalculados = new ArrayList<>();
-        listaCamposCalculados.add(etBaseFreteRealCalculado);
-
+        //**************
+        //POPULAR COMBOS
+        //**************
         popularCombosValorFixo(spnConditions, R.array.conditions);
         popularCombosValorFixo(spnMedida, R.array.medidas);
         popularComboQuantidade(spnQtd);
+        //******************
+        //FIM POPULAR COMBOS
+        //******************
 
-        aplicarMascaraMoeda(etCotacaoDolar,   Constantes.SIMBOLO_REAL,  listaCamposCalculados);
-        aplicarMascaraMoeda(etBaseFreteDolar, Constantes.SIMBOLO_DOLAR, listaCamposCalculados);
+
+        //****************
+        //APLICAR MÁSCARAS
+        //****************
+        //List<EditText> listaCamposCalculados = new ArrayList<>();
+        //listaCamposCalculados.add(etBaseFreteRealCalculado);
+
+        aplicarMascaraMoeda(etCotacaoDolar,    Constantes.SIMBOLO_REAL);
+        aplicarMascaraMoeda(etBaseFreteDolar,  Constantes.SIMBOLO_DOLAR);
+        aplicarMascaraMoeda(etValorLanceDolar, Constantes.SIMBOLO_DOLAR);
+        //********************
+        //FIM APLICAR MÁSCARAS
+        //********************
 
 
-        //CÁLCULO DA BASE DA FRETE
-        etBaseFreteDolar.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        //**********************************************
+        //CÁLCULO DE CAMPOS BASEADOS NA COTAÇÃO DO DOLAR
+        //**********************************************
+        etCotacaoDolar.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                    if(null != etCotacaoDolar && !Utils.isBlank(etCotacaoDolar.getText().toString())){
+                //CHAMA TODOS OS MÉTODOS DE CÁLCULO QUE USAM COMO BASE A COTAÇÃO DO DOLAR
 
-                        BigDecimal valorCotacaoDolar   = new BigDecimal(Utils.desformatarMascaraMoeda(etCotacaoDolar.getText().toString(),   Constantes.SIMBOLO_REAL));
-                        BigDecimal valorBaseFreteDolar = new BigDecimal(Utils.desformatarMascaraMoeda(etBaseFreteDolar.getText().toString(), Constantes.SIMBOLO_DOLAR));
-                        BigDecimal valorBaseFreteReal  = valorCotacaoDolar.multiply(valorBaseFreteDolar).setScale(2);
+                calcularValorBaseadoNaCotacaoDolar(etBaseFreteDolar,  Constantes.SIMBOLO_DOLAR, etBaseFreteRealCalculado,  Constantes.SIMBOLO_REAL);
+                calcularValorBaseadoNaCotacaoDolar(etValorLanceDolar, Constantes.SIMBOLO_DOLAR, etValorLanceRealCalculado, Constantes.SIMBOLO_REAL);
 
-                        if(!Utils.isNullOrZero(valorBaseFreteReal)){
-                            etBaseFreteRealCalculado.setText(Utils.formatarMascaraMoeda(valorBaseFreteReal.toString(), Constantes.SIMBOLO_REAL));
-                        }
-                        else{
-                            etBaseFreteRealCalculado.setText(Constantes.VAZIO);
-                        }
 
-                    }
-                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
+        //**************************************************
+        //FIM CÁLCULO DE CAMPOS BASEADOS NA COTAÇÃO DO DOLAR
+        //**************************************************
 
 
+
+        //************************
+        //CÁLCULO DA BASE DA FRETE
+        //************************
+        etBaseFreteDolar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calcularValorBaseadoNaCotacaoDolar(etBaseFreteDolar, Constantes.SIMBOLO_DOLAR, etBaseFreteRealCalculado, Constantes.SIMBOLO_REAL);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        //*****************************
+        //FIM CÁLCULO DA BASE DA FRETE
+        //*****************************
+
+
+
+        //***************************
         //CALCULO DAS MEDIDAS DE PESO
+        //***************************
         etMedidaInicial.setText(Constantes.PESO_DEFAULT_1_KG);
         etMedidaFinal.setText(Constantes.PESO_DEFAULT_1_KG_EM_LIBRA);
 
@@ -127,12 +180,37 @@ public class AddActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+        //*******************************
+        //FIM CALCULO DAS MEDIDAS DE PESO
+        //*******************************
+
+
+        //*************************
+        //CÁLCULO DO VALOR DO LANCE
+        //*************************
+        etValorLanceDolar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calcularValorBaseadoNaCotacaoDolar(etValorLanceDolar, Constantes.SIMBOLO_DOLAR, etValorLanceRealCalculado, Constantes.SIMBOLO_REAL);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        //*****************************
+        //FIM CÁLCULO DA BASE DA FRETE
+        //*****************************
 
 
 
 
 
+        //**************************************
         //STATUS DE PAGAMENTO DA ORDEM DE COMPRA
+        //**************************************
         swStatusOrdem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(CompoundButton cb, boolean on){
@@ -147,10 +225,9 @@ public class AddActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
-
+        //******************************************
+        //FIM STATUS DE PAGAMENTO DA ORDEM DE COMPRA
+        //******************************************
 
 
 
@@ -160,9 +237,65 @@ public class AddActivity extends AppCompatActivity {
     }//FIM onCreate
 
 
-    //*******
+
+
+
+    //**********************************************************************************************
     //MÉTODOS
-    //*******
+    //**********************************************************************************************
+
+
+    private void calcularValorBaseadoNaCotacaoDolar(EditText campoBase, String simboloMoedaBase, TextView campoResultado, String simboloMoedaResultado){
+
+        if(!Utils.isBlank(etCotacaoDolar.getText().toString()) && !Utils.isBlank(campoBase.getText().toString())){
+
+            try{
+                BigDecimal valorCotacaoDolar   = new BigDecimal(Utils.desformatarMascaraMoeda(etCotacaoDolar.getText().toString(),   Constantes.SIMBOLO_REAL));
+                BigDecimal valorCampoBase      = new BigDecimal(Utils.desformatarMascaraMoeda(campoBase.getText().toString(), simboloMoedaBase));
+
+                BigDecimal valorCampoResultado;
+
+                if(simboloMoedaBase.equals(Constantes.SIMBOLO_DOLAR)){
+                    valorCampoResultado  = valorCotacaoDolar.multiply(valorCampoBase).setScale(2,BigDecimal.ROUND_HALF_UP);
+                }
+                else{
+                    valorCampoResultado  = valorCotacaoDolar.divide(valorCampoBase).setScale(2,BigDecimal.ROUND_HALF_UP);
+                }
+
+                campoResultado.setText(Utils.formatarMascaraMoeda(valorCampoResultado.toString(), simboloMoedaResultado));
+
+            }
+            catch(NumberFormatException | ArithmeticException e){
+                campoResultado.setText(Constantes.VAZIO);
+            }
+        }
+        else{
+            campoResultado.setText(Constantes.VAZIO);
+        }
+
+    }
+
+
+    private void calcularBaseFrete(){
+
+        if(!Utils.isBlank(etCotacaoDolar.getText().toString()) && !Utils.isBlank(etBaseFreteDolar.getText().toString())){
+
+            try{
+                BigDecimal valorCotacaoDolar   = new BigDecimal(Utils.desformatarMascaraMoeda(etCotacaoDolar.getText().toString(),   Constantes.SIMBOLO_REAL));
+                BigDecimal valorBaseFreteDolar = new BigDecimal(Utils.desformatarMascaraMoeda(etBaseFreteDolar.getText().toString(), Constantes.SIMBOLO_DOLAR));
+                BigDecimal valorBaseFreteReal  = valorCotacaoDolar.multiply(valorBaseFreteDolar).setScale(2,BigDecimal.ROUND_HALF_UP);
+
+                etBaseFreteRealCalculado.setText(Utils.formatarMascaraMoeda(valorBaseFreteReal.toString(), Constantes.SIMBOLO_REAL));
+
+            }
+            catch(NumberFormatException | ArithmeticException e){
+                etBaseFreteRealCalculado.setText(Constantes.VAZIO);
+            }
+        }
+        else{
+            etBaseFreteRealCalculado.setText(Constantes.VAZIO);
+        }
+    }
 
     private void calcularMedidasDePeso(){
 
@@ -234,17 +367,17 @@ public class AddActivity extends AppCompatActivity {
 
 
 
-    private void aplicarMascaraMoeda(final EditText campo, final String simboloMoeda, final List<EditText> listaCamposcalculados){
+    private void aplicarMascaraMoeda(final EditText campo, final String simboloMoeda){
 
         campo.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                //ZERAR CAMPOS CALCULADOS
-                for(EditText edt: listaCamposcalculados){
-                    edt.setText(Constantes.VAZIO);
-                }
+//                //ZERAR CAMPOS CALCULADOS
+//                for(EditText edt: listaCamposcalculados){
+//                    edt.setText(Constantes.VAZIO);
+//                }
             }
 
             private String current = Constantes.VAZIO;

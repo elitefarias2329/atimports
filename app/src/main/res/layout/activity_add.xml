@@ -706,6 +706,7 @@
                 tools:targetApi="o" />
 
             <EditText
+                android:id="@+id/et_valor_lance_real_calculado"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

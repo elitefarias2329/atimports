@@ -21,8 +21,8 @@ public abstract class Utils {
     }
 
 
-    public static String formatarMascaraMoeda(String texto, String simboloMoeda){
-        String formatado = simboloMoeda + texto;
+    public static String formatarMascaraMoeda(String valor, String simboloMoeda){
+        String formatado = simboloMoeda + valor;
 
         if(simboloMoeda.equals(Constantes.SIMBOLO_REAL)){
             formatado = formatado.replace(Constantes.PONTO, Constantes.VIRGULA);
