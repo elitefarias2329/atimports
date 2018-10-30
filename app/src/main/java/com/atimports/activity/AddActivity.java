@@ -52,6 +52,7 @@ public class AddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
+        //INICIALIZAÇÃO DAS VIEWS
         spnConditions    = findViewById(R.id.spn_conditions);
         spnQtd           = findViewById(R.id.spn_qtd);
         spnMedida        = findViewById(R.id.spn_medida);
@@ -119,8 +120,6 @@ public class AddActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
-
-
 
 
         spnMedida.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -252,10 +251,11 @@ public class AddActivity extends AppCompatActivity {
                 }
             }
 
-            private String current = "";
+            private String current = Constantes.VAZIO;
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
                 if(!s.toString().equals(current)) {
 
                     Locale myLocale = new Locale("pt", "BR");
@@ -278,7 +278,6 @@ public class AddActivity extends AppCompatActivity {
                     campo.addTextChangedListener(this);
                 }
             }
-
             @Override
             public void afterTextChanged(Editable s) {
             }
