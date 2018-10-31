@@ -32,37 +32,25 @@ public class AddActivity extends AppCompatActivity {
     Spinner spnStatusOrdem;
 
     EditText etCotacaoDolar;
-
     EditText etBaseFreteDolar;
     EditText etBaseFreteRealCalculado;
-
     EditText etMedidaInicial;
     EditText etMedidaFinal;
-
     EditText etValorLanceDolar;
     EditText etValorLanceRealCalculado;
-
     EditText etValorComissaoFornecedorDolar;
     EditText etValorComissaoFornecedorRealCalculado;
-
     EditText etValorFreteFornecedorDolar;
     EditText etValorFreteFornecedorRealCalculado;
-
     EditText etValorTaxaCambioReal;
     EditText etValorTaxaCambioDolarCalculado;
-
     EditText etValorVendaUnidade;
     EditText etComissaoRevendedor;
     EditText etValorFreteRevendedor;
-
     EditText etDataOrdem;
 
     TextView tvMedidaFinal;
     TextView tvFreteUsaBrasil;
-
-
-
-    //private DatePickerDialog
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,42 +62,31 @@ public class AddActivity extends AppCompatActivity {
         //***********************
         //INICIALIZAÇÃO DAS VIEWS
         //***********************
-        spnConditions    = findViewById(R.id.spn_conditions);
-        spnQtd           = findViewById(R.id.spn_qtd);
-        spnMedida        = findViewById(R.id.spn_medida);
-        spnStatusOrdem   = findViewById(R.id.spn_status_ordem);
+        spnConditions = findViewById(R.id.spn_conditions);
+        spnQtd = findViewById(R.id.spn_qtd);
+        spnMedida = findViewById(R.id.spn_medida);
+        spnStatusOrdem = findViewById(R.id.spn_status_ordem);
 
+        etCotacaoDolar =  findViewById(R.id.et_cotacao_dolar);
+        etBaseFreteDolar = findViewById(R.id.et_base_frete_dolar);
+        etBaseFreteRealCalculado = findViewById(R.id.et_base_frete_real);
+        etMedidaInicial = findViewById(R.id.et_medida_inicial);
+        etMedidaFinal = findViewById(R.id.et_medida_final);
+        etValorLanceDolar = findViewById(R.id.et_valor_lance_dolar);
+        etValorLanceRealCalculado = findViewById(R.id.et_valor_lance_real_calculado);
+        etValorComissaoFornecedorDolar = findViewById(R.id.et_valor_comissao_fornecedor_dolar);
+        etValorComissaoFornecedorRealCalculado = findViewById(R.id.et_valor_comissao_fornecedor_real_calculado);
+        etValorFreteFornecedorDolar = findViewById(R.id.et_valor_frete_fornecedor_dolar);
+        etValorFreteFornecedorRealCalculado = findViewById(R.id.et_valor_frete_fornecedor_real_calculado);
+        etValorTaxaCambioReal = findViewById(R.id.et_valor_taxa_cambio_real);
+        etValorTaxaCambioDolarCalculado = findViewById(R.id.et_valor_taxa_cambio_dolar_calculado);
+        etValorVendaUnidade = findViewById(R.id.et_valor_venda_unidade);
+        etComissaoRevendedor = findViewById(R.id.et_comissao_revendedor);
+        etValorFreteRevendedor = findViewById(R.id.et_frete_revendedor);
+        etDataOrdem = findViewById(R.id.et_data_ordem);
 
-
-        etCotacaoDolar            =  findViewById(R.id.et_cotacao_dolar);
-
-        etBaseFreteDolar          =  findViewById(R.id.et_base_frete_dolar);
-        etBaseFreteRealCalculado  =  findViewById(R.id.et_base_frete_real);
-
-        etMedidaInicial           =  findViewById(R.id.et_medida_inicial);
-        etMedidaFinal             =  findViewById(R.id.et_medida_final);
-
-        etValorLanceDolar         =  findViewById(R.id.et_valor_lance_dolar);
-        etValorLanceRealCalculado =  findViewById(R.id.et_valor_lance_real_calculado);
-
-        etValorComissaoFornecedorDolar =  findViewById(R.id.et_valor_comissao_fornecedor_dolar);
-        etValorComissaoFornecedorRealCalculado =  findViewById(R.id.et_valor_comissao_fornecedor_real_calculado);
-
-        etValorFreteFornecedorDolar =  findViewById(R.id.et_valor_frete_fornecedor_dolar);
-        etValorFreteFornecedorRealCalculado =  findViewById(R.id.et_valor_frete_fornecedor_real_calculado);
-
-        etValorTaxaCambioReal =  findViewById(R.id.et_valor_taxa_cambio_real);
-        etValorTaxaCambioDolarCalculado =  findViewById(R.id.et_valor_taxa_cambio_dolar_calculado);
-
-        etValorVendaUnidade =  findViewById(R.id.et_valor_venda_unidade);
-        etComissaoRevendedor =  findViewById(R.id.et_comissao_revendedor);
-        etValorFreteRevendedor =  findViewById(R.id.et_frete_revendedor);
-
-
-        etDataOrdem               =  findViewById(R.id.et_data_ordem);
-
-        tvMedidaFinal             =  findViewById(R.id.tv_medida_final);
-        tvFreteUsaBrasil          =  findViewById(R.id.tv_frete_usa_brasil);
+        tvMedidaFinal = findViewById(R.id.tv_medida_final);
+        tvFreteUsaBrasil = findViewById(R.id.tv_frete_usa_brasil);
 
 
 
@@ -117,11 +94,14 @@ public class AddActivity extends AppCompatActivity {
         //FIM INICIALIZAÇÃO DAS VIEWS
         //***************************
 
+
+
+
         //**************
         //POPULAR COMBOS
         //**************
-        popularCombosValorFixo(spnConditions,  R.array.conditions);
-        popularCombosValorFixo(spnMedida,      R.array.medidas);
+        popularCombosValorFixo(spnConditions, R.array.conditions);
+        popularCombosValorFixo(spnMedida, R.array.medidas);
         popularCombosValorFixo(spnStatusOrdem, R.array.status_ordem);
         popularComboQuantidade(spnQtd);
         //******************
@@ -129,24 +109,27 @@ public class AddActivity extends AppCompatActivity {
         //******************
 
 
+
+
+
         //****************
         //APLICAR MÁSCARAS
         //****************
-        aplicarMascaraMoeda(etCotacaoDolar,    Constantes.SIMBOLO_REAL);
-        aplicarMascaraMoeda(etBaseFreteDolar,  Constantes.SIMBOLO_DOLAR);
-        aplicarMascaraMoeda(etValorLanceDolar, Constantes.SIMBOLO_DOLAR);
-        aplicarMascaraMoeda(etValorComissaoFornecedorDolar, Constantes.SIMBOLO_DOLAR);
-        aplicarMascaraMoeda(etValorFreteFornecedorDolar, Constantes.SIMBOLO_DOLAR);
-        aplicarMascaraMoeda(etValorTaxaCambioReal, Constantes.SIMBOLO_REAL);
-        aplicarMascaraMoeda(etValorVendaUnidade, Constantes.SIMBOLO_REAL);
-        aplicarMascaraMoeda(etComissaoRevendedor, Constantes.SIMBOLO_REAL);
-        aplicarMascaraMoeda(etValorFreteRevendedor, Constantes.SIMBOLO_REAL);
-
-
-
+        Utils.aplicarMascaraMoeda(etCotacaoDolar, Utils.LOCALE_BRASIL);
+        Utils.aplicarMascaraMoeda(etBaseFreteDolar, Utils.LOCALE_USA);
+        Utils.aplicarMascaraMoeda(etValorLanceDolar, Utils.LOCALE_USA);
+        Utils.aplicarMascaraMoeda(etValorComissaoFornecedorDolar, Utils.LOCALE_USA);
+        Utils.aplicarMascaraMoeda(etValorFreteFornecedorDolar, Utils.LOCALE_USA);
+        Utils.aplicarMascaraMoeda(etValorTaxaCambioReal, Utils.LOCALE_BRASIL);
+        Utils.aplicarMascaraMoeda(etValorVendaUnidade, Utils.LOCALE_BRASIL);
+        Utils.aplicarMascaraMoeda(etComissaoRevendedor,Utils.LOCALE_BRASIL);
+        Utils.aplicarMascaraMoeda(etValorFreteRevendedor, Utils.LOCALE_BRASIL);
         //********************
         //FIM APLICAR MÁSCARAS
         //********************
+
+
+
 
 
         //**********************************************
@@ -160,13 +143,12 @@ public class AddActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 //CHAMA TODOS OS MÉTODOS DE CÁLCULO QUE USAM COMO BASE A COTAÇÃO DO DOLAR
-
-                calcularValorBaseadoNaCotacaoDolar(etBaseFreteDolar,  Constantes.SIMBOLO_DOLAR, etBaseFreteRealCalculado,  Constantes.SIMBOLO_REAL);
-                calcularValorBaseadoNaCotacaoDolar(etValorLanceDolar, Constantes.SIMBOLO_DOLAR, etValorLanceRealCalculado, Constantes.SIMBOLO_REAL);
+                calcularValorBaseadoNaCotacaoDolar(etBaseFreteDolar, Utils.LOCALE_USA, etBaseFreteRealCalculado, Utils.LOCALE_BRASIL);
+                calcularValorBaseadoNaCotacaoDolar(etValorLanceDolar, Utils.LOCALE_USA, etValorLanceRealCalculado, Utils.LOCALE_BRASIL);
                 calcularFreteUsaBrasil();
-                calcularValorBaseadoNaCotacaoDolar(etValorComissaoFornecedorDolar, Constantes.SIMBOLO_DOLAR, etValorComissaoFornecedorRealCalculado, Constantes.SIMBOLO_REAL);
-                calcularValorBaseadoNaCotacaoDolar(etValorFreteFornecedorDolar, Constantes.SIMBOLO_DOLAR, etValorFreteFornecedorRealCalculado, Constantes.SIMBOLO_REAL);
-                calcularValorBaseadoNaCotacaoDolar(etValorTaxaCambioReal, Constantes.SIMBOLO_REAL, etValorTaxaCambioDolarCalculado, Constantes.SIMBOLO_DOLAR);
+                calcularValorBaseadoNaCotacaoDolar(etValorComissaoFornecedorDolar, Utils.LOCALE_USA, etValorComissaoFornecedorRealCalculado, Utils.LOCALE_BRASIL);
+                calcularValorBaseadoNaCotacaoDolar(etValorFreteFornecedorDolar, Utils.LOCALE_USA, etValorFreteFornecedorRealCalculado, Utils.LOCALE_BRASIL);
+                calcularValorBaseadoNaCotacaoDolar(etValorTaxaCambioReal, Utils.LOCALE_BRASIL, etValorTaxaCambioDolarCalculado, Utils.LOCALE_USA);
 
 
             }
@@ -189,7 +171,7 @@ public class AddActivity extends AppCompatActivity {
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularValorBaseadoNaCotacaoDolar(etBaseFreteDolar, Constantes.SIMBOLO_DOLAR, etBaseFreteRealCalculado, Constantes.SIMBOLO_REAL);
+                calcularValorBaseadoNaCotacaoDolar(etBaseFreteDolar, Utils.LOCALE_USA, etBaseFreteRealCalculado, Utils.LOCALE_BRASIL);
                 calcularFreteUsaBrasil();
             }
             @Override
@@ -198,6 +180,26 @@ public class AddActivity extends AppCompatActivity {
         });
         //*****************************
         //FIM CÁLCULO DA BASE DA FRETE
+        //*****************************
+
+
+        //*************************
+        //CÁLCULO DO VALOR DO LANCE
+        //*************************
+        etValorLanceDolar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calcularValorBaseadoNaCotacaoDolar(etValorLanceDolar, Utils.LOCALE_USA, etValorLanceRealCalculado, Utils.LOCALE_BRASIL);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        //*****************************
+        //FIM CÁLCULO DO VALOR DO LANCE
         //*****************************
 
 
@@ -240,24 +242,7 @@ public class AddActivity extends AppCompatActivity {
 
 
 
-        //*************************
-        //CÁLCULO DO VALOR DO LANCE
-        //*************************
-        etValorLanceDolar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularValorBaseadoNaCotacaoDolar(etValorLanceDolar, Constantes.SIMBOLO_DOLAR, etValorLanceRealCalculado, Constantes.SIMBOLO_REAL);
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        //*****************************
-        //FIM CÁLCULO DO VALOR DO LANCE
-        //*****************************
+
 
 
         //********************************
@@ -305,6 +290,10 @@ public class AddActivity extends AppCompatActivity {
         //FIM DATE PICKER DIALOG - DATA ORDEM
         //***********************************
 
+
+
+
+
         //******************************************
         //CÁLCULO DO VALOR DO COMISSAO DO FORNECEDOR
         //******************************************
@@ -314,7 +303,7 @@ public class AddActivity extends AppCompatActivity {
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularValorBaseadoNaCotacaoDolar(etValorComissaoFornecedorDolar, Constantes.SIMBOLO_DOLAR, etValorComissaoFornecedorRealCalculado, Constantes.SIMBOLO_REAL);
+                calcularValorBaseadoNaCotacaoDolar(etValorComissaoFornecedorDolar, Utils.LOCALE_USA, etValorComissaoFornecedorRealCalculado, Utils.LOCALE_BRASIL);
             }
             @Override
             public void afterTextChanged(Editable s) {
@@ -323,6 +312,10 @@ public class AddActivity extends AppCompatActivity {
         //**********************************************
         //FIM CÁLCULO DO VALOR DO COMISSAO DO FORNECEDOR
         //**********************************************
+
+
+
+
 
         //***************************************
         //CÁLCULO DO VALOR DO FRETE DO FORNECEDOR
@@ -333,7 +326,7 @@ public class AddActivity extends AppCompatActivity {
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularValorBaseadoNaCotacaoDolar(etValorFreteFornecedorDolar, Constantes.SIMBOLO_DOLAR, etValorFreteFornecedorRealCalculado, Constantes.SIMBOLO_REAL);
+                calcularValorBaseadoNaCotacaoDolar(etValorFreteFornecedorDolar, Utils.LOCALE_USA, etValorFreteFornecedorRealCalculado, Utils.LOCALE_BRASIL);
             }
             @Override
             public void afterTextChanged(Editable s) {
@@ -342,6 +335,10 @@ public class AddActivity extends AppCompatActivity {
         //*************************************
         //FIM DO CÁLCULO DO FRETE DO FORNECEDOR
         //*************************************
+
+
+
+
 
         //************************************
         //CÁLCULO DO VALOR DAS TAXAS DE CÂMBIO
@@ -352,7 +349,7 @@ public class AddActivity extends AppCompatActivity {
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularValorBaseadoNaCotacaoDolar(etValorTaxaCambioReal, Constantes.SIMBOLO_REAL, etValorTaxaCambioDolarCalculado, Constantes.SIMBOLO_DOLAR);
+                calcularValorBaseadoNaCotacaoDolar(etValorTaxaCambioReal, Utils.LOCALE_BRASIL, etValorTaxaCambioDolarCalculado, Utils.LOCALE_USA);
             }
             @Override
             public void afterTextChanged(Editable s) {
@@ -375,25 +372,23 @@ public class AddActivity extends AppCompatActivity {
     //**********************************************************************************************
 
 
-    private void calcularValorBaseadoNaCotacaoDolar(EditText campoBase, String simboloMoedaBase, TextView campoResultado, String simboloMoedaResultado){
+    private void calcularValorBaseadoNaCotacaoDolar(EditText campoBase, Locale localeBase, TextView campoResultado, Locale localeResultado){
 
         if(!Utils.isBlank(etCotacaoDolar.getText().toString()) && !Utils.isBlank(campoBase.getText().toString())){
 
             try{
-                BigDecimal valorCotacaoDolar   = new BigDecimal(Utils.desformatarMascaraMoeda(etCotacaoDolar.getText().toString(),   Constantes.SIMBOLO_REAL));
-                BigDecimal valorCampoBase      = new BigDecimal(Utils.desformatarMascaraMoeda(campoBase.getText().toString(), simboloMoedaBase));
-
+                BigDecimal valorCotacaoDolar = Utils.retornarValorMonetario(etCotacaoDolar.getText().toString(), Utils.LOCALE_BRASIL);
+                BigDecimal valorCampoBase = Utils.retornarValorMonetario(campoBase.getText().toString(), localeBase);
                 BigDecimal valorCampoResultado;
 
-                if(simboloMoedaBase.equals(Constantes.SIMBOLO_DOLAR)){
-                    valorCampoResultado  = valorCotacaoDolar.multiply(valorCampoBase).setScale(2,BigDecimal.ROUND_HALF_UP);
+                if(localeResultado.equals(Utils.LOCALE_BRASIL)){
+                    valorCampoResultado  = valorCotacaoDolar.multiply(valorCampoBase).setScale(2,BigDecimal.ROUND_HALF_EVEN);
                 }
                 else{
-                    //valorCampoResultado  = valorCampoBase.divide(valorCotacaoDolar, 2, BigDecimal.ROUND_HALF_UP).setScale(2,BigDecimal.ROUND_HALF_UP);
-                    valorCampoResultado  = valorCampoBase.divide(valorCotacaoDolar, 2, BigDecimal.ROUND_HALF_UP);
+                    valorCampoResultado  = valorCampoBase.divide(valorCotacaoDolar, 2, BigDecimal.ROUND_HALF_EVEN);
                 }
 
-                campoResultado.setText(Utils.formatarMascaraMoeda(valorCampoResultado.toString(), simboloMoedaResultado));
+                campoResultado.setText(Utils.retornaValorMontarioComMascara(valorCampoResultado, localeResultado));
 
             }
             catch(NumberFormatException | ArithmeticException e){
@@ -403,7 +398,6 @@ public class AddActivity extends AppCompatActivity {
         else{
             campoResultado.setText(Constantes.VAZIO);
         }
-
     }
 
 
@@ -418,22 +412,22 @@ public class AddActivity extends AppCompatActivity {
 
             try{
                 Double valorMedidaInicialDouble = Double.parseDouble(valorMedidaInicial.replace(Constantes.VIRGULA, Constantes.PONTO));
-                Double valorMedidaFinallDouble = 0.0;
+                Double valorMedidaFinalDouble = 0.0;
                 Double valor1KGEmLibra = Double.parseDouble(Constantes.PESO_DEFAULT_1_KG_EM_LIBRA.replace(Constantes.VIRGULA, Constantes.PONTO));
 
                 String tipoMedidaSelecionada = spnMedida.getSelectedItem().toString();
 
                 if(tipoMedidaSelecionada.equals(getString(R.string.medida_kg))){
-                    valorMedidaFinallDouble = valorMedidaInicialDouble * valor1KGEmLibra;
+                    valorMedidaFinalDouble = valorMedidaInicialDouble * valor1KGEmLibra;
                     tvMedidaFinal.setText(R.string.medida_libra);
                 }
                 else{
-                    valorMedidaFinallDouble = valorMedidaInicialDouble / valor1KGEmLibra;
+                    valorMedidaFinalDouble = valorMedidaInicialDouble / valor1KGEmLibra;
                     tvMedidaFinal.setText(R.string.medida_kg);
 
                 }
 
-                String valorFinalFormatado = String.format("%.2f", valorMedidaFinallDouble);
+                String valorFinalFormatado = String.format("%.2f", valorMedidaFinalDouble);
                 valorFinalFormatado = valorFinalFormatado.replace(Constantes.PONTO, Constantes.VIRGULA);
                 etMedidaFinal.setText(valorFinalFormatado);
             }
@@ -447,7 +441,7 @@ public class AddActivity extends AppCompatActivity {
     private void calcularFreteUsaBrasil(){
 
         String tipoMedidaSelecionada = spnMedida.getSelectedItem().toString();
-        String medidaKG = null;
+        String medidaKG;
 
         if(tipoMedidaSelecionada.equals(getString(R.string.medida_kg))){
             medidaKG = etMedidaInicial.getText().toString();
@@ -459,13 +453,13 @@ public class AddActivity extends AppCompatActivity {
         if(!Utils.isBlank(medidaKG) && !Utils.isBlank(etBaseFreteRealCalculado.getText().toString())){
 
             try{
-                BigDecimal valorFreteRealCalculado = new BigDecimal(Utils.desformatarMascaraMoeda(etBaseFreteRealCalculado.getText().toString(), Constantes.SIMBOLO_REAL));
+                BigDecimal valorFreteRealCalculado = Utils.retornarValorMonetario(etBaseFreteRealCalculado.getText().toString(), Utils.LOCALE_BRASIL);
                 BigDecimal valorMedidaKG = new BigDecimal(medidaKG.replace(Constantes.VIRGULA, Constantes.PONTO));
-                BigDecimal valorFreteUsaBrasil  = valorFreteRealCalculado.multiply(valorMedidaKG).setScale(2,BigDecimal.ROUND_HALF_UP);
-                tvFreteUsaBrasil.setText(Utils.formatarMascaraMoeda(valorFreteUsaBrasil.toString(), Constantes.SIMBOLO_REAL));
+                BigDecimal valorFreteUsaBrasil  = valorFreteRealCalculado.multiply(valorMedidaKG).setScale(2,BigDecimal.ROUND_HALF_EVEN);
+                tvFreteUsaBrasil.setText(Utils.retornaValorMontarioComMascara(valorFreteUsaBrasil, Utils.LOCALE_BRASIL));
 
             }
-            catch(NumberFormatException | ArithmeticException e){
+            catch(Exception e){
                 tvFreteUsaBrasil.setText(Constantes.VAZIO);
             }
         }
@@ -508,45 +502,7 @@ public class AddActivity extends AppCompatActivity {
 
 
 
-    private void aplicarMascaraMoeda(final EditText campo, final String simboloMoeda){
-                                     campo.addTextChangedListener(new TextWatcher(){
 
-            private String current = Constantes.VAZIO;
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                if(!s.toString().equals(current)) {
-
-                    Locale myLocale = new Locale("pt", "BR");
-                    String regex = "[R$ ,.]";
-
-                    if( simboloMoeda.equals(Constantes.SIMBOLO_DOLAR)){
-                        regex = "[U$ ,.]";
-                        myLocale = Locale.US;
-                    }
-
-                    campo.removeTextChangedListener(this);
-                    String cleanString = s.toString().replaceAll(regex, "");
-
-                    Double parsed = Double.parseDouble(cleanString);
-                    String formatted = NumberFormat.getCurrencyInstance(myLocale).format((parsed / 100));
-
-                    current = formatted;
-                    campo.setText(formatted);
-                    campo.setSelection(formatted.length());
-                    campo.addTextChangedListener(this);
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-    }
 
 }
 
