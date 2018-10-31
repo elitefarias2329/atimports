@@ -1,21 +1,16 @@
 package com.atimports.activity;
 
 import android.app.DatePickerDialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.atimports.R;
@@ -46,6 +41,19 @@ public class AddActivity extends AppCompatActivity {
 
     EditText etValorLanceDolar;
     EditText etValorLanceRealCalculado;
+
+    EditText etValorComissaoFornecedorDolar;
+    EditText etValorComissaoFornecedorRealCalculado;
+
+    EditText etValorFreteFornecedorDolar;
+    EditText etValorFreteFornecedorRealCalculado;
+
+    EditText etValorTaxaCambioReal;
+    EditText etValorTaxaCambioDolarCalculado;
+
+    EditText etValorVendaUnidade;
+    EditText etComissaoRevendedor;
+    EditText etValorFreteRevendedor;
 
     EditText etDataOrdem;
 
@@ -84,9 +92,21 @@ public class AddActivity extends AppCompatActivity {
         etValorLanceDolar         =  findViewById(R.id.et_valor_lance_dolar);
         etValorLanceRealCalculado =  findViewById(R.id.et_valor_lance_real_calculado);
 
+        etValorComissaoFornecedorDolar =  findViewById(R.id.et_valor_comissao_fornecedor_dolar);
+        etValorComissaoFornecedorRealCalculado =  findViewById(R.id.et_valor_comissao_fornecedor_real_calculado);
+
+        etValorFreteFornecedorDolar =  findViewById(R.id.et_valor_frete_fornecedor_dolar);
+        etValorFreteFornecedorRealCalculado =  findViewById(R.id.et_valor_frete_fornecedor_real_calculado);
+
+        etValorTaxaCambioReal =  findViewById(R.id.et_valor_taxa_cambio_real);
+        etValorTaxaCambioDolarCalculado =  findViewById(R.id.et_valor_taxa_cambio_dolar_calculado);
+
+        etValorVendaUnidade =  findViewById(R.id.et_valor_venda_unidade);
+        etComissaoRevendedor =  findViewById(R.id.et_comissao_revendedor);
+        etValorFreteRevendedor =  findViewById(R.id.et_frete_revendedor);
+
+
         etDataOrdem               =  findViewById(R.id.et_data_ordem);
-
-
 
         tvMedidaFinal             =  findViewById(R.id.tv_medida_final);
         tvFreteUsaBrasil          =  findViewById(R.id.tv_frete_usa_brasil);
@@ -115,6 +135,15 @@ public class AddActivity extends AppCompatActivity {
         aplicarMascaraMoeda(etCotacaoDolar,    Constantes.SIMBOLO_REAL);
         aplicarMascaraMoeda(etBaseFreteDolar,  Constantes.SIMBOLO_DOLAR);
         aplicarMascaraMoeda(etValorLanceDolar, Constantes.SIMBOLO_DOLAR);
+        aplicarMascaraMoeda(etValorComissaoFornecedorDolar, Constantes.SIMBOLO_DOLAR);
+        aplicarMascaraMoeda(etValorFreteFornecedorDolar, Constantes.SIMBOLO_DOLAR);
+        aplicarMascaraMoeda(etValorTaxaCambioReal, Constantes.SIMBOLO_REAL);
+        aplicarMascaraMoeda(etValorVendaUnidade, Constantes.SIMBOLO_REAL);
+        aplicarMascaraMoeda(etComissaoRevendedor, Constantes.SIMBOLO_REAL);
+        aplicarMascaraMoeda(etValorFreteRevendedor, Constantes.SIMBOLO_REAL);
+
+
+
         //********************
         //FIM APLICAR MÁSCARAS
         //********************
@@ -135,6 +164,9 @@ public class AddActivity extends AppCompatActivity {
                 calcularValorBaseadoNaCotacaoDolar(etBaseFreteDolar,  Constantes.SIMBOLO_DOLAR, etBaseFreteRealCalculado,  Constantes.SIMBOLO_REAL);
                 calcularValorBaseadoNaCotacaoDolar(etValorLanceDolar, Constantes.SIMBOLO_DOLAR, etValorLanceRealCalculado, Constantes.SIMBOLO_REAL);
                 calcularFreteUsaBrasil();
+                calcularValorBaseadoNaCotacaoDolar(etValorComissaoFornecedorDolar, Constantes.SIMBOLO_DOLAR, etValorComissaoFornecedorRealCalculado, Constantes.SIMBOLO_REAL);
+                calcularValorBaseadoNaCotacaoDolar(etValorFreteFornecedorDolar, Constantes.SIMBOLO_DOLAR, etValorFreteFornecedorRealCalculado, Constantes.SIMBOLO_REAL);
+                calcularValorBaseadoNaCotacaoDolar(etValorTaxaCambioReal, Constantes.SIMBOLO_REAL, etValorTaxaCambioDolarCalculado, Constantes.SIMBOLO_DOLAR);
 
 
             }
@@ -273,6 +305,63 @@ public class AddActivity extends AppCompatActivity {
         //FIM DATE PICKER DIALOG - DATA ORDEM
         //***********************************
 
+        //******************************************
+        //CÁLCULO DO VALOR DO COMISSAO DO FORNECEDOR
+        //******************************************
+        etValorComissaoFornecedorDolar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calcularValorBaseadoNaCotacaoDolar(etValorComissaoFornecedorDolar, Constantes.SIMBOLO_DOLAR, etValorComissaoFornecedorRealCalculado, Constantes.SIMBOLO_REAL);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        //**********************************************
+        //FIM CÁLCULO DO VALOR DO COMISSAO DO FORNECEDOR
+        //**********************************************
+
+        //***************************************
+        //CÁLCULO DO VALOR DO FRETE DO FORNECEDOR
+        //***************************************
+        etValorFreteFornecedorDolar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calcularValorBaseadoNaCotacaoDolar(etValorFreteFornecedorDolar, Constantes.SIMBOLO_DOLAR, etValorFreteFornecedorRealCalculado, Constantes.SIMBOLO_REAL);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        //*************************************
+        //FIM DO CÁLCULO DO FRETE DO FORNECEDOR
+        //*************************************
+
+        //************************************
+        //CÁLCULO DO VALOR DAS TAXAS DE CÂMBIO
+        //************************************
+        etValorTaxaCambioReal.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calcularValorBaseadoNaCotacaoDolar(etValorTaxaCambioReal, Constantes.SIMBOLO_REAL, etValorTaxaCambioDolarCalculado, Constantes.SIMBOLO_DOLAR);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        //****************************************
+        //FIM DO CÁLCULO VALOR DAS TAXAS DE CÂMBIO
+        //****************************************
+
 
 
     }//FIM onCreate
@@ -300,7 +389,8 @@ public class AddActivity extends AppCompatActivity {
                     valorCampoResultado  = valorCotacaoDolar.multiply(valorCampoBase).setScale(2,BigDecimal.ROUND_HALF_UP);
                 }
                 else{
-                    valorCampoResultado  = valorCotacaoDolar.divide(valorCampoBase).setScale(2,BigDecimal.ROUND_HALF_UP);
+                    //valorCampoResultado  = valorCampoBase.divide(valorCotacaoDolar, 2, BigDecimal.ROUND_HALF_UP).setScale(2,BigDecimal.ROUND_HALF_UP);
+                    valorCampoResultado  = valorCampoBase.divide(valorCotacaoDolar, 2, BigDecimal.ROUND_HALF_UP);
                 }
 
                 campoResultado.setText(Utils.formatarMascaraMoeda(valorCampoResultado.toString(), simboloMoedaResultado));

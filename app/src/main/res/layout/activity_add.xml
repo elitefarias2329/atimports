@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".com.atimports.activity.AddActivity">
+    tools:context=".activity.AddActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -74,7 +74,7 @@
                 android:textColor="@color/dark_red"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/textView26"
-                app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar10" />
+                app:layout_constraintTop_toBottomOf="@+id/et_frete_revendedor" />
 
             <TextView
                 android:id="@+id/textView29"
@@ -101,7 +101,7 @@
                 android:drawingCacheQuality="high"
                 android:text="Custo Total"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar10" />
+                app:layout_constraintTop_toBottomOf="@+id/et_frete_revendedor" />
 
             <TextView
                 android:id="@+id/textView30"
@@ -149,10 +149,10 @@
                 android:drawingCacheQuality="high"
                 android:text="Frete do Revendedor por Unidade (R$)"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar8" />
+                app:layout_constraintTop_toBottomOf="@+id/et_comissao_revendedor" />
 
             <EditText
-                android:id="@+id/et_valor_lance_dolar10"
+                android:id="@+id/et_frete_revendedor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -185,10 +185,10 @@
                 android:drawingCacheQuality="high"
                 android:text="Frete do Fornecedor ($)"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar4" />
+                app:layout_constraintTop_toBottomOf="@+id/et_valor_comissao_fornecedor_dolar" />
 
             <EditText
-                android:id="@+id/et_valor_lance_dolar9"
+                android:id="@+id/et_valor_frete_fornecedor_dolar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -203,13 +203,13 @@
                 android:importantForAutofill="no"
                 android:inputType="numberDecimal"
                 android:maxLength="9"
-                app:layout_constraintEnd_toStartOf="@+id/editText6"
+                app:layout_constraintEnd_toStartOf="@+id/et_valor_frete_fornecedor_real_calculado"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView24"
                 tools:targetApi="o" />
 
             <EditText
-                android:id="@+id/editText6"
+                android:id="@+id/et_valor_frete_fornecedor_real_calculado"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -238,7 +238,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/spn_medida" />
 
             <EditText
-                android:id="@+id/et_valor_lance_dolar7"
+                android:id="@+id/et_valor_venda_unidade"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -272,10 +272,10 @@
                 android:drawingCacheQuality="high"
                 android:text="Comissão Revendedor por Unidade(R$)"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar7" />
+                app:layout_constraintTop_toBottomOf="@+id/et_valor_venda_unidade" />
 
             <EditText
-                android:id="@+id/et_valor_lance_dolar8"
+                android:id="@+id/et_comissao_revendedor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -303,16 +303,17 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="32dp"
-                android:drawableStart="@drawable/real18"
+                android:drawableStart="@drawable/real_green18"
                 android:drawableEnd="@drawable/asterisco18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
                 android:text="Valor de venda por Unidade (R$)"
+                android:textColor="@color/material_green"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar6" />
+                app:layout_constraintTop_toBottomOf="@+id/et_valor_taxa_cambio_real" />
 
             <EditText
-                android:id="@+id/et_valor_lance_dolar6"
+                android:id="@+id/et_valor_taxa_cambio_real"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -327,14 +328,14 @@
                 android:importantForAutofill="no"
                 android:inputType="numberDecimal"
                 android:maxLength="9"
-                app:layout_constraintEnd_toStartOf="@+id/editText7"
+                app:layout_constraintEnd_toStartOf="@+id/et_valor_taxa_cambio_dolar_calculado"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView16"
                 tools:targetApi="o" />
 
             <EditText
-                android:id="@+id/editText7"
+                android:id="@+id/et_valor_taxa_cambio_dolar_calculado"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -363,10 +364,10 @@
                 android:drawingCacheQuality="high"
                 android:text="Taxas de Câmbio (R$)"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_valor_lance_dolar9" />
+                app:layout_constraintTop_toBottomOf="@+id/et_valor_frete_fornecedor_dolar" />
 
             <EditText
-                android:id="@+id/et_valor_lance_dolar4"
+                android:id="@+id/et_valor_comissao_fornecedor_dolar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -381,14 +382,14 @@
                 android:importantForAutofill="no"
                 android:inputType="numberDecimal"
                 android:maxLength="9"
-                app:layout_constraintEnd_toStartOf="@+id/editText3"
+                app:layout_constraintEnd_toStartOf="@+id/et_valor_comissao_fornecedor_real_calculado"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView13"
                 tools:targetApi="o" />
 
             <EditText
-                android:id="@+id/editText3"
+                android:id="@+id/et_valor_comissao_fornecedor_real_calculado"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
