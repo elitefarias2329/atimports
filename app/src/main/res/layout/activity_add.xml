@@ -24,52 +24,74 @@
 
 
             <TextView
-                android:id="@+id/textView33"
+                android:id="@+id/tv_lucro_unidade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="R$:900,00"
                 android:textColor="@color/material_green"
-                android:textSize="21sp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/textView17"
+                app:layout_constraintStart_toStartOf="@+id/textView17"
+                app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="32dp"
+                android:drawableStart="@drawable/frete18"
+                android:drawablePadding="8dp"
+                android:drawingCacheQuality="high"
+                android:text="Frete Transportadora (R$)"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_valor_taxa_cambio_real" />
+
+            <EditText
+                android:id="@+id/et_valor_frete_transportadora"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:drawablePadding="@dimen/fab_margin"
+                android:drawingCacheQuality="high"
+                android:ems="10"
+                android:hint="Digite o valor em Real"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView14"
+                tools:targetApi="o" />
+
+            <TextView
+                android:id="@+id/tv_lucro_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="R$:900,00"
+                android:textColor="@color/material_green"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/textView30"
                 app:layout_constraintStart_toStartOf="@+id/textView30"
                 app:layout_constraintTop_toBottomOf="@+id/textView30" />
 
             <TextView
-                android:id="@+id/textView32"
+                android:id="@+id/tv_custo_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="16dp"
-                android:text="R$:900,00"
-                android:textColor="@color/material_green"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/textView31"
-                app:layout_constraintTop_toBottomOf="@+id/textView29" />
-
-            <TextView
-                android:id="@+id/textView31"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="16dp"
-                android:drawableStart="@drawable/real18"
-                android:drawablePadding="8dp"
-                android:drawingCacheQuality="high"
-                android:text="Lucro Total por Unidade"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView27" />
-
-            <TextView
-                android:id="@+id/textView28"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:text="R$:900,00"
                 android:textColor="@color/dark_red"
                 android:textStyle="bold"
@@ -77,7 +99,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/et_frete_revendedor" />
 
             <TextView
-                android:id="@+id/textView29"
+                android:id="@+id/tv_custo_unidade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -87,7 +109,7 @@
                 android:textColor="@color/dark_red"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/textView27"
-                app:layout_constraintTop_toBottomOf="@+id/textView28" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_custo_total" />
 
             <TextView
                 android:id="@+id/textView26"
@@ -95,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:drawableStart="@drawable/real18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
@@ -107,20 +129,35 @@
                 android:id="@+id/textView30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
                 android:drawableStart="@drawable/lucro24"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
                 android:text="Lucro Total"
                 android:textColor="@color/material_green"
-                android:textSize="21sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.511"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:drawableStart="@drawable/lucro24"
+                android:drawablePadding="8dp"
+                android:drawingCacheQuality="high"
+                android:text="Lucro por Unidade"
+                android:textColor="@color/material_green"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView30"
                 app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
             <TextView
@@ -133,7 +170,7 @@
                 android:drawableStart="@drawable/real18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
-                android:text="Custo Total por Unidade"
+                android:text="Custo por Unidade"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView26" />
 
@@ -180,7 +217,6 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="32dp"
                 android:drawableStart="@drawable/frete18"
-                android:drawableEnd="@drawable/asterisco18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
                 android:text="Frete do Fornecedor ($)"
@@ -269,7 +305,7 @@
                 android:drawableStart="@drawable/real18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
-                android:text="Comissão Revendedor por Unidade(R$)"
+                android:text="Comissão Revendedor por Unidade (R$)"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_valor_venda_unidade" />
 
@@ -309,7 +345,7 @@
                 android:text="Valor de venda por Unidade (R$)"
                 android:textColor="@color/material_green"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_valor_taxa_cambio_real" />
+                app:layout_constraintTop_toBottomOf="@+id/et_valor_frete_transportadora" />
 
             <EditText
                 android:id="@+id/et_valor_taxa_cambio_real"
@@ -357,7 +393,6 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="32dp"
                 android:drawableStart="@drawable/cambio18"
-                android:drawableEnd="@drawable/asterisco18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
                 android:text="Taxas de Câmbio (R$)"
@@ -425,7 +460,6 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="32dp"
                 android:drawableStart="@drawable/dolar18"
-                android:drawableEnd="@drawable/asterisco18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
                 android:text="Comissão do Fornecedor ($)"
@@ -577,7 +611,6 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="32dp"
                 android:drawableStart="@drawable/balanca18"
-                android:drawableEnd="@drawable/asterisco18"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
                 android:text="Peso do Lote"
@@ -625,13 +658,13 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:digits="0123456789,"
                 android:drawablePadding="@dimen/fab_margin"
                 android:drawingCacheQuality="high"
                 android:ems="10"
                 android:hint="Digite o Peso"
                 android:importantForAutofill="no"
                 android:inputType="numberDecimal"
-                android:digits="0123456789,"
                 android:maxLength="9"
                 app:layout_constraintEnd_toStartOf="@+id/et_medida_final"
                 app:layout_constraintStart_toStartOf="parent"
@@ -971,11 +1004,11 @@
                 android:id="@+id/divider2"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:background="@color/dark_grey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView32" />
+                app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
             <Button
                 android:id="@+id/button"
@@ -994,7 +1027,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView33" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_lucro_total" />
 
             <Spinner
                 android:id="@+id/spn_medida"

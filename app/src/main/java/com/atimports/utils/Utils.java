@@ -2,16 +2,12 @@ package com.atimports.utils;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.EditText;
 
-import com.atimports.activity.AddActivity;
 import com.atimports.constantes.Constantes;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.Locale;
 
 public abstract class Utils {
@@ -86,20 +82,14 @@ public abstract class Utils {
     public static BigDecimal retornarValorMonetario(String valor, Locale locale){
 
         try {
-
             String valorFmt = retirarSimboloMoeda(valor);
             valorFmt = NumberFormat.getNumberInstance(locale).parse(valorFmt).toString();
-            BigDecimal b = new BigDecimal(valorFmt);
-
-            return b;
-
+            return new BigDecimal(valorFmt);
         }
         catch(Exception e){
             System.out.println(e.getMessage());
         }
-
         return null;
-
     }
 
 

@@ -20,4 +20,6 @@
 ---------------------------------------------------------------------------------------------------
 ### RESOLVER CRASH DO LONG PRESS
 
+### FAZER REFACTORY DO CÓDIGO PARA DIMINUIR A QUANTIDADE DE LISTENERS QUE CHAMAM O MESMO MÉTODO
+
 
