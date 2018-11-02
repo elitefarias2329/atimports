@@ -1,6 +1,5 @@
 package com.atimports.activity;
 
-import android.app.DatePickerDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -8,7 +7,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,7 +23,7 @@ import java.util.Locale;
 
 public class AddActivity extends AppCompatActivity {
 
-    Spinner spnConditions;
+    Spinner spnCondicoes;
     Spinner spnQtd;
     Spinner spnMedida;
     Spinner spnStatusOrdem;
@@ -56,17 +54,113 @@ public class AddActivity extends AppCompatActivity {
     TextView tvLucroTotal;
     TextView tvLucroUnidade;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
+        inicializarViews();
 
-        //***********************
-        //INICIALIZAÇÃO DAS VIEWS
-        //***********************
-        spnConditions = findViewById(R.id.spn_conditions);
+        aplicarMascaraMoeda(etCotacaoDolar, Utils.LOCALE_BRASIL);
+        aplicarMascaraMoeda(etBaseFreteDolar, Utils.LOCALE_USA);
+        aplicarMascaraMoeda(etValorLanceDolar, Utils.LOCALE_USA);
+        aplicarMascaraMoeda(etValorComissaoFornecedorDolar, Utils.LOCALE_USA);
+        aplicarMascaraMoeda(etValorFreteFornecedorDolar, Utils.LOCALE_USA);
+        aplicarMascaraMoeda(etValorTaxaCambioReal, Utils.LOCALE_BRASIL);
+        aplicarMascaraMoeda(etValorVendaUnidade, Utils.LOCALE_BRASIL);
+        aplicarMascaraMoeda(etComissaoRevendedor,Utils.LOCALE_BRASIL);
+        aplicarMascaraMoeda(etValorFreteRevendedor, Utils.LOCALE_BRASIL);
+        aplicarMascaraMoeda(etValorFreteTransportadora, Utils.LOCALE_BRASIL);
+
+        popularComboValorFixo(spnCondicoes, R.array.condicoes);
+        popularComboValorFixo(spnMedida, R.array.medidas);
+        popularComboValorFixo(spnStatusOrdem, R.array.status_ordem);
+        popularComboQuantidade(spnQtd);
+
+        calcularValorBaseadoNaCotacaoDolar(etCotacaoDolar, etBaseFreteDolar, Utils.LOCALE_USA, etBaseFreteRealCalculado, Utils.LOCALE_BRASIL);
+        calcularValorBaseadoNaCotacaoDolar(etCotacaoDolar, etValorLanceDolar, Utils.LOCALE_USA, etValorLanceRealCalculado, Utils.LOCALE_BRASIL);
+        calcularValorBaseadoNaCotacaoDolar(etCotacaoDolar, etValorComissaoFornecedorDolar, Utils.LOCALE_USA, etValorComissaoFornecedorRealCalculado, Utils.LOCALE_BRASIL);
+        calcularValorBaseadoNaCotacaoDolar(etCotacaoDolar, etValorFreteFornecedorDolar, Utils.LOCALE_USA, etValorFreteFornecedorRealCalculado, Utils.LOCALE_BRASIL);
+        calcularValorBaseadoNaCotacaoDolar(etCotacaoDolar, etValorTaxaCambioReal, Utils.LOCALE_BRASIL, etValorTaxaCambioDolarCalculado, Utils.LOCALE_USA);
+
+        calcularValorBaseadoNaCotacaoDolar(etBaseFreteDolar, etBaseFreteDolar, Utils.LOCALE_USA, etBaseFreteRealCalculado, Utils.LOCALE_BRASIL);
+        calcularValorBaseadoNaCotacaoDolar(etValorLanceDolar, etValorLanceDolar, Utils.LOCALE_USA, etValorLanceRealCalculado, Utils.LOCALE_BRASIL);
+        calcularValorBaseadoNaCotacaoDolar(etValorComissaoFornecedorDolar, etValorComissaoFornecedorDolar, Utils.LOCALE_USA, etValorComissaoFornecedorRealCalculado, Utils.LOCALE_BRASIL);
+        calcularValorBaseadoNaCotacaoDolar(etValorFreteFornecedorDolar, etValorFreteFornecedorDolar, Utils.LOCALE_USA, etValorFreteFornecedorRealCalculado, Utils.LOCALE_BRASIL);
+        calcularValorBaseadoNaCotacaoDolar(etValorTaxaCambioReal, etValorTaxaCambioReal, Utils.LOCALE_BRASIL, etValorTaxaCambioDolarCalculado, Utils.LOCALE_USA);
+
+        calcularMedidasDePeso(etMedidaInicial);
+
+        calcularFreteUsaBrasil(etCotacaoDolar);
+        calcularFreteUsaBrasil(etBaseFreteDolar);
+        calcularFreteUsaBrasil(etMedidaInicial);
+
+        Utils.criarDatePickerDialog(etDataOrdem, etDataOrdem, AddActivity.this);
+
+        calcularCustoTotal(etCotacaoDolar);
+        calcularCustoTotal(etValorLanceRealCalculado);
+        calcularCustoTotal(tvFreteUsaBrasil);
+        calcularCustoTotal(etValorComissaoFornecedorRealCalculado);
+        calcularCustoTotal(etValorFreteFornecedorRealCalculado);
+        calcularCustoTotal(etValorTaxaCambioReal);
+        calcularCustoTotal(etValorFreteTransportadora);
+        calcularCustoTotal(etComissaoRevendedor);
+        calcularCustoTotal(etValorFreteRevendedor);
+
+        calcularCustoUnidade(tvCustoTotal);
+
+        calcularValorLucroUnidade(etValorVendaUnidade);
+
+        calcularValorLucroUnidade(tvCustoUnidade);
+        calcularValorLucroTotal(tvLucroUnidade);
+
+
+        spnMedida.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                calcularMedidasDePeso();
+                calcularFreteUsaBrasil();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+
+        spnQtd.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                calcularCustoUnidade();
+                calcularValorLucroTotal();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+
+
+
+
+
+
+    }//FIM onCreate
+
+
+    //**************************************************************************************************************************************************************
+    //**************************************************************************************************************************************************************
+    //**************************************************************************************************************************************************************
+    //**************************************************************************************************************************************************************
+    //**************************************************************************************************************************************************************
+
+
+    //MÉTODOS
+
+
+    private void inicializarViews(){
+
+        spnCondicoes = findViewById(R.id.spn_condicoes);
         spnQtd = findViewById(R.id.spn_qtd);
         spnMedida = findViewById(R.id.spn_medida);
         spnStatusOrdem = findViewById(R.id.spn_status_ordem);
@@ -97,408 +191,146 @@ public class AddActivity extends AppCompatActivity {
         tvLucroTotal = findViewById(R.id.tv_lucro_total);
         tvLucroUnidade = findViewById(R.id.tv_lucro_unidade);
 
-
-
-        //***************************
-        //FIM INICIALIZAÇÃO DAS VIEWS
-        //***************************
-
-
-
-
-        //**************
-        //POPULAR COMBOS
-        //**************
-        popularCombosValorFixo(spnConditions, R.array.conditions);
-        popularCombosValorFixo(spnMedida, R.array.medidas);
-        popularCombosValorFixo(spnStatusOrdem, R.array.status_ordem);
-        popularComboQuantidade(spnQtd);
-        //******************
-        //FIM POPULAR COMBOS
-        //******************
-
-
-
-
-
-        //****************
-        //APLICAR MÁSCARAS
-        //****************
-        Utils.aplicarMascaraMoeda(etCotacaoDolar, Utils.LOCALE_BRASIL);
-        Utils.aplicarMascaraMoeda(etBaseFreteDolar, Utils.LOCALE_USA);
-        Utils.aplicarMascaraMoeda(etValorLanceDolar, Utils.LOCALE_USA);
-        Utils.aplicarMascaraMoeda(etValorComissaoFornecedorDolar, Utils.LOCALE_USA);
-        Utils.aplicarMascaraMoeda(etValorFreteFornecedorDolar, Utils.LOCALE_USA);
-        Utils.aplicarMascaraMoeda(etValorTaxaCambioReal, Utils.LOCALE_BRASIL);
-        Utils.aplicarMascaraMoeda(etValorVendaUnidade, Utils.LOCALE_BRASIL);
-        Utils.aplicarMascaraMoeda(etComissaoRevendedor,Utils.LOCALE_BRASIL);
-        Utils.aplicarMascaraMoeda(etValorFreteRevendedor, Utils.LOCALE_BRASIL);
-        Utils.aplicarMascaraMoeda(etValorFreteTransportadora, Utils.LOCALE_BRASIL);
-        //********************
-        //FIM APLICAR MÁSCARAS
-        //********************
-
-
-
-
-
-        //**********************************************
-        //CÁLCULO DE CAMPOS BASEADOS NA COTAÇÃO DO DOLAR
-        //**********************************************
-        etCotacaoDolar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                //CHAMA TODOS OS MÉTODOS DE CÁLCULO QUE USAM COMO BASE A COTAÇÃO DO DOLAR
-                calcularValorBaseadoNaCotacaoDolar(etBaseFreteDolar, Utils.LOCALE_USA, etBaseFreteRealCalculado, Utils.LOCALE_BRASIL);
-                calcularValorBaseadoNaCotacaoDolar(etValorLanceDolar, Utils.LOCALE_USA, etValorLanceRealCalculado, Utils.LOCALE_BRASIL);
-                calcularFreteUsaBrasil();
-                calcularValorBaseadoNaCotacaoDolar(etValorComissaoFornecedorDolar, Utils.LOCALE_USA, etValorComissaoFornecedorRealCalculado, Utils.LOCALE_BRASIL);
-                calcularValorBaseadoNaCotacaoDolar(etValorFreteFornecedorDolar, Utils.LOCALE_USA, etValorFreteFornecedorRealCalculado, Utils.LOCALE_BRASIL);
-                calcularValorBaseadoNaCotacaoDolar(etValorTaxaCambioReal, Utils.LOCALE_BRASIL, etValorTaxaCambioDolarCalculado, Utils.LOCALE_USA);
-
-
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        //**************************************************
-        //FIM CÁLCULO DE CAMPOS BASEADOS NA COTAÇÃO DO DOLAR
-        //**************************************************
-
-
-
-        //************************
-        //CÁLCULO DA BASE DA FRETE
-        //************************
-        etBaseFreteDolar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularValorBaseadoNaCotacaoDolar(etBaseFreteDolar, Utils.LOCALE_USA, etBaseFreteRealCalculado, Utils.LOCALE_BRASIL);
-                calcularFreteUsaBrasil();
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        //*****************************
-        //FIM CÁLCULO DA BASE DA FRETE
-        //*****************************
-
-
-
-
-
-
-        //***************************************
-        //CÁLCULO DO VALOR DO LANCE E CUSTO TOTAL
-        //***************************************
-        etValorLanceDolar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularValorBaseadoNaCotacaoDolar(etValorLanceDolar, Utils.LOCALE_USA, etValorLanceRealCalculado, Utils.LOCALE_BRASIL);
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        //*****************************
-        //FIM CÁLCULO DO VALOR DO LANCE
-        //*****************************
-
-
-
-        //***************************
-        //CALCULO DAS MEDIDAS DE PESO
-        //***************************
         etMedidaInicial.setText(Constantes.PESO_DEFAULT_1_KG);
         etMedidaFinal.setText(Constantes.PESO_DEFAULT_1_KG_EM_LIBRA);
 
-
-        etMedidaInicial.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularMedidasDePeso();
-                calcularFreteUsaBrasil();
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-
-        spnMedida.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                calcularMedidasDePeso();
-                calcularFreteUsaBrasil();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-            }
-        });
-        //*******************************
-        //FIM CALCULO DAS MEDIDAS DE PESO
-        //*******************************
-
-
-
-
-
-
-        //********************************
-        //DATE PICKER DIALOG - DATA ORDEM
-        //********************************
-
-        etDataOrdem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-               Calendar cal = Calendar.getInstance() ;
-               int year = cal.get(Calendar.YEAR);
-               int month = cal.get(Calendar.MONTH);
-               int day = cal.get(Calendar.DAY_OF_MONTH);
-
-               DatePickerDialog dpDataOrdemDialog = new DatePickerDialog(AddActivity.this,
-                                                                                 android.R.style.Theme_DeviceDefault_Dialog,
-
-                                                                                 new DatePickerDialog.OnDateSetListener() {
-                                                                                    @Override
-                                                                                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
-                                                                                        String dia = String.valueOf(dayOfMonth);
-                                                                                        if(dia.length() < 2){
-                                                                                            dia = "0" + dia;
-                                                                                        }
-
-                                                                                        String mes = String.valueOf(month + 1);
-                                                                                        if(mes.length() < 2){
-                                                                                            mes = "0" + mes;
-                                                                                        }
-
-                                                                                        etDataOrdem.setText(dia + "/" + mes + "/" + year);
-                                                                                    }
-                                                                                 },
-
-                                                                                year, month, day
-                                                                        );
-
-               dpDataOrdemDialog.show();
-
-            }
-        });
-        //***********************************
-        //FIM DATE PICKER DIALOG - DATA ORDEM
-        //***********************************
-
-
-
-
-
-        //******************************************
-        //CÁLCULO DO VALOR DO COMISSAO DO FORNECEDOR
-        //******************************************
-        etValorComissaoFornecedorDolar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularValorBaseadoNaCotacaoDolar(etValorComissaoFornecedorDolar, Utils.LOCALE_USA, etValorComissaoFornecedorRealCalculado, Utils.LOCALE_BRASIL);
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        //**********************************************
-        //FIM CÁLCULO DO VALOR DO COMISSAO DO FORNECEDOR
-        //**********************************************
-
-
-
-
-
-        //***************************************
-        //CÁLCULO DO VALOR DO FRETE DO FORNECEDOR
-        //***************************************
-        etValorFreteFornecedorDolar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularValorBaseadoNaCotacaoDolar(etValorFreteFornecedorDolar, Utils.LOCALE_USA, etValorFreteFornecedorRealCalculado, Utils.LOCALE_BRASIL);
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        //*************************************
-        //FIM DO CÁLCULO DO FRETE DO FORNECEDOR
-        //*************************************
-
-
-
-
-
-        //************************************
-        //CÁLCULO DO VALOR DAS TAXAS DE CÂMBIO
-        //************************************
-        etValorTaxaCambioReal.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularValorBaseadoNaCotacaoDolar(etValorTaxaCambioReal, Utils.LOCALE_BRASIL, etValorTaxaCambioDolarCalculado, Utils.LOCALE_USA);
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        //****************************************
-        //FIM DO CÁLCULO VALOR DAS TAXAS DE CÂMBIO
-        //****************************************
-
-
-        //CÁLCULO DO VALOR TOTAL
-        calcularCustoTotal(etCotacaoDolar);
-        calcularCustoTotal(etValorLanceRealCalculado);
-        calcularCustoTotal(tvFreteUsaBrasil);
-        calcularCustoTotal(etValorComissaoFornecedorRealCalculado);
-        calcularCustoTotal(etValorFreteFornecedorRealCalculado);
-        calcularCustoTotal(etValorTaxaCambioReal);
-        calcularCustoTotal(etValorFreteTransportadora);
-        calcularCustoTotal(etComissaoRevendedor);
-        calcularCustoTotal(etValorFreteRevendedor);
-
-
-        //************************************
-        //CÁLCULO DO VALOR CUSTO POR UNIDADE
-        //************************************
-        tvCustoTotal.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                String qtd = spnQtd.getSelectedItem().toString();
-
-                if(isValorCalculadoValido(tvCustoTotal.getText().toString()) && !qtd.equals(getString(R.string.selecione)) ){
-
-                    BigDecimal valorCustoTotal = Utils.retornarValorMonetario(tvCustoTotal.getText().toString(), Utils.LOCALE_BRASIL);
-
-                    valorCustoTotal = valorCustoTotal.divide(new BigDecimal(qtd),2, BigDecimal.ROUND_HALF_UP);
-
-                    tvCustoUnidade.setText(Utils.retornaValorMontarioComMascara(valorCustoTotal, Utils.LOCALE_BRASIL));
-                }
-                else{
-                    tvCustoUnidade.setText(Constantes.VAZIO);
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        //****************************************
-        //FIM CÁLCULO DO VALOR CUSTO POR UNIDADE
-        //****************************************
-
-
-
-    }//FIM onCreate
-
-
-
-
-
-    //**********************************************************************************************
-    //MÉTODOS
-    //**********************************************************************************************
-
-
-    private void calcularValorBaseadoNaCotacaoDolar(EditText campoBase, Locale localeBase, TextView campoResultado, Locale localeResultado){
-
-        if(!Utils.isBlank(etCotacaoDolar.getText().toString()) && !Utils.isBlank(campoBase.getText().toString())){
-
-            try{
-                BigDecimal valorCotacaoDolar = Utils.retornarValorMonetario(etCotacaoDolar.getText().toString(), Utils.LOCALE_BRASIL);
-                BigDecimal valorCampoBase = Utils.retornarValorMonetario(campoBase.getText().toString(), localeBase);
-                BigDecimal valorCampoResultado;
-
-                if(localeResultado.equals(Utils.LOCALE_BRASIL)){
-                    valorCampoResultado  = valorCotacaoDolar.multiply(valorCampoBase).setScale(2,BigDecimal.ROUND_HALF_EVEN);
-                }
-                else{
-                    valorCampoResultado  = valorCampoBase.divide(valorCotacaoDolar, 2, BigDecimal.ROUND_HALF_EVEN);
-                }
-
-                campoResultado.setText(Utils.retornaValorMontarioComMascara(valorCampoResultado, localeResultado));
-
-            }
-            catch(NumberFormatException | ArithmeticException e){
-                campoResultado.setText(Constantes.VAZIO);
-            }
-        }
-        else{
-            campoResultado.setText(Constantes.VAZIO);
-        }
     }
 
 
-    private void calcularMedidasDePeso(){
+    public static void aplicarMascaraMoeda(final EditText campo, final Locale locale){
 
-        String valorMedidaInicial = etMedidaInicial.getText().toString();
+        campo.addTextChangedListener(new TextWatcher(){
 
-        if(Utils.isBlank(valorMedidaInicial)){
-            etMedidaFinal.setText(Constantes.VAZIO);
+            private String current = Constantes.VAZIO;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence valorTexto, int start, int before, int count) {
+
+                if(!valorTexto.toString().equals(current)) {
+
+                    campo.removeTextChangedListener(this);
+
+                    String valorMonetarioPuro = Utils.retirarMascaraMoeda(valorTexto.toString());
+
+                    BigDecimal valorMonetario = new BigDecimal(valorMonetarioPuro);
+                    valorMonetario = valorMonetario.divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_EVEN);
+
+                    String valorMonetarioFormatado = Utils.retornaValorMontarioComMascara(valorMonetario, locale);
+
+                    campo.setText(valorMonetarioFormatado);
+                    current = valorMonetarioFormatado;
+                    campo.setSelection(valorMonetarioFormatado.length());
+                    campo.addTextChangedListener(this);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+        });
+    }
+
+
+    private void popularComboQuantidade(Spinner spinner){
+
+        List<String> itensArray = new ArrayList<>();
+        itensArray.add(getString(R.string.selecione));
+
+        for(int i = 1; i <= 999; i++){
+            itensArray.add(String.valueOf(i));
         }
-        else{
 
-            try{
-                Double valorMedidaInicialDouble = Double.parseDouble(valorMedidaInicial.replace(Constantes.VIRGULA, Constantes.PONTO));
-                Double valorMedidaFinalDouble = 0.0;
-                Double valor1KGEmLibra = Double.parseDouble(Constantes.PESO_DEFAULT_1_KG_EM_LIBRA.replace(Constantes.VIRGULA, Constantes.PONTO));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item,
+                itensArray);
 
-                String tipoMedidaSelecionada = spnMedida.getSelectedItem().toString();
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
 
-                if(tipoMedidaSelecionada.equals(getString(R.string.medida_kg))){
-                    valorMedidaFinalDouble = valorMedidaInicialDouble * valor1KGEmLibra;
-                    tvMedidaFinal.setText(R.string.medida_libra);
+    }
+
+    private void popularComboValorFixo(Spinner spinner, int idLista){
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                idLista,
+                android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+    }
+
+
+
+    private void calcularValorBaseadoNaCotacaoDolar(final TextView campoEvento,
+                                                    final TextView campoBase,
+                                                    final Locale localeBase,
+                                                    final TextView campoResultado,
+                                                    final Locale localeResultado){
+
+        campoEvento.addTextChangedListener(new TextWatcher(){
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence valorTexto, int start, int before, int count) {
+                if(!Utils.isBlank(etCotacaoDolar.getText().toString()) && !Utils.isBlank(campoBase.getText().toString())){
+
+                    try{
+                        BigDecimal valorCotacaoDolar = Utils.retornarValorMonetario(etCotacaoDolar.getText().toString(), Utils.LOCALE_BRASIL);
+                        BigDecimal valorCampoBase = Utils.retornarValorMonetario(campoBase.getText().toString(), localeBase);
+                        BigDecimal valorCampoResultado;
+
+                        if(localeResultado.equals(Utils.LOCALE_BRASIL)){
+                            valorCampoResultado  = valorCotacaoDolar.multiply(valorCampoBase).setScale(2,BigDecimal.ROUND_HALF_EVEN);
+                        }
+                        else{
+                            valorCampoResultado  = valorCampoBase.divide(valorCotacaoDolar, 2, BigDecimal.ROUND_HALF_EVEN);
+                        }
+
+                        campoResultado.setText(Utils.retornaValorMontarioComMascara(valorCampoResultado, localeResultado));
+
+                    }
+                    catch(NumberFormatException | ArithmeticException e){
+                        campoResultado.setText(Constantes.VAZIO);
+                    }
                 }
                 else{
-                    valorMedidaFinalDouble = valorMedidaInicialDouble / valor1KGEmLibra;
-                    tvMedidaFinal.setText(R.string.medida_kg);
-
+                    campoResultado.setText(Constantes.VAZIO);
                 }
+            }
 
-                String valorFinalFormatado = String.format("%.2f", valorMedidaFinalDouble);
-                valorFinalFormatado = valorFinalFormatado.replace(Constantes.PONTO, Constantes.VIRGULA);
-                etMedidaFinal.setText(valorFinalFormatado);
+            @Override
+            public void afterTextChanged(Editable s) {
             }
-            catch(NumberFormatException e){
-                etMedidaInicial.setText(Constantes.VAZIO);
-                etMedidaFinal.setText(Constantes.VAZIO);
+
+        });
+    }
+
+
+
+    private void calcularFreteUsaBrasil(TextView tView){
+        tView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-        }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calcularFreteUsaBrasil();
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     private void calcularFreteUsaBrasil(){
-
         String tipoMedidaSelecionada = spnMedida.getSelectedItem().toString();
         String medidaKG;
 
@@ -528,19 +360,77 @@ public class AddActivity extends AppCompatActivity {
     }
 
 
-    private void calcularCustoTotal(TextView campo){
-
-
-        campo.addTextChangedListener(new TextWatcher() {
+    private void calcularMedidasDePeso(TextView tView){
+        tView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calcularMedidasDePeso();
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
 
-                if(isValorCalculadoValido(etValorLanceRealCalculado.getText().toString())){
 
-                    BigDecimal valorLance = BigDecimal.ZERO;
+
+
+
+    private void calcularMedidasDePeso(){
+
+        String valorMedidaInicial = etMedidaInicial.getText().toString();
+
+        if(Utils.isBlank(valorMedidaInicial)){
+            etMedidaFinal.setText(Constantes.VAZIO);
+        }
+        else{
+
+            try{
+                Double valorMedidaInicialDouble = Double.parseDouble(valorMedidaInicial.replace(Constantes.VIRGULA, Constantes.PONTO));
+                Double valorMedidaFinalDouble;
+                Double valor1KGEmLibra = Double.parseDouble(Constantes.PESO_DEFAULT_1_KG_EM_LIBRA.replace(Constantes.VIRGULA, Constantes.PONTO));
+
+                String tipoMedidaSelecionada = spnMedida.getSelectedItem().toString();
+
+                if(tipoMedidaSelecionada.equals(getString(R.string.medida_kg))){
+                    valorMedidaFinalDouble = valorMedidaInicialDouble * valor1KGEmLibra;
+                    tvMedidaFinal.setText(R.string.medida_libra);
+                }
+                else{
+                    valorMedidaFinalDouble = valorMedidaInicialDouble / valor1KGEmLibra;
+                    tvMedidaFinal.setText(R.string.medida_kg);
+
+                }
+
+                String valorFinalFormatado = String.format("%.2f", valorMedidaFinalDouble);
+                valorFinalFormatado = valorFinalFormatado.replace(Constantes.PONTO, Constantes.VIRGULA);
+                etMedidaFinal.setText(valorFinalFormatado);
+            }
+            catch(NumberFormatException e){
+                etMedidaInicial.setText(Constantes.VAZIO);
+                etMedidaFinal.setText(Constantes.VAZIO);
+            }
+        }
+    }
+
+
+    private void calcularCustoTotal(TextView campo){
+
+        campo.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(Utils.isValorParaCalculoValido(etValorLanceRealCalculado.getText().toString())){
+
+                    BigDecimal valorLance;
 
                     BigDecimal valorFreteUsaBrasil = BigDecimal.ZERO;
                     BigDecimal valorComissaoFornecedor = BigDecimal.ZERO;
@@ -554,39 +444,38 @@ public class AddActivity extends AppCompatActivity {
 
                     valorLance = Utils.retornarValorMonetario(etValorLanceRealCalculado.getText().toString(), Utils.LOCALE_BRASIL);
 
-                    if(isValorCalculadoValido(tvFreteUsaBrasil.getText().toString())){
+                    if(Utils.isValorParaCalculoValido(tvFreteUsaBrasil.getText().toString())){
                         valorFreteUsaBrasil = Utils.retornarValorMonetario(tvFreteUsaBrasil.getText().toString(), Utils.LOCALE_BRASIL);
                     }
 
-                    if(isValorCalculadoValido(etValorComissaoFornecedorRealCalculado.getText().toString())){
+                    if(Utils.isValorParaCalculoValido(etValorComissaoFornecedorRealCalculado.getText().toString())){
                         valorComissaoFornecedor = Utils.retornarValorMonetario(etValorComissaoFornecedorRealCalculado.getText().toString(), Utils.LOCALE_BRASIL);
                     }
 
-                    if(isValorCalculadoValido(etValorFreteFornecedorRealCalculado.getText().toString())){
+                    if(Utils.isValorParaCalculoValido(etValorFreteFornecedorRealCalculado.getText().toString())){
                         valorFreteFornecedor = Utils.retornarValorMonetario(etValorFreteFornecedorRealCalculado.getText().toString(), Utils.LOCALE_BRASIL);
                     }
 
-                    if(isValorCalculadoValido(etValorTaxaCambioReal.getText().toString())){
+                    if(Utils.isValorParaCalculoValido(etValorTaxaCambioReal.getText().toString())){
                         valorTaxaCambio = Utils.retornarValorMonetario(etValorTaxaCambioReal.getText().toString(), Utils.LOCALE_BRASIL);
                     }
 
-                    if(isValorCalculadoValido(etValorFreteTransportadora.getText().toString())){
+                    if(Utils.isValorParaCalculoValido(etValorFreteTransportadora.getText().toString())){
                         valorFreteTransportadora = Utils.retornarValorMonetario(etValorFreteTransportadora.getText().toString(), Utils.LOCALE_BRASIL);
                     }
 
 
                     String qtd = spnQtd.getSelectedItem().toString();
 
-                    if(isValorCalculadoValido(etComissaoRevendedor.getText().toString()) && !qtd.equals(getString(R.string.selecione)) ){
+                    if(Utils.isValorParaCalculoValido(etComissaoRevendedor.getText().toString()) && !qtd.equals(getString(R.string.selecione)) ){
                         valorComissaoRevendedor = Utils.retornarValorMonetario(etComissaoRevendedor.getText().toString(), Utils.LOCALE_BRASIL);
                         valorComissaoRevendedor = valorComissaoRevendedor.multiply(new BigDecimal(qtd)).setScale(2 ,BigDecimal.ROUND_HALF_UP);
                     }
 
-                    if(isValorCalculadoValido(etValorFreteRevendedor.getText().toString()) && !qtd.equals(getString(R.string.selecione)) ){
+                    if(Utils.isValorParaCalculoValido(etValorFreteRevendedor.getText().toString()) && !qtd.equals(getString(R.string.selecione)) ){
                         valorFreteRevendedor = Utils.retornarValorMonetario(etValorFreteRevendedor.getText().toString(), Utils.LOCALE_BRASIL);
                         valorFreteRevendedor = valorFreteRevendedor.multiply(new BigDecimal(qtd)).setScale(2 ,BigDecimal.ROUND_HALF_UP);
                     }
-
 
                     valorCustoTotal = valorCustoTotal.add(valorLance)
                             .add(valorFreteUsaBrasil)
@@ -604,65 +493,125 @@ public class AddActivity extends AppCompatActivity {
                     tvCustoTotal.setText(Constantes.VAZIO);
                 }
             }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+        });
+    }
+
+
+
+    private void calcularCustoUnidade(TextView tView){
+        tView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calcularCustoUnidade();
+            }
             @Override
             public void afterTextChanged(Editable s) {
             }
         });
-
-
-
-
     }
 
 
-    private boolean isValorCalculadoValido(String valor){
+    private void calcularCustoUnidade(){
 
-        if(null == valor                                       ||
-           valor.equals(Constantes.VALOR_MASCARA_ZERADO_DOLAR) ||
-           valor.equals(Constantes.VALOR_MASCARA_ZERADO_REAL)  ||
-           valor.equals(Constantes.VAZIO)                      ){
+        String qtd = spnQtd.getSelectedItem().toString();
 
-            return false;
+        if(Utils.isValorParaCalculoValido(tvCustoTotal.getText().toString()) && !qtd.equals(getString(R.string.selecione)) ){
+
+            BigDecimal valorCusto = Utils.retornarValorMonetario(tvCustoTotal.getText().toString(), Utils.LOCALE_BRASIL);
+            valorCusto = valorCusto.divide(new BigDecimal(qtd),2, BigDecimal.ROUND_HALF_UP);
+            tvCustoUnidade.setText(Utils.retornaValorMontarioComMascara(valorCusto, Utils.LOCALE_BRASIL));
         }
-        return true;
-    }
-
-
-    private void popularComboQuantidade(Spinner spinner){
-
-        List<String> itensArray = new ArrayList<>();
-        itensArray.add(getString(R.string.selecione));
-
-        for(int i = 1; i <= 999; i++){
-            itensArray.add(String.valueOf(i));
+        else{
+            tvCustoUnidade.setText(Constantes.VAZIO);
         }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                                                          android.R.layout.simple_spinner_item,
-                                                          itensArray);
-        popularCombo(spinner ,adapter);
-
-    }
-
-    private void popularCombosValorFixo(Spinner spinner, int idLista){
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                                                                              idLista,
-                                                                              android.R.layout.simple_spinner_item);
-
-
-        popularCombo(spinner ,adapter);
-    }
-
-    private void popularCombo(Spinner spinner,  ArrayAdapter adapter){
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
     }
 
 
+    private void calcularValorLucroUnidade(TextView tView){
+
+        tView.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(Utils.isValorParaCalculoValido(tvCustoUnidade.getText().toString()) && Utils.isValorParaCalculoValido(etValorVendaUnidade.getText().toString() )){
+
+                    BigDecimal valorVendaUnidade = Utils.retornarValorMonetario(etValorVendaUnidade.getText().toString(), Utils.LOCALE_BRASIL);
+                    BigDecimal valorCustoUnidade = Utils.retornarValorMonetario(tvCustoUnidade.getText().toString(), Utils.LOCALE_BRASIL);
+
+                    BigDecimal valorLucroUnidade = valorVendaUnidade.subtract(valorCustoUnidade);
+
+                    if(valorLucroUnidade.compareTo(BigDecimal.ZERO) < 0 ){
+                        tvLucroUnidade.setTextColor(getResources().getColor(R.color.dark_red));
+                    }
+                    else{
+                        tvLucroUnidade.setTextColor(getResources().getColor(R.color.material_green));
+                    }
+
+                    tvLucroUnidade.setText(Utils.retornaValorMontarioComMascara(valorLucroUnidade, Utils.LOCALE_BRASIL));
+                }
+                else{
+                    tvLucroUnidade.setText(Constantes.VAZIO);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+        });
+    }
+
+    private void calcularValorLucroTotal(TextView tView){
+        tView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calcularValorLucroTotal();
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
 
 
+
+    private void calcularValorLucroTotal(){
+
+        String qtd = spnQtd.getSelectedItem().toString();
+
+        if(Utils.isValorParaCalculoValido(tvLucroUnidade.getText().toString()) && !qtd.equals(getString(R.string.selecione)) ){
+
+            BigDecimal valorLucro = Utils.retornarValorMonetario(tvLucroUnidade.getText().toString(), Utils.LOCALE_BRASIL);
+            valorLucro = valorLucro.multiply(new BigDecimal(qtd)).setScale(2, BigDecimal.ROUND_HALF_UP);
+
+            if(valorLucro.compareTo(BigDecimal.ZERO) < 0 ){
+                tvLucroTotal.setTextColor(getResources().getColor(R.color.dark_red));
+            }
+            else{
+                tvLucroTotal.setTextColor(getResources().getColor(R.color.material_green));
+            }
+
+            tvLucroTotal.setText(Utils.retornaValorMontarioComMascara(valorLucro, Utils.LOCALE_BRASIL));
+        }
+        else{
+            tvLucroTotal.setText(Constantes.VAZIO);
+        }
+    }
 
 }
-
-

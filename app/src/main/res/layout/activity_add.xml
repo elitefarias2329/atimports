@@ -28,13 +28,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="R$:900,00"
                 android:textColor="@color/material_green"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/textView17"
-                app:layout_constraintStart_toStartOf="@+id/textView17"
-                app:layout_constraintTop_toBottomOf="@+id/textView17" />
+                app:layout_constraintEnd_toEndOf="@+id/tv_lbl_lucro_unidade"
+                app:layout_constraintStart_toStartOf="@+id/tv_lbl_lucro_unidade"
+                app:layout_constraintTop_toBottomOf="@+id/tv_lbl_lucro_unidade" />
 
             <TextView
                 android:id="@+id/textView14"
@@ -77,13 +76,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="R$:900,00"
                 android:textColor="@color/material_green"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/textView30"
-                app:layout_constraintStart_toStartOf="@+id/textView30"
-                app:layout_constraintTop_toBottomOf="@+id/textView30" />
+                app:layout_constraintEnd_toEndOf="@+id/tv_lbl_lucro_total"
+                app:layout_constraintStart_toStartOf="@+id/tv_lbl_lucro_total"
+                app:layout_constraintTop_toBottomOf="@+id/tv_lbl_lucro_total" />
 
             <TextView
                 android:id="@+id/tv_custo_total"
@@ -92,7 +90,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="24dp"
-                android:text="R$:900,00"
                 android:textColor="@color/dark_red"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/textView26"
@@ -105,7 +102,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="16dp"
-                android:text="R$:100,00"
                 android:textColor="@color/dark_red"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/textView27"
@@ -126,7 +122,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/et_frete_revendedor" />
 
             <TextView
-                android:id="@+id/textView30"
+                android:id="@+id/tv_lbl_lucro_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -142,7 +138,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/tv_lbl_lucro_unidade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -157,7 +153,7 @@
                 android:textColor="@color/material_green"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView30"
+                app:layout_constraintStart_toEndOf="@+id/tv_lbl_lucro_total"
                 app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
             <TextView
@@ -880,7 +876,7 @@
                 android:drawingCacheQuality="high"
                 android:text="Quantidade"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spn_conditions" />
+                app:layout_constraintTop_toBottomOf="@+id/spn_condicoes" />
 
             <ImageButton
                 android:id="@+id/imageButton"
@@ -909,7 +905,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
             <Spinner
-                android:id="@+id/spn_conditions"
+                android:id="@+id/spn_condicoes"
                 android:layout_width="0dp"
                 android:layout_height="28dp"
                 android:layout_marginStart="8dp"
@@ -961,7 +957,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spn_conditions" />
+                app:layout_constraintTop_toBottomOf="@+id/spn_condicoes" />
 
             <View
                 android:id="@+id/divider5"

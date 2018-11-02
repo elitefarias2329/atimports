@@ -1,13 +1,20 @@
 package com.atimports.utils;
 
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.atimports.activity.AddActivity;
 import com.atimports.constantes.Constantes;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
 public abstract class Utils {
@@ -23,44 +30,16 @@ public abstract class Utils {
 
 
 
-    public static void aplicarMascaraMoeda(final EditText campo, final Locale locale){
-                                           campo.addTextChangedListener(new TextWatcher(){
+    public static boolean isValorParaCalculoValido(String valor){
 
-            private String current = Constantes.VAZIO;
+        if(null == valor ||
+          valor.equals(Constantes.VALOR_MASCARA_ZERADO_DOLAR) ||
+          valor.equals(Constantes.VALOR_MASCARA_ZERADO_REAL)  ||
+          valor.equals(Constantes.VAZIO) ){
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence valorTexto, int start, int before, int count) {
-
-                if(!valorTexto.toString().equals(current)) {
-
-                    campo.removeTextChangedListener(this);
-
-                    String valorMonetarioPuro = retirarMascaraMoeda(valorTexto.toString());
-
-                    BigDecimal valorMonetario = new BigDecimal(valorMonetarioPuro);
-                    valorMonetario = valorMonetario.divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_EVEN);
-
-                    String valorMonetarioFormatado = retornaValorMontarioComMascara(valorMonetario, locale);
-
-                    campo.setText(valorMonetarioFormatado);
-                    current = valorMonetarioFormatado;
-                    campo.setSelection(valorMonetarioFormatado.length());
-                    campo.addTextChangedListener(this);
-                }
-
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-        });
+            return false;
+        }
+        return true;
     }
 
     public static String retirarSimboloMoeda(String texto){
@@ -98,5 +77,63 @@ public abstract class Utils {
         NumberFormat f = NumberFormat.getCurrencyInstance(locale);
         return f.format(valor);
     }
+
+
+
+    public static void criarDatePickerDialog(View campoClicavel, final TextView campoResultado, final Context ctx){
+
+        campoClicavel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Calendar cal = Calendar.getInstance() ;
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dpDataOrdemDialog = new DatePickerDialog(ctx,
+                                                                          android.R.style.Theme_DeviceDefault_Dialog,
+
+                                                                           new DatePickerDialog.OnDateSetListener() {
+
+                                                                                @Override
+                                                                                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                                                                                    String dia = String.valueOf(dayOfMonth);
+                                                                                    if(dia.length() < 2){
+                                                                                        dia = "0" + dia;
+                                                                                    }
+
+                                                                                    String mes = String.valueOf(month + 1);
+                                                                                    if(mes.length() < 2){
+                                                                                        mes = "0" + mes;
+                                                                                    }
+
+                                                                                    campoResultado.setText(dia + "/" + mes + "/" + year);
+                                                                                }
+                                                                            },
+
+                                                                             year, month, day
+                                                                        );
+
+                dpDataOrdemDialog.show();
+
+            }
+        });
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

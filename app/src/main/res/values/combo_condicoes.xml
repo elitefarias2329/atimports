@@ -1,5 +1,5 @@
 <resources>
-    <string-array name="conditions">
+    <string-array name="condicoes">
         <item>@string/selecione</item>
         <item>Lacrado</item>
         <item>Novo</item>
