@@ -41,6 +41,12 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.x.x'
 
 
+    //MEDIA FRAMEWORK
+
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+
+
 
 
 }

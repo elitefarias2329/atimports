@@ -1,20 +1,41 @@
 package com.atimports.activity;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.atimports.R;
 import com.atimports.constantes.Constantes;
 import com.atimports.utils.Utils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,6 +75,8 @@ public class AddActivity extends AppCompatActivity {
     TextView tvLucroTotal;
     TextView tvLucroUnidade;
 
+    ImageView ivFotoProduto;
+
 
 
     @Override
@@ -64,33 +87,35 @@ public class AddActivity extends AppCompatActivity {
 
         inicializarViews();
 
-        aplicarMascaraMoeda(etCotacaoDolar, Utils.LOCALE_BRASIL);
-        aplicarMascaraMoeda(etBaseFreteDolar, Utils.LOCALE_USA);
-        aplicarMascaraMoeda(etValorLanceDolar, Utils.LOCALE_USA);
-        aplicarMascaraMoeda(etValorComissaoFornecedorDolar, Utils.LOCALE_USA);
-        aplicarMascaraMoeda(etValorFreteFornecedorDolar, Utils.LOCALE_USA);
-        aplicarMascaraMoeda(etValorTaxaCambioReal, Utils.LOCALE_BRASIL);
-        aplicarMascaraMoeda(etValorVendaUnidade, Utils.LOCALE_BRASIL);
-        aplicarMascaraMoeda(etComissaoRevendedor,Utils.LOCALE_BRASIL);
-        aplicarMascaraMoeda(etValorFreteRevendedor, Utils.LOCALE_BRASIL);
-        aplicarMascaraMoeda(etValorFreteTransportadora, Utils.LOCALE_BRASIL);
+        criarImagePicker();
+
+        aplicarMascaraMoeda(etCotacaoDolar, Constantes.LOCALE_BRASIL);
+        aplicarMascaraMoeda(etBaseFreteDolar, Constantes.LOCALE_USA);
+        aplicarMascaraMoeda(etValorLanceDolar, Constantes.LOCALE_USA);
+        aplicarMascaraMoeda(etValorComissaoFornecedorDolar, Constantes.LOCALE_USA);
+        aplicarMascaraMoeda(etValorFreteFornecedorDolar, Constantes.LOCALE_USA);
+        aplicarMascaraMoeda(etValorTaxaCambioReal, Constantes.LOCALE_BRASIL);
+        aplicarMascaraMoeda(etValorVendaUnidade, Constantes.LOCALE_BRASIL);
+        aplicarMascaraMoeda(etComissaoRevendedor,Constantes.LOCALE_BRASIL);
+        aplicarMascaraMoeda(etValorFreteRevendedor, Constantes.LOCALE_BRASIL);
+        aplicarMascaraMoeda(etValorFreteTransportadora, Constantes.LOCALE_BRASIL);
 
         popularComboValorFixo(spnCondicoes, R.array.condicoes);
         popularComboValorFixo(spnMedida, R.array.medidas);
         popularComboValorFixo(spnStatusOrdem, R.array.status_ordem);
         popularComboQuantidade(spnQtd);
 
-        calcularValorBaseadoNaCotacaoDolar(etCotacaoDolar, etBaseFreteDolar, Utils.LOCALE_USA, etBaseFreteRealCalculado, Utils.LOCALE_BRASIL);
-        calcularValorBaseadoNaCotacaoDolar(etCotacaoDolar, etValorLanceDolar, Utils.LOCALE_USA, etValorLanceRealCalculado, Utils.LOCALE_BRASIL);
-        calcularValorBaseadoNaCotacaoDolar(etCotacaoDolar, etValorComissaoFornecedorDolar, Utils.LOCALE_USA, etValorComissaoFornecedorRealCalculado, Utils.LOCALE_BRASIL);
-        calcularValorBaseadoNaCotacaoDolar(etCotacaoDolar, etValorFreteFornecedorDolar, Utils.LOCALE_USA, etValorFreteFornecedorRealCalculado, Utils.LOCALE_BRASIL);
-        calcularValorBaseadoNaCotacaoDolar(etCotacaoDolar, etValorTaxaCambioReal, Utils.LOCALE_BRASIL, etValorTaxaCambioDolarCalculado, Utils.LOCALE_USA);
+        calcularValorBaseadoNaCotacaoDolar(etCotacaoDolar, etBaseFreteDolar, Constantes.LOCALE_USA, etBaseFreteRealCalculado, Constantes.LOCALE_BRASIL);
+        calcularValorBaseadoNaCotacaoDolar(etCotacaoDolar, etValorLanceDolar, Constantes.LOCALE_USA, etValorLanceRealCalculado, Constantes.LOCALE_BRASIL);
+        calcularValorBaseadoNaCotacaoDolar(etCotacaoDolar, etValorComissaoFornecedorDolar, Constantes.LOCALE_USA, etValorComissaoFornecedorRealCalculado, Constantes.LOCALE_BRASIL);
+        calcularValorBaseadoNaCotacaoDolar(etCotacaoDolar, etValorFreteFornecedorDolar, Constantes.LOCALE_USA, etValorFreteFornecedorRealCalculado, Constantes.LOCALE_BRASIL);
+        calcularValorBaseadoNaCotacaoDolar(etCotacaoDolar, etValorTaxaCambioReal, Constantes.LOCALE_BRASIL, etValorTaxaCambioDolarCalculado, Constantes.LOCALE_USA);
 
-        calcularValorBaseadoNaCotacaoDolar(etBaseFreteDolar, etBaseFreteDolar, Utils.LOCALE_USA, etBaseFreteRealCalculado, Utils.LOCALE_BRASIL);
-        calcularValorBaseadoNaCotacaoDolar(etValorLanceDolar, etValorLanceDolar, Utils.LOCALE_USA, etValorLanceRealCalculado, Utils.LOCALE_BRASIL);
-        calcularValorBaseadoNaCotacaoDolar(etValorComissaoFornecedorDolar, etValorComissaoFornecedorDolar, Utils.LOCALE_USA, etValorComissaoFornecedorRealCalculado, Utils.LOCALE_BRASIL);
-        calcularValorBaseadoNaCotacaoDolar(etValorFreteFornecedorDolar, etValorFreteFornecedorDolar, Utils.LOCALE_USA, etValorFreteFornecedorRealCalculado, Utils.LOCALE_BRASIL);
-        calcularValorBaseadoNaCotacaoDolar(etValorTaxaCambioReal, etValorTaxaCambioReal, Utils.LOCALE_BRASIL, etValorTaxaCambioDolarCalculado, Utils.LOCALE_USA);
+        calcularValorBaseadoNaCotacaoDolar(etBaseFreteDolar, etBaseFreteDolar, Constantes.LOCALE_USA, etBaseFreteRealCalculado, Constantes.LOCALE_BRASIL);
+        calcularValorBaseadoNaCotacaoDolar(etValorLanceDolar, etValorLanceDolar, Constantes.LOCALE_USA, etValorLanceRealCalculado, Constantes.LOCALE_BRASIL);
+        calcularValorBaseadoNaCotacaoDolar(etValorComissaoFornecedorDolar, etValorComissaoFornecedorDolar, Constantes.LOCALE_USA, etValorComissaoFornecedorRealCalculado, Constantes.LOCALE_BRASIL);
+        calcularValorBaseadoNaCotacaoDolar(etValorFreteFornecedorDolar, etValorFreteFornecedorDolar, Constantes.LOCALE_USA, etValorFreteFornecedorRealCalculado, Constantes.LOCALE_BRASIL);
+        calcularValorBaseadoNaCotacaoDolar(etValorTaxaCambioReal, etValorTaxaCambioReal, Constantes.LOCALE_BRASIL, etValorTaxaCambioDolarCalculado, Constantes.LOCALE_USA);
 
         calcularMedidasDePeso(etMedidaInicial);
 
@@ -157,7 +182,6 @@ public class AddActivity extends AppCompatActivity {
 
     //MÉTODOS
 
-
     private void inicializarViews(){
 
         spnCondicoes = findViewById(R.id.spn_condicoes);
@@ -193,6 +217,8 @@ public class AddActivity extends AppCompatActivity {
 
         etMedidaInicial.setText(Constantes.PESO_DEFAULT_1_KG);
         etMedidaFinal.setText(Constantes.PESO_DEFAULT_1_KG_EM_LIBRA);
+
+        ivFotoProduto = findViewById(R.id.iv_foto_produto);
 
     }
 
@@ -283,11 +309,11 @@ public class AddActivity extends AppCompatActivity {
                 if(!Utils.isBlank(etCotacaoDolar.getText().toString()) && !Utils.isBlank(campoBase.getText().toString())){
 
                     try{
-                        BigDecimal valorCotacaoDolar = Utils.retornarValorMonetario(etCotacaoDolar.getText().toString(), Utils.LOCALE_BRASIL);
+                        BigDecimal valorCotacaoDolar = Utils.retornarValorMonetario(etCotacaoDolar.getText().toString(), Constantes.LOCALE_BRASIL);
                         BigDecimal valorCampoBase = Utils.retornarValorMonetario(campoBase.getText().toString(), localeBase);
                         BigDecimal valorCampoResultado;
 
-                        if(localeResultado.equals(Utils.LOCALE_BRASIL)){
+                        if(localeResultado.equals(Constantes.LOCALE_BRASIL)){
                             valorCampoResultado  = valorCotacaoDolar.multiply(valorCampoBase).setScale(2,BigDecimal.ROUND_HALF_EVEN);
                         }
                         else{
@@ -344,10 +370,10 @@ public class AddActivity extends AppCompatActivity {
         if(!Utils.isBlank(medidaKG) && !Utils.isBlank(etBaseFreteRealCalculado.getText().toString())){
 
             try{
-                BigDecimal valorFreteRealCalculado = Utils.retornarValorMonetario(etBaseFreteRealCalculado.getText().toString(), Utils.LOCALE_BRASIL);
+                BigDecimal valorFreteRealCalculado = Utils.retornarValorMonetario(etBaseFreteRealCalculado.getText().toString(), Constantes.LOCALE_BRASIL);
                 BigDecimal valorMedidaKG = new BigDecimal(medidaKG.replace(Constantes.VIRGULA, Constantes.PONTO));
                 BigDecimal valorFreteUsaBrasil  = valorFreteRealCalculado.multiply(valorMedidaKG).setScale(2,BigDecimal.ROUND_HALF_EVEN);
-                tvFreteUsaBrasil.setText(Utils.retornaValorMontarioComMascara(valorFreteUsaBrasil, Utils.LOCALE_BRASIL));
+                tvFreteUsaBrasil.setText(Utils.retornaValorMontarioComMascara(valorFreteUsaBrasil, Constantes.LOCALE_BRASIL));
 
             }
             catch(Exception e){
@@ -442,38 +468,38 @@ public class AddActivity extends AppCompatActivity {
 
                     BigDecimal valorCustoTotal = BigDecimal.ZERO;
 
-                    valorLance = Utils.retornarValorMonetario(etValorLanceRealCalculado.getText().toString(), Utils.LOCALE_BRASIL);
+                    valorLance = Utils.retornarValorMonetario(etValorLanceRealCalculado.getText().toString(), Constantes.LOCALE_BRASIL);
 
                     if(Utils.isValorParaCalculoValido(tvFreteUsaBrasil.getText().toString())){
-                        valorFreteUsaBrasil = Utils.retornarValorMonetario(tvFreteUsaBrasil.getText().toString(), Utils.LOCALE_BRASIL);
+                        valorFreteUsaBrasil = Utils.retornarValorMonetario(tvFreteUsaBrasil.getText().toString(), Constantes.LOCALE_BRASIL);
                     }
 
                     if(Utils.isValorParaCalculoValido(etValorComissaoFornecedorRealCalculado.getText().toString())){
-                        valorComissaoFornecedor = Utils.retornarValorMonetario(etValorComissaoFornecedorRealCalculado.getText().toString(), Utils.LOCALE_BRASIL);
+                        valorComissaoFornecedor = Utils.retornarValorMonetario(etValorComissaoFornecedorRealCalculado.getText().toString(), Constantes.LOCALE_BRASIL);
                     }
 
                     if(Utils.isValorParaCalculoValido(etValorFreteFornecedorRealCalculado.getText().toString())){
-                        valorFreteFornecedor = Utils.retornarValorMonetario(etValorFreteFornecedorRealCalculado.getText().toString(), Utils.LOCALE_BRASIL);
+                        valorFreteFornecedor = Utils.retornarValorMonetario(etValorFreteFornecedorRealCalculado.getText().toString(), Constantes.LOCALE_BRASIL);
                     }
 
                     if(Utils.isValorParaCalculoValido(etValorTaxaCambioReal.getText().toString())){
-                        valorTaxaCambio = Utils.retornarValorMonetario(etValorTaxaCambioReal.getText().toString(), Utils.LOCALE_BRASIL);
+                        valorTaxaCambio = Utils.retornarValorMonetario(etValorTaxaCambioReal.getText().toString(), Constantes.LOCALE_BRASIL);
                     }
 
                     if(Utils.isValorParaCalculoValido(etValorFreteTransportadora.getText().toString())){
-                        valorFreteTransportadora = Utils.retornarValorMonetario(etValorFreteTransportadora.getText().toString(), Utils.LOCALE_BRASIL);
+                        valorFreteTransportadora = Utils.retornarValorMonetario(etValorFreteTransportadora.getText().toString(), Constantes.LOCALE_BRASIL);
                     }
 
 
                     String qtd = spnQtd.getSelectedItem().toString();
 
                     if(Utils.isValorParaCalculoValido(etComissaoRevendedor.getText().toString()) && !qtd.equals(getString(R.string.selecione)) ){
-                        valorComissaoRevendedor = Utils.retornarValorMonetario(etComissaoRevendedor.getText().toString(), Utils.LOCALE_BRASIL);
+                        valorComissaoRevendedor = Utils.retornarValorMonetario(etComissaoRevendedor.getText().toString(), Constantes.LOCALE_BRASIL);
                         valorComissaoRevendedor = valorComissaoRevendedor.multiply(new BigDecimal(qtd)).setScale(2 ,BigDecimal.ROUND_HALF_UP);
                     }
 
                     if(Utils.isValorParaCalculoValido(etValorFreteRevendedor.getText().toString()) && !qtd.equals(getString(R.string.selecione)) ){
-                        valorFreteRevendedor = Utils.retornarValorMonetario(etValorFreteRevendedor.getText().toString(), Utils.LOCALE_BRASIL);
+                        valorFreteRevendedor = Utils.retornarValorMonetario(etValorFreteRevendedor.getText().toString(), Constantes.LOCALE_BRASIL);
                         valorFreteRevendedor = valorFreteRevendedor.multiply(new BigDecimal(qtd)).setScale(2 ,BigDecimal.ROUND_HALF_UP);
                     }
 
@@ -486,7 +512,7 @@ public class AddActivity extends AppCompatActivity {
                             .add(valorComissaoRevendedor)
                             .add(valorFreteRevendedor);
 
-                    tvCustoTotal.setText(Utils.retornaValorMontarioComMascara(valorCustoTotal, Utils.LOCALE_BRASIL));
+                    tvCustoTotal.setText(Utils.retornaValorMontarioComMascara(valorCustoTotal, Constantes.LOCALE_BRASIL));
 
                 }
                 else{
@@ -525,9 +551,9 @@ public class AddActivity extends AppCompatActivity {
 
         if(Utils.isValorParaCalculoValido(tvCustoTotal.getText().toString()) && !qtd.equals(getString(R.string.selecione)) ){
 
-            BigDecimal valorCusto = Utils.retornarValorMonetario(tvCustoTotal.getText().toString(), Utils.LOCALE_BRASIL);
+            BigDecimal valorCusto = Utils.retornarValorMonetario(tvCustoTotal.getText().toString(), Constantes.LOCALE_BRASIL);
             valorCusto = valorCusto.divide(new BigDecimal(qtd),2, BigDecimal.ROUND_HALF_UP);
-            tvCustoUnidade.setText(Utils.retornaValorMontarioComMascara(valorCusto, Utils.LOCALE_BRASIL));
+            tvCustoUnidade.setText(Utils.retornaValorMontarioComMascara(valorCusto, Constantes.LOCALE_BRASIL));
         }
         else{
             tvCustoUnidade.setText(Constantes.VAZIO);
@@ -548,8 +574,8 @@ public class AddActivity extends AppCompatActivity {
 
                 if(Utils.isValorParaCalculoValido(tvCustoUnidade.getText().toString()) && Utils.isValorParaCalculoValido(etValorVendaUnidade.getText().toString() )){
 
-                    BigDecimal valorVendaUnidade = Utils.retornarValorMonetario(etValorVendaUnidade.getText().toString(), Utils.LOCALE_BRASIL);
-                    BigDecimal valorCustoUnidade = Utils.retornarValorMonetario(tvCustoUnidade.getText().toString(), Utils.LOCALE_BRASIL);
+                    BigDecimal valorVendaUnidade = Utils.retornarValorMonetario(etValorVendaUnidade.getText().toString(), Constantes.LOCALE_BRASIL);
+                    BigDecimal valorCustoUnidade = Utils.retornarValorMonetario(tvCustoUnidade.getText().toString(), Constantes.LOCALE_BRASIL);
 
                     BigDecimal valorLucroUnidade = valorVendaUnidade.subtract(valorCustoUnidade);
 
@@ -560,7 +586,7 @@ public class AddActivity extends AppCompatActivity {
                         tvLucroUnidade.setTextColor(getResources().getColor(R.color.material_green));
                     }
 
-                    tvLucroUnidade.setText(Utils.retornaValorMontarioComMascara(valorLucroUnidade, Utils.LOCALE_BRASIL));
+                    tvLucroUnidade.setText(Utils.retornaValorMontarioComMascara(valorLucroUnidade, Constantes.LOCALE_BRASIL));
                 }
                 else{
                     tvLucroUnidade.setText(Constantes.VAZIO);
@@ -597,7 +623,7 @@ public class AddActivity extends AppCompatActivity {
 
         if(Utils.isValorParaCalculoValido(tvLucroUnidade.getText().toString()) && !qtd.equals(getString(R.string.selecione)) ){
 
-            BigDecimal valorLucro = Utils.retornarValorMonetario(tvLucroUnidade.getText().toString(), Utils.LOCALE_BRASIL);
+            BigDecimal valorLucro = Utils.retornarValorMonetario(tvLucroUnidade.getText().toString(), Constantes.LOCALE_BRASIL);
             valorLucro = valorLucro.multiply(new BigDecimal(qtd)).setScale(2, BigDecimal.ROUND_HALF_UP);
 
             if(valorLucro.compareTo(BigDecimal.ZERO) < 0 ){
@@ -607,11 +633,128 @@ public class AddActivity extends AppCompatActivity {
                 tvLucroTotal.setTextColor(getResources().getColor(R.color.material_green));
             }
 
-            tvLucroTotal.setText(Utils.retornaValorMontarioComMascara(valorLucro, Utils.LOCALE_BRASIL));
+            tvLucroTotal.setText(Utils.retornaValorMontarioComMascara(valorLucro, Constantes.LOCALE_BRASIL));
         }
         else{
             tvLucroTotal.setText(Constantes.VAZIO);
         }
+    }
+
+
+
+
+    private void criarImagePicker(){
+
+        ivFotoProduto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder pictureDialog = new AlertDialog.Builder(AddActivity.this);
+                pictureDialog.setTitle("Selecionar Imagem");
+
+                String[] pictureDialogItems = {"Selecionar da Galeria", "Capturar com a câmera" };
+
+                pictureDialog.setItems(pictureDialogItems,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case 0:
+                                        choosePhotoFromGallary();
+                                        break;
+                                    case 1:
+                                        takePhotoFromCamera();
+                                        break;
+                                }
+                            }
+                        });
+                pictureDialog.show();
+            }
+        });
+    }
+
+    private void choosePhotoFromGallary() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, Constantes.GALLERY);
+    }
+
+    private void takePhotoFromCamera() {
+        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, Constantes.CAMERA);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        try {
+
+            Uri uri = data.getData();
+
+            if (resultCode == this.RESULT_CANCELED) {
+                return;
+            }
+
+
+
+            else if (requestCode == Constantes.GALLERY ) {
+
+                if (data != null) {
+
+
+                    Glide.with(AddActivity.this)
+                            .load(uri)
+                            .apply(new RequestOptions().circleCrop())
+                            .into(ivFotoProduto);
+
+                }
+            }
+
+            else if (requestCode == Constantes.CAMERA) {
+
+                Glide.with(AddActivity.this)
+                        .load(data.getExtras().get("data"))
+                        .apply(new RequestOptions().circleCrop().override(600, 600))
+                        .into(ivFotoProduto);
+
+            }
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(AddActivity.this, "Impossivel carrgear a imagem!", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    public String saveImage(Bitmap myBitmap) {
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        File wallpaperDirectory = new File(Environment.getExternalStorageDirectory() + Constantes.IMAGE_DIRECTORY);
+
+        // have the object build the directory structure, if needed.
+        if (!wallpaperDirectory.exists()) {
+            wallpaperDirectory.mkdirs();
+        }
+
+        try {
+            File f = new File(wallpaperDirectory, Calendar.getInstance().getTimeInMillis() + ".jpg");
+            f.createNewFile();
+            FileOutputStream fo = new FileOutputStream(f);
+            fo.write(bytes.toByteArray());
+            MediaScannerConnection.scanFile(this, new String[]{f.getPath()}, new String[]{"image/jpeg"}, null);
+            fo.close();
+            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
+
+            return f.getAbsolutePath();
+        }
+        catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return "";
     }
 
 }

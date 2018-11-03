@@ -1,7 +1,12 @@
 package com.atimports.constantes;
 
+import java.util.Locale;
+
 public abstract class Constantes {
 
+
+    public static final Locale LOCALE_BRASIL = new Locale("pt", "BR");
+    public static final Locale LOCALE_USA = Locale.US;
 
     public final static String SIMBOLO_REAL = "R$";
     public final static String SIMBOLO_DOLAR = "$";
@@ -16,5 +21,12 @@ public abstract class Constantes {
     public final static String PESO_DEFAULT_1_KG = "1";
     public final static String PESO_DEFAULT_1_KG_EM_LIBRA = "2,205";
 
+    public static final String IMAGE_DIRECTORY = "/atimports";
+
+    public static final int GALLERY = 1;
+    public static final int CAMERA = 2;
+
+
 
 }
+

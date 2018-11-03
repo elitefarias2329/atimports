@@ -2,14 +2,10 @@ package com.atimports.utils;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.atimports.activity.AddActivity;
 import com.atimports.constantes.Constantes;
 
 import java.math.BigDecimal;
@@ -18,10 +14,6 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public abstract class Utils {
-
-
-    public static final Locale LOCALE_BRASIL = new Locale("pt", "BR");
-    public static final Locale LOCALE_USA = Locale.US;
 
 
     public static boolean isBlank(String texto){
