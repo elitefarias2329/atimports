@@ -2,23 +2,17 @@ package com.atimports.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -28,17 +22,13 @@ import android.widget.Toast;
 import com.atimports.R;
 import com.atimports.constantes.Constantes;
 import com.atimports.utils.Utils;
+import com.atimports.validator.FieldValidator;
+import com.atimports.validator.RequiredFieldValidator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -52,6 +42,13 @@ public class AddActivity extends AppCompatActivity {
     EditText etCotacaoDolar;
     EditText etBaseFreteDolar;
     EditText etBaseFreteRealCalculado;
+
+
+    TextView tvProduto;
+    EditText etProduto;
+    TextView tvErrorMsgProduto;
+
+
     EditText etMedidaInicial;
     EditText etMedidaFinal;
     EditText etValorLanceDolar;
@@ -66,6 +63,7 @@ public class AddActivity extends AppCompatActivity {
     EditText etComissaoRevendedor;
     EditText etValorFreteRevendedor;
     EditText etValorFreteTransportadora;
+    EditText etGastosExtras;
     EditText etDataOrdem;
 
     TextView tvMedidaFinal;
@@ -77,7 +75,9 @@ public class AddActivity extends AppCompatActivity {
 
     ImageView ivFotoProduto;
 
+    Button btSalvar;
 
+    RequiredFieldValidator requiredFieldValidator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +99,7 @@ public class AddActivity extends AppCompatActivity {
         aplicarMascaraMoeda(etComissaoRevendedor,Constantes.LOCALE_BRASIL);
         aplicarMascaraMoeda(etValorFreteRevendedor, Constantes.LOCALE_BRASIL);
         aplicarMascaraMoeda(etValorFreteTransportadora, Constantes.LOCALE_BRASIL);
+        aplicarMascaraMoeda(etGastosExtras, Constantes.LOCALE_BRASIL);
 
         popularComboValorFixo(spnCondicoes, R.array.condicoes);
         popularComboValorFixo(spnMedida, R.array.medidas);
@@ -134,6 +135,7 @@ public class AddActivity extends AppCompatActivity {
         calcularCustoTotal(etValorFreteTransportadora);
         calcularCustoTotal(etComissaoRevendedor);
         calcularCustoTotal(etValorFreteRevendedor);
+        calcularCustoTotal(etGastosExtras);
 
         calcularCustoUnidade(tvCustoTotal);
 
@@ -166,7 +168,7 @@ public class AddActivity extends AppCompatActivity {
         });
 
 
-
+        salvar();
 
 
 
@@ -189,7 +191,15 @@ public class AddActivity extends AppCompatActivity {
         spnMedida = findViewById(R.id.spn_medida);
         spnStatusOrdem = findViewById(R.id.spn_status_ordem);
 
-        etCotacaoDolar =  findViewById(R.id.et_cotacao_dolar);
+        etCotacaoDolar = findViewById(R.id.et_cotacao_dolar);
+
+
+        tvProduto = findViewById(R.id.tv_produto);
+        etProduto = findViewById(R.id.et_produto);
+        tvErrorMsgProduto = findViewById(R.id.error_msg_produto);
+
+
+
         etBaseFreteDolar = findViewById(R.id.et_base_frete_dolar);
         etBaseFreteRealCalculado = findViewById(R.id.et_base_frete_real);
         etMedidaInicial = findViewById(R.id.et_medida_inicial);
@@ -206,6 +216,7 @@ public class AddActivity extends AppCompatActivity {
         etComissaoRevendedor = findViewById(R.id.et_comissao_revendedor);
         etValorFreteRevendedor = findViewById(R.id.et_frete_revendedor);
         etValorFreteTransportadora = findViewById(R.id.et_valor_frete_transportadora);
+        etGastosExtras = findViewById(R.id.et_gastos_extras);
         etDataOrdem = findViewById(R.id.et_data_ordem);
 
         tvMedidaFinal = findViewById(R.id.tv_medida_final);
@@ -220,6 +231,7 @@ public class AddActivity extends AppCompatActivity {
 
         ivFotoProduto = findViewById(R.id.iv_foto_produto);
 
+        btSalvar = findViewById(R.id.bt_salvar);
     }
 
 
@@ -465,6 +477,7 @@ public class AddActivity extends AppCompatActivity {
                     BigDecimal valorFreteTransportadora = BigDecimal.ZERO;
                     BigDecimal valorComissaoRevendedor = BigDecimal.ZERO;
                     BigDecimal valorFreteRevendedor = BigDecimal.ZERO;
+                    BigDecimal valorGastosExtras = BigDecimal.ZERO;
 
                     BigDecimal valorCustoTotal = BigDecimal.ZERO;
 
@@ -490,6 +503,9 @@ public class AddActivity extends AppCompatActivity {
                         valorFreteTransportadora = Utils.retornarValorMonetario(etValorFreteTransportadora.getText().toString(), Constantes.LOCALE_BRASIL);
                     }
 
+                    if(Utils.isValorParaCalculoValido(etGastosExtras.getText().toString())){
+                        valorGastosExtras = Utils.retornarValorMonetario(etGastosExtras.getText().toString(), Constantes.LOCALE_BRASIL);
+                    }
 
                     String qtd = spnQtd.getSelectedItem().toString();
 
@@ -510,7 +526,9 @@ public class AddActivity extends AppCompatActivity {
                             .add(valorTaxaCambio)
                             .add(valorFreteTransportadora)
                             .add(valorComissaoRevendedor)
-                            .add(valorFreteRevendedor);
+                            .add(valorFreteRevendedor)
+                            .add(valorGastosExtras);
+
 
                     tvCustoTotal.setText(Utils.retornaValorMontarioComMascara(valorCustoTotal, Constantes.LOCALE_BRASIL));
 
@@ -650,7 +668,7 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 AlertDialog.Builder pictureDialog = new AlertDialog.Builder(AddActivity.this);
-                pictureDialog.setTitle("Selecionar Imagem");
+                pictureDialog.setTitle("Selecione a foto do produto");
 
                 String[] pictureDialogItems = {"Selecionar da Galeria", "Capturar com a câmera" };
 
@@ -675,12 +693,19 @@ public class AddActivity extends AppCompatActivity {
 
     private void choosePhotoFromGallary() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, Constantes.GALLERY);
+
+        if (galleryIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(galleryIntent, Constantes.GALLERY);
+        }
     }
 
     private void takePhotoFromCamera() {
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, Constantes.CAMERA);
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, Constantes.CAMERA);
+        }
     }
 
 
@@ -697,28 +722,23 @@ public class AddActivity extends AppCompatActivity {
                 return;
             }
 
-
-
-            else if (requestCode == Constantes.GALLERY ) {
+            else if (requestCode == Constantes.GALLERY && resultCode == RESULT_OK) {
 
                 if (data != null) {
 
-
                     Glide.with(AddActivity.this)
                             .load(uri)
-                            .apply(new RequestOptions().circleCrop())
+                            .apply(new RequestOptions().circleCrop().override(ivFotoProduto.getWidth(), ivFotoProduto.getHeight()))
                             .into(ivFotoProduto);
-
                 }
             }
 
-            else if (requestCode == Constantes.CAMERA) {
+            else if (requestCode == Constantes.CAMERA && resultCode == RESULT_OK) {
 
                 Glide.with(AddActivity.this)
                         .load(data.getExtras().get("data"))
-                        .apply(new RequestOptions().circleCrop().override(600, 600))
+                        .apply(new RequestOptions().circleCrop().override(ivFotoProduto.getWidth(), ivFotoProduto.getHeight()))
                         .into(ivFotoProduto);
-
             }
 
         }
@@ -729,32 +749,20 @@ public class AddActivity extends AppCompatActivity {
 
     }
 
-    public String saveImage(Bitmap myBitmap) {
 
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-        File wallpaperDirectory = new File(Environment.getExternalStorageDirectory() + Constantes.IMAGE_DIRECTORY);
+    private void salvar(){
 
-        // have the object build the directory structure, if needed.
-        if (!wallpaperDirectory.exists()) {
-            wallpaperDirectory.mkdirs();
-        }
+        btSalvar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        try {
-            File f = new File(wallpaperDirectory, Calendar.getInstance().getTimeInMillis() + ".jpg");
-            f.createNewFile();
-            FileOutputStream fo = new FileOutputStream(f);
-            fo.write(bytes.toByteArray());
-            MediaScannerConnection.scanFile(this, new String[]{f.getPath()}, new String[]{"image/jpeg"}, null);
-            fo.close();
-            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
+                FieldValidator.validarCampoObrigatorio( tvProduto,etProduto,tvErrorMsgProduto);
 
-            return f.getAbsolutePath();
-        }
-        catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        return "";
+
+            }
+        });
     }
+
+
 
 }
