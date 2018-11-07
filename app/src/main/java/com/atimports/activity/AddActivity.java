@@ -23,7 +23,6 @@ import com.atimports.R;
 import com.atimports.constantes.Constantes;
 import com.atimports.utils.Utils;
 import com.atimports.validator.FieldValidator;
-import com.atimports.validator.RequiredFieldValidator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -781,7 +780,7 @@ public class AddActivity extends AppCompatActivity {
         }
         catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(AddActivity.this, "Impossivel carrgear a imagem!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddActivity.this, "Impossivel carregar a imagem!", Toast.LENGTH_SHORT).show();
         }
 
     }
