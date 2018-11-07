@@ -34,32 +34,51 @@ import java.util.Locale;
 
 public class AddActivity extends AppCompatActivity {
 
+
+    TextView tvCondicoes;
     Spinner spnCondicoes;
+    TextView errorMsgCondicoes;
+
+    TextView tvQtd;
     Spinner spnQtd;
+    TextView errorMsgQtd;
+
     Spinner spnMedida;
     Spinner spnStatusOrdem;
 
+    TextView tvCotacaoDolar;
     EditText etCotacaoDolar;
+    TextView errorMsgCotacaoDolar;
+
+    TextView tvBaseFreteDolar;
     EditText etBaseFreteDolar;
     EditText etBaseFreteRealCalculado;
-
+    TextView errorMsgFreteDolar;
 
     TextView tvProduto;
     EditText etProduto;
-    TextView tvErrorMsgProduto;
+    TextView errorMsgProduto;
 
 
     EditText etMedidaInicial;
     EditText etMedidaFinal;
+
+    TextView tvValorLanceDolar;
     EditText etValorLanceDolar;
     EditText etValorLanceRealCalculado;
+    TextView errorMsgValorLanceDolar;
+
     EditText etValorComissaoFornecedorDolar;
     EditText etValorComissaoFornecedorRealCalculado;
     EditText etValorFreteFornecedorDolar;
     EditText etValorFreteFornecedorRealCalculado;
     EditText etValorTaxaCambioReal;
     EditText etValorTaxaCambioDolarCalculado;
+
+    TextView tvValorVendaUnidade;
     EditText etValorVendaUnidade;
+    TextView errorMsgValorVendaUnidade;
+
     EditText etComissaoRevendedor;
     EditText etValorFreteRevendedor;
     EditText etValorFreteTransportadora;
@@ -76,8 +95,6 @@ public class AddActivity extends AppCompatActivity {
     ImageView ivFotoProduto;
 
     Button btSalvar;
-
-    RequiredFieldValidator requiredFieldValidator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,33 +203,53 @@ public class AddActivity extends AppCompatActivity {
 
     private void inicializarViews(){
 
+        tvCondicoes = findViewById(R.id.tv_condicoes);
         spnCondicoes = findViewById(R.id.spn_condicoes);
+        errorMsgCondicoes = findViewById(R.id.error_msg_condicoes);
+
+        tvQtd = findViewById(R.id.tv_qtd);
         spnQtd = findViewById(R.id.spn_qtd);
+        errorMsgQtd = findViewById(R.id.error_msg_qtd);
+
+
         spnMedida = findViewById(R.id.spn_medida);
         spnStatusOrdem = findViewById(R.id.spn_status_ordem);
 
+        tvCotacaoDolar = findViewById(R.id.tv_cotacao_dolar);
         etCotacaoDolar = findViewById(R.id.et_cotacao_dolar);
-
+        errorMsgCotacaoDolar = findViewById(R.id.error_msg_cotacao_dolar);
 
         tvProduto = findViewById(R.id.tv_produto);
         etProduto = findViewById(R.id.et_produto);
-        tvErrorMsgProduto = findViewById(R.id.error_msg_produto);
+        errorMsgProduto = findViewById(R.id.error_msg_produto);
 
-
-
+        tvBaseFreteDolar = findViewById(R.id.tv_base_frete_dolar);
         etBaseFreteDolar = findViewById(R.id.et_base_frete_dolar);
         etBaseFreteRealCalculado = findViewById(R.id.et_base_frete_real);
+        errorMsgFreteDolar = findViewById(R.id.error_msg_frete_dolar);
+
+
         etMedidaInicial = findViewById(R.id.et_medida_inicial);
         etMedidaFinal = findViewById(R.id.et_medida_final);
+
+        tvValorLanceDolar = findViewById(R.id.tv_valor_lance_dolar);
         etValorLanceDolar = findViewById(R.id.et_valor_lance_dolar);
         etValorLanceRealCalculado = findViewById(R.id.et_valor_lance_real_calculado);
+        errorMsgValorLanceDolar = findViewById(R.id.error_msg_valor_lance_dolar);
+
         etValorComissaoFornecedorDolar = findViewById(R.id.et_valor_comissao_fornecedor_dolar);
         etValorComissaoFornecedorRealCalculado = findViewById(R.id.et_valor_comissao_fornecedor_real_calculado);
+
         etValorFreteFornecedorDolar = findViewById(R.id.et_valor_frete_fornecedor_dolar);
         etValorFreteFornecedorRealCalculado = findViewById(R.id.et_valor_frete_fornecedor_real_calculado);
         etValorTaxaCambioReal = findViewById(R.id.et_valor_taxa_cambio_real);
         etValorTaxaCambioDolarCalculado = findViewById(R.id.et_valor_taxa_cambio_dolar_calculado);
+
+
+        tvValorVendaUnidade = findViewById(R.id.tv_valor_venda_unidade);
         etValorVendaUnidade = findViewById(R.id.et_valor_venda_unidade);
+        errorMsgValorVendaUnidade = findViewById(R.id.error_msg_valor_venda_unidade);
+
         etComissaoRevendedor = findViewById(R.id.et_comissao_revendedor);
         etValorFreteRevendedor = findViewById(R.id.et_frete_revendedor);
         etValorFreteTransportadora = findViewById(R.id.et_valor_frete_transportadora);
@@ -756,13 +793,34 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                FieldValidator.validarCampoObrigatorio( tvProduto,etProduto,tvErrorMsgProduto);
 
+                if(validarCampos()){
+
+                }
+                else{
+                    Toast.makeText(AddActivity.this, "Verifique os campos obrigatórios.", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
     }
 
+
+    private boolean validarCampos(){
+
+        boolean retorno = true;
+
+        retorno = FieldValidator.validarCampoMonetarioObrigatorio( tvCotacaoDolar, etCotacaoDolar, errorMsgCotacaoDolar);
+        retorno = FieldValidator.validarCampoMonetarioObrigatorio( tvBaseFreteDolar, etBaseFreteDolar, errorMsgFreteDolar);
+        retorno = FieldValidator.validarCampoObrigatorio( tvProduto, etProduto, errorMsgProduto);
+        retorno = FieldValidator.validarCampoObrigatorio( tvCondicoes, spnCondicoes, errorMsgCondicoes);
+        retorno = FieldValidator.validarCampoObrigatorio( tvQtd, spnQtd, errorMsgQtd);
+        retorno = FieldValidator.validarCampoMonetarioObrigatorio( tvValorLanceDolar, etValorLanceDolar, errorMsgValorLanceDolar);
+        retorno = FieldValidator.validarCampoMonetarioObrigatorio( tvValorVendaUnidade, etValorVendaUnidade, errorMsgValorVendaUnidade);
+
+        return retorno;
+
+    }
 
 
 }

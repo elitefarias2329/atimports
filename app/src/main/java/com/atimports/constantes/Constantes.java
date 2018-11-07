@@ -4,6 +4,7 @@ import java.util.Locale;
 
 public abstract class Constantes {
 
+    public static final String SELECIONE  = "...Selecione...";
 
     public static final Locale LOCALE_BRASIL = new Locale("pt", "BR");
     public static final Locale LOCALE_USA = Locale.US;
