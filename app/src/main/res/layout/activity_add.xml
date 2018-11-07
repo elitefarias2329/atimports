@@ -595,10 +595,10 @@
                 android:drawingCacheQuality="high"
                 android:text="Comissão do Fornecedor"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText2" />
+                app:layout_constraintTop_toBottomOf="@+id/et_fornecedor" />
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/et_fornecedor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -696,10 +696,10 @@
                 android:drawingCacheQuality="high"
                 android:text="Data da Ordem de Compra"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText" />
+                app:layout_constraintTop_toBottomOf="@+id/et_ordem_compra" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/et_ordem_compra"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

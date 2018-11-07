@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.atimports.R;
 import com.atimports.constantes.Constantes;
+import com.atimports.model.Leilao;
 import com.atimports.utils.Utils;
 import com.atimports.validator.FieldValidator;
 import com.bumptech.glide.Glide;
@@ -58,6 +59,9 @@ public class AddActivity extends AppCompatActivity {
     EditText etProduto;
     TextView errorMsgProduto;
 
+    EditText etOrdemCompra;
+
+    EditText etFornecedor;
 
     EditText etMedidaInicial;
     EditText etMedidaFinal;
@@ -244,6 +248,9 @@ public class AddActivity extends AppCompatActivity {
         etValorTaxaCambioReal = findViewById(R.id.et_valor_taxa_cambio_real);
         etValorTaxaCambioDolarCalculado = findViewById(R.id.et_valor_taxa_cambio_dolar_calculado);
 
+        etOrdemCompra = findViewById(R.id.et_ordem_compra);
+
+        etFornecedor = findViewById(R.id.et_fornecedor);
 
         tvValorVendaUnidade = findViewById(R.id.tv_valor_venda_unidade);
         etValorVendaUnidade = findViewById(R.id.et_valor_venda_unidade);
@@ -792,8 +799,53 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                 if(validarCampos()){
+
+                    Leilao leilao = new Leilao();
+                    leilao.setValorCotacaoDolar(Utils.retornarValorMonetario(etCotacaoDolar.getText().toString(),Constantes.LOCALE_BRASIL));
+                    leilao.setBaseFreteDolar(Utils.retornarValorMonetario(etBaseFreteDolar.getText().toString(),Constantes.LOCALE_USA));
+                    leilao.setBaseFreteReal(Utils.retornarValorMonetario(etBaseFreteRealCalculado.getText().toString(),Constantes.LOCALE_BRASIL));
+                    leilao.setNomeProduto(etProduto.getText().toString());
+                    leilao.setCondicao(spnCondicoes.getSelectedItem().toString());
+                    leilao.setQtd(Integer.valueOf(spnQtd.getSelectedItem().toString()));
+                    leilao.setValorLanceDolar(Utils.retornarValorMonetario(etValorLanceDolar.getText().toString(),Constantes.LOCALE_USA));
+                    leilao.setValorLanceReal(Utils.retornarValorMonetario(etValorLanceRealCalculado.getText().toString(),Constantes.LOCALE_BRASIL));
+
+
+                    //TODO VERIFICAR SE O VALOR DO PESO É VALIDO E RETIRAR VIRGULA INVALIDA
+                    String tipoMedidaSelecionada = spnMedida.getSelectedItem().toString();
+                    String medidaKG;
+
+                    if(tipoMedidaSelecionada.equals(getString(R.string.medida_kg))){
+                        medidaKG = etMedidaInicial.getText().toString();
+                    }
+                    else{
+                        medidaKG = etMedidaFinal.getText().toString();
+                    }
+
+                    leilao.setPesoLoteKg(Double.parseDouble(medidaKG.replace(",", ".")));
+                    leilao.setValorFreteUsaReal(Utils.retornarValorMonetario(tvFreteUsaBrasil.getText().toString(),Constantes.LOCALE_BRASIL));
+                    leilao.setOrdemCompra(Utils.isBlank(etOrdemCompra.getText().toString())? null : etOrdemCompra.getText().toString() );
+
+                    //TODO TRATAR A DATA DA ORDEM DE COMPRA
+
+                    //TODO TRATAR O STATUS DA ORDEM DE COMPRA
+                    leilao.setNomeFornecedor(Utils.isBlank(etFornecedor.getText().toString())? null : etFornecedor.getText().toString() );
+
+
+
+                    if(Utils.isValorParaCalculoValido(etValorComissaoFornecedorDolar.getText().toString())){
+
+                    }
+                    else{
+
+                    }
+
+
+
+
+
+
 
                 }
                 else{
