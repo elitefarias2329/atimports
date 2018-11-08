@@ -3,12 +3,6 @@ package com.atimports.model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
-
-import com.atimports.converter.Converters;
-
-import java.math.BigDecimal;
-import java.util.Date;
 
 import io.reactivex.annotations.NonNull;
 
@@ -20,24 +14,20 @@ public class Leilao {
     @ColumnInfo(name = "ID")
     private Long id;
 
-    @TypeConverters(Converters.class)
+    @ColumnInfo(name = "PATH_FOTO_PRODUTO")
+    private String pathFotoProduto;
+
     @NonNull
     @ColumnInfo(name = "VALOR_COTACAO_DOLAR")
-    private BigDecimal valorCotacaoDolar;
+    private String valorCotacaoDolar;
 
-    @TypeConverters(Converters.class)
     @NonNull
     @ColumnInfo(name = "BASE_FRETE_DOLAR")
-    private BigDecimal baseFreteDolar;
-
-    @TypeConverters(Converters.class)
-    @NonNull
-    @ColumnInfo(name = "BASE_FRETE_REAL")
-    private BigDecimal baseFreteReal;
+    private String baseFreteDolar;
 
     @NonNull
-    @ColumnInfo(name = "NOME_PRODUTO")
-    private String nomeProduto;
+    @ColumnInfo(name = "PRODUTO")
+    private String produto;
 
     @NonNull
     @ColumnInfo(name = "CONDICAO")
@@ -47,143 +37,89 @@ public class Leilao {
     @ColumnInfo(name = "QUANTIDADE")
     private Integer qtd;
 
-    @TypeConverters(Converters.class)
     @NonNull
     @ColumnInfo(name = "VALOR_LANCE_DOLAR")
-    private BigDecimal valorLanceDolar;
-
-    @TypeConverters(Converters.class)
-    @NonNull
-    @ColumnInfo(name = "VALOR_LANCE_REAL")
-    private BigDecimal valorLanceReal;
-
-    @TypeConverters(Converters.class)
-    @NonNull
-    @ColumnInfo(name = "VALOR_FRETE_USA_REAL")
-    private BigDecimal valorFreteUsaReal;
+    private String valorLanceDolar;
 
     @ColumnInfo(name = "PESO_LOTE_KG")
-    private Double pesoLoteKg;
-
+    private String pesoLoteKg;
 
     @ColumnInfo(name = "ORDEM_COMPRA")
     private String ordemCompra;
 
     @ColumnInfo(name = "DATA_ORDEM_COMPRA")
-    private Date dataOrdemCompra;
+    private String dataOrdemCompra;
 
     @ColumnInfo(name = "STATUS_ORDEM_COMPRA")
     private String statusOrdemCompra;
 
-    @ColumnInfo(name = "NOME_FORNECEDOR")
-    private String nomeFornecedor;
+    @ColumnInfo(name = "FORNECEDOR")
+    private String fornecedor;
 
-    @TypeConverters(Converters.class)
     @ColumnInfo(name = "VALOR_COMISSAO_FORNECEDOR_DOLAR")
-    private BigDecimal valorComissaoFornecedorDolar;
+    private String valorComissaoFornecedorDolar;
 
-    @TypeConverters(Converters.class)
-    @ColumnInfo(name = "VALOR_COMISSAO_FORNECEDOR_REAL")
-    private BigDecimal valorComissaoFornecedorReal;
-
-    @TypeConverters(Converters.class)
     @ColumnInfo(name = "VALOR_FRETE_FORNECEDOR_DOLAR")
-    private BigDecimal valorFreteFornecedorDolar;
+    private String valorFreteFornecedorDolar;
 
-    @TypeConverters(Converters.class)
-    @ColumnInfo(name = "VALOR_FRETE_FORNECEDOR_REAL")
-    private BigDecimal valorFreteFornecedorReal;
-
-    @TypeConverters(Converters.class)
     @ColumnInfo(name = "VALOR_TAXA_CAMBIO_DOLAR")
-    private BigDecimal valorTaxaCambioDolar;
+    private String valorTaxaCambioDolar;
 
-    @TypeConverters(Converters.class)
-    @ColumnInfo(name = "VALOR_TAXA_CAMBIO_REAL")
-    private BigDecimal valorTaxaCambioReal;
-
-    @TypeConverters(Converters.class)
     @ColumnInfo(name = "VALOR_FRETE_TRANSPORTADORA")
-    private BigDecimal valorFreteTransportadora;
+    private String valorFreteTransportadora;
 
     @NonNull
-    @TypeConverters(Converters.class)
     @ColumnInfo(name = "VALOR_VENDA_UNIDADE")
-    private BigDecimal valorVendaUnidade;
+    private String valorVendaUnidade;
 
-    @TypeConverters(Converters.class)
     @ColumnInfo(name = "VALOR_COMISSAO_REVENDEDOR_UNIDADE")
-    private BigDecimal valorComissaoRevendedorUnidade;
+    private String valorComissaoRevendedorUnidade;
 
-    @TypeConverters(Converters.class)
     @ColumnInfo(name = "VALOR_FRETE_REVENDEDOR_UNIDADE")
-    private BigDecimal valorFreteRevendedorUnidade;
+    private String valorFreteRevendedorUnidade;
 
-    @NonNull
-    @TypeConverters(Converters.class)
-    @ColumnInfo(name = "VALOR_CUSTO_TOTAL")
-    private BigDecimal valorCustoTotal;
+    public String getValorGastosExtras() {
+        return valorGastosExtras;
+    }
 
-    @NonNull
-    @TypeConverters(Converters.class)
-    @ColumnInfo(name = "VALOR_CUSTO_UNIDADE")
-    private BigDecimal valorCustoUnidade;
+    public void setValorGastosExtras(String valorGastosExtras) {
+        this.valorGastosExtras = valorGastosExtras;
+    }
 
-
-    @NonNull
-    @TypeConverters(Converters.class)
-    @ColumnInfo(name = "VALOR_LUCRO_TOTAL")
-    private BigDecimal valorLucroTotal;
-
-    @NonNull
-    @TypeConverters(Converters.class)
-    @ColumnInfo(name = "VALOR_LUCRO_UNIDADE")
-    private BigDecimal valorLucroUnidade;
-
-    @ColumnInfo(name = "PATH_FOTO_PRODUTO")
-    private String pathFotoProduto;
-
+    @ColumnInfo(name = "VALOR_GASTOS_EXTRAS")
+    private String valorGastosExtras;
 
     //GETTERS E SETTERS
 
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
 
-    public BigDecimal getValorCotacaoDolar() {
+    public String getValorCotacaoDolar() {
         return valorCotacaoDolar;
     }
 
-    public void setValorCotacaoDolar(BigDecimal valorCotacaoDolar) {
+    public void setValorCotacaoDolar(String valorCotacaoDolar) {
         this.valorCotacaoDolar = valorCotacaoDolar;
     }
 
-    public BigDecimal getBaseFreteDolar() {
+    public String getBaseFreteDolar() {
         return baseFreteDolar;
     }
 
-    public void setBaseFreteDolar(BigDecimal baseFreteDolar) {
+    public void setBaseFreteDolar(String baseFreteDolar) {
         this.baseFreteDolar = baseFreteDolar;
     }
 
-    public BigDecimal getBaseFreteReal() {
-        return baseFreteReal;
+    public String getProduto() {
+        return produto;
     }
 
-    public void setBaseFreteReal(BigDecimal baseFreteReal) {
-        this.baseFreteReal = baseFreteReal;
-    }
-
-    public String getNomeProduto() {
-        return nomeProduto;
-    }
-
-    public void setNomeProduto(String nomeProduto) {
-        this.nomeProduto = nomeProduto;
+    public void setProduto(String produto) {
+        this.produto = produto;
     }
 
     public String getCondicao() {
@@ -202,38 +138,21 @@ public class Leilao {
         this.qtd = qtd;
     }
 
-    public BigDecimal getValorLanceDolar() {
+    public String getValorLanceDolar() {
         return valorLanceDolar;
     }
 
-    public void setValorLanceDolar(BigDecimal valorLanceDolar) {
+    public void setValorLanceDolar(String valorLanceDolar) {
         this.valorLanceDolar = valorLanceDolar;
     }
 
-    public BigDecimal getValorLanceReal() {
-        return valorLanceReal;
-    }
-
-    public void setValorLanceReal(BigDecimal valorLanceReal) {
-        this.valorLanceReal = valorLanceReal;
-    }
-
-    public BigDecimal getValorFreteUsaReal() {
-        return valorFreteUsaReal;
-    }
-
-    public void setValorFreteUsaReal(BigDecimal valorFreteUsaReal) {
-        this.valorFreteUsaReal = valorFreteUsaReal;
-    }
-
-    public Double getPesoLoteKg() {
+    public String getPesoLoteKg() {
         return pesoLoteKg;
     }
 
-    public void setPesoLoteKg(Double pesoLoteKg) {
+    public void setPesoLoteKg(String pesoLoteKg) {
         this.pesoLoteKg = pesoLoteKg;
     }
-
 
     public String getOrdemCompra() {
         return ordemCompra;
@@ -243,11 +162,11 @@ public class Leilao {
         this.ordemCompra = ordemCompra;
     }
 
-    public Date getDataOrdemCompra() {
+    public String getDataOrdemCompra() {
         return dataOrdemCompra;
     }
 
-    public void setDataOrdemCompra(Date dataOrdemCompra) {
+    public void setDataOrdemCompra(String dataOrdemCompra) {
         this.dataOrdemCompra = dataOrdemCompra;
     }
 
@@ -259,124 +178,68 @@ public class Leilao {
         this.statusOrdemCompra = statusOrdemCompra;
     }
 
-    public String getNomeFornecedor() {
-        return nomeFornecedor;
+    public String getFornecedor() {
+        return fornecedor;
     }
 
-    public void setNomeFornecedor(String nomeFornecedor) {
-        this.nomeFornecedor = nomeFornecedor;
+    public void setFornecedor(String fornecedor) {
+        this.fornecedor = fornecedor;
     }
 
-    public BigDecimal getValorComissaoFornecedorDolar() {
+    public String getValorComissaoFornecedorDolar() {
         return valorComissaoFornecedorDolar;
     }
 
-    public void setValorComissaoFornecedorDolar(BigDecimal valorComissaoFornecedorDolar) {
+    public void setValorComissaoFornecedorDolar(String valorComissaoFornecedorDolar) {
         this.valorComissaoFornecedorDolar = valorComissaoFornecedorDolar;
     }
 
-    public BigDecimal getValorComissaoFornecedorReal() {
-        return valorComissaoFornecedorReal;
-    }
-
-    public void setValorComissaoFornecedorReal(BigDecimal valorComissaoFornecedorReal) {
-        this.valorComissaoFornecedorReal = valorComissaoFornecedorReal;
-    }
-
-    public BigDecimal getValorFreteFornecedorDolar() {
+    public String getValorFreteFornecedorDolar() {
         return valorFreteFornecedorDolar;
     }
 
-    public void setValorFreteFornecedorDolar(BigDecimal valorFreteFornecedorDolar) {
+    public void setValorFreteFornecedorDolar(String valorFreteFornecedorDolar) {
         this.valorFreteFornecedorDolar = valorFreteFornecedorDolar;
     }
 
-    public BigDecimal getValorFreteFornecedorReal() {
-        return valorFreteFornecedorReal;
-    }
-
-    public void setValorFreteFornecedorReal(BigDecimal valorFreteFornecedorReal) {
-        this.valorFreteFornecedorReal = valorFreteFornecedorReal;
-    }
-
-    public BigDecimal getValorTaxaCambioDolar() {
+    public String getValorTaxaCambioDolar() {
         return valorTaxaCambioDolar;
     }
 
-    public void setValorTaxaCambioDolar(BigDecimal valorTaxaCambioDolar) {
+    public void setValorTaxaCambioDolar(String valorTaxaCambioDolar) {
         this.valorTaxaCambioDolar = valorTaxaCambioDolar;
     }
 
-    public BigDecimal getValorTaxaCambioReal() {
-        return valorTaxaCambioReal;
-    }
-
-    public void setValorTaxaCambioReal(BigDecimal valorTaxaCambioReal) {
-        this.valorTaxaCambioReal = valorTaxaCambioReal;
-    }
-
-    public BigDecimal getValorFreteTransportadora() {
+    public String getValorFreteTransportadora() {
         return valorFreteTransportadora;
     }
 
-    public void setValorFreteTransportadora(BigDecimal valorFreteTransportadora) {
+    public void setValorFreteTransportadora(String valorFreteTransportadora) {
         this.valorFreteTransportadora = valorFreteTransportadora;
     }
 
-    public BigDecimal getValorVendaUnidade() {
+    public String getValorVendaUnidade() {
         return valorVendaUnidade;
     }
 
-    public void setValorVendaUnidade(BigDecimal valorVendaUnidade) {
+    public void setValorVendaUnidade(String valorVendaUnidade) {
         this.valorVendaUnidade = valorVendaUnidade;
     }
 
-    public BigDecimal getValorComissaoRevendedorUnidade() {
+    public String getValorComissaoRevendedorUnidade() {
         return valorComissaoRevendedorUnidade;
     }
 
-    public void setValorComissaoRevendedorUnidade(BigDecimal valorComissaoRevendedorUnidade) {
+    public void setValorComissaoRevendedorUnidade(String valorComissaoRevendedorUnidade) {
         this.valorComissaoRevendedorUnidade = valorComissaoRevendedorUnidade;
     }
 
-    public BigDecimal getValorFreteRevendedorUnidade() {
+    public String getValorFreteRevendedorUnidade() {
         return valorFreteRevendedorUnidade;
     }
 
-    public void setValorFreteRevendedorUnidade(BigDecimal valorFreteRevendedorUnidade) {
+    public void setValorFreteRevendedorUnidade(String valorFreteRevendedorUnidade) {
         this.valorFreteRevendedorUnidade = valorFreteRevendedorUnidade;
-    }
-
-    public BigDecimal getValorCustoTotal() {
-        return valorCustoTotal;
-    }
-
-    public void setValorCustoTotal(BigDecimal valorCustoTotal) {
-        this.valorCustoTotal = valorCustoTotal;
-    }
-
-    public BigDecimal getValorCustoUnidade() {
-        return valorCustoUnidade;
-    }
-
-    public void setValorCustoUnidade(BigDecimal valorCustoUnidade) {
-        this.valorCustoUnidade = valorCustoUnidade;
-    }
-
-    public BigDecimal getValorLucroTotal() {
-        return valorLucroTotal;
-    }
-
-    public void setValorLucroTotal(BigDecimal valorLucroTotal) {
-        this.valorLucroTotal = valorLucroTotal;
-    }
-
-    public BigDecimal getValorLucroUnidade() {
-        return valorLucroUnidade;
-    }
-
-    public void setValorLucroUnidade(BigDecimal valorLucroUnidade) {
-        this.valorLucroUnidade = valorLucroUnidade;
     }
 
     public String getPathFotoProduto() {
@@ -386,5 +249,4 @@ public class Leilao {
     public void setPathFotoProduto(String pathFotoProduto) {
         this.pathFotoProduto = pathFotoProduto;
     }
-
 }

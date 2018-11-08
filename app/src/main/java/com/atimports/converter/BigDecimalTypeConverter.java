@@ -4,19 +4,20 @@ import android.arch.persistence.room.TypeConverter;
 
 import java.math.BigDecimal;
 
-public class Converters {
+public class BigDecimalTypeConverter {
 
     @TypeConverter
-    public BigDecimal fromString(String value) {
+    public static BigDecimal fromString(String value) {
         return value == null ? null : new BigDecimal(value);
     }
 
     @TypeConverter
-    public Double amountToString(BigDecimal bigDecimal) {
+    public static Double toDouble(BigDecimal bigDecimal) {
         if (bigDecimal == null) {
             return null;
         } else {
             return bigDecimal.doubleValue();
         }
     }
+
 }

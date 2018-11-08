@@ -91,12 +91,12 @@ public class MainActivity extends AppCompatActivity {
                                                                 for(int i = 0; i<20; i++){
                                                                     Leilao leilao = new Leilao();
                                                                     leilao.setId(Long.valueOf(i));
-                                                                    leilao.setNomeProduto("iphone 6");
-                                                                    leilao.setCondicao("novo");
-                                                                    leilao.setQtd(3);
-                                                                    leilao.setValorCotacaoDolar(3.89);
-                                                                    leilao.setValorFreteUsaDolar(30.0);
-                                                                    leilao.setValorFreteUsaReal(117.0);
+//                                                                    leilao.setNomeProduto("iphone 6");
+//                                                                    leilao.setCondicao("novo");
+//                                                                    leilao.setQtd(3);
+//                                                                    leilao.setValorCotacaoDolar(3.89);
+//                                                                    leilao.setValorFreteUsaDolar(30.0);
+//                                                                    leilao.setValorFreteUsaReal(117.0);
                                                                     leiloes.add(leilao);
                                                                 }
                                                                 //TODO RETIRAR FIM

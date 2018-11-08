@@ -412,30 +412,15 @@ public class AddActivity extends AppCompatActivity {
     }
 
     private void calcularFreteUsaBrasil(){
-        String tipoMedidaSelecionada = spnMedida.getSelectedItem().toString();
-        String medidaKG;
 
-        if(tipoMedidaSelecionada.equals(getString(R.string.medida_kg))){
-            medidaKG = etMedidaInicial.getText().toString();
+        try{
+            BigDecimal valorFreteRealCalculado = Utils.retornarValorMonetario(etBaseFreteRealCalculado.getText().toString(), Constantes.LOCALE_BRASIL);
+            BigDecimal valorMedidaKG = retornarMedidaPesoKG();
+            BigDecimal valorFreteUsaBrasil  = valorFreteRealCalculado.multiply(valorMedidaKG).setScale(2,BigDecimal.ROUND_HALF_EVEN);
+            tvFreteUsaBrasil.setText(Utils.retornaValorMontarioComMascara(valorFreteUsaBrasil, Constantes.LOCALE_BRASIL));
+
         }
-        else{
-            medidaKG = etMedidaFinal.getText().toString();
-        }
-
-        if(!Utils.isBlank(medidaKG) && !Utils.isBlank(etBaseFreteRealCalculado.getText().toString())){
-
-            try{
-                BigDecimal valorFreteRealCalculado = Utils.retornarValorMonetario(etBaseFreteRealCalculado.getText().toString(), Constantes.LOCALE_BRASIL);
-                BigDecimal valorMedidaKG = new BigDecimal(medidaKG.replace(Constantes.VIRGULA, Constantes.PONTO));
-                BigDecimal valorFreteUsaBrasil  = valorFreteRealCalculado.multiply(valorMedidaKG).setScale(2,BigDecimal.ROUND_HALF_EVEN);
-                tvFreteUsaBrasil.setText(Utils.retornaValorMontarioComMascara(valorFreteUsaBrasil, Constantes.LOCALE_BRASIL));
-
-            }
-            catch(Exception e){
-                tvFreteUsaBrasil.setText(Constantes.VAZIO);
-            }
-        }
-        else{
+        catch(Exception e){
             tvFreteUsaBrasil.setText(Constantes.VAZIO);
         }
     }
@@ -801,48 +786,7 @@ public class AddActivity extends AppCompatActivity {
 
                 if(validarCampos()){
 
-                    Leilao leilao = new Leilao();
-                    leilao.setValorCotacaoDolar(Utils.retornarValorMonetario(etCotacaoDolar.getText().toString(),Constantes.LOCALE_BRASIL));
-                    leilao.setBaseFreteDolar(Utils.retornarValorMonetario(etBaseFreteDolar.getText().toString(),Constantes.LOCALE_USA));
-                    leilao.setBaseFreteReal(Utils.retornarValorMonetario(etBaseFreteRealCalculado.getText().toString(),Constantes.LOCALE_BRASIL));
-                    leilao.setNomeProduto(etProduto.getText().toString());
-                    leilao.setCondicao(spnCondicoes.getSelectedItem().toString());
-                    leilao.setQtd(Integer.valueOf(spnQtd.getSelectedItem().toString()));
-                    leilao.setValorLanceDolar(Utils.retornarValorMonetario(etValorLanceDolar.getText().toString(),Constantes.LOCALE_USA));
-                    leilao.setValorLanceReal(Utils.retornarValorMonetario(etValorLanceRealCalculado.getText().toString(),Constantes.LOCALE_BRASIL));
-
-
-                    //TODO VERIFICAR SE O VALOR DO PESO É VALIDO E RETIRAR VIRGULA INVALIDA
-                    String tipoMedidaSelecionada = spnMedida.getSelectedItem().toString();
-                    String medidaKG;
-
-                    if(tipoMedidaSelecionada.equals(getString(R.string.medida_kg))){
-                        medidaKG = etMedidaInicial.getText().toString();
-                    }
-                    else{
-                        medidaKG = etMedidaFinal.getText().toString();
-                    }
-
-                    leilao.setPesoLoteKg(Double.parseDouble(medidaKG.replace(",", ".")));
-                    leilao.setValorFreteUsaReal(Utils.retornarValorMonetario(tvFreteUsaBrasil.getText().toString(),Constantes.LOCALE_BRASIL));
-                    leilao.setOrdemCompra(Utils.isBlank(etOrdemCompra.getText().toString())? null : etOrdemCompra.getText().toString() );
-
-                    //TODO TRATAR A DATA DA ORDEM DE COMPRA
-
-                    //TODO TRATAR O STATUS DA ORDEM DE COMPRA
-                    leilao.setNomeFornecedor(Utils.isBlank(etFornecedor.getText().toString())? null : etFornecedor.getText().toString() );
-
-
-
-                    if(Utils.isValorParaCalculoValido(etValorComissaoFornecedorDolar.getText().toString())){
-
-                    }
-                    else{
-
-                    }
-
-
-
+                    Leilao leilao = prepararDadosParaInclusao();
 
 
 
@@ -857,12 +801,101 @@ public class AddActivity extends AppCompatActivity {
     }
 
 
+
+    private Leilao prepararDadosParaInclusao(){
+
+        Leilao leilao = new Leilao();
+
+        //TODO SALVAR PATH IMAGEM
+        String pathFotoProduto = "";
+        leilao.setPathFotoProduto(pathFotoProduto);
+
+
+        leilao.setValorCotacaoDolar(Utils.retornarValorMonetario(etCotacaoDolar.getText().toString(),Constantes.LOCALE_BRASIL).toString());
+
+
+        leilao.setBaseFreteDolar(!Utils.isValorParaCalculoValido(etBaseFreteDolar.getText().toString())? null :
+                                  Utils.retornarValorMonetario(etBaseFreteDolar.getText().toString(),Constantes.LOCALE_USA).toString());
+
+        leilao.setProduto(etProduto.getText().toString());
+        leilao.setCondicao(spnCondicoes.getSelectedItem().toString());
+        leilao.setQtd(Integer.valueOf(spnQtd.getSelectedItem().toString()));
+
+        leilao.setValorLanceDolar(Utils.retornarValorMonetario(etValorLanceDolar.getText().toString(),Constantes.LOCALE_USA).toString());
+
+        BigDecimal valorMedidaKg = retornarMedidaPesoKG();
+        leilao.setPesoLoteKg(valorMedidaKg.compareTo(BigDecimal.ZERO) == 0 ? null : valorMedidaKg.toString());
+
+        leilao.setOrdemCompra(Utils.isBlank(etOrdemCompra.getText().toString()) ? null : etOrdemCompra.getText().toString());
+        leilao.setDataOrdemCompra(Utils.isBlank(etDataOrdem.getText().toString()) ? null : etDataOrdem.getText().toString());
+        leilao.setStatusOrdemCompra(spnStatusOrdem.getSelectedItem().toString().equals(Constantes.SELECIONE) ? null : spnStatusOrdem.getSelectedItem().toString());
+
+        leilao.setFornecedor(Utils.isBlank(etFornecedor.getText().toString()) ? null : etFornecedor.getText().toString() );
+
+
+        leilao.setValorComissaoFornecedorDolar(!Utils.isValorParaCalculoValido(etValorComissaoFornecedorDolar.getText().toString())? null :
+                                                Utils.retornarValorMonetario(etValorComissaoFornecedorDolar.getText().toString(),Constantes.LOCALE_USA).toString());
+
+        leilao.setValorFreteFornecedorDolar(!Utils.isValorParaCalculoValido(etValorFreteFornecedorDolar.getText().toString())? null :
+                                             Utils.retornarValorMonetario(etValorFreteFornecedorDolar.getText().toString(),Constantes.LOCALE_USA).toString());
+
+
+        leilao.setValorTaxaCambioDolar(!Utils.isValorParaCalculoValido(etValorTaxaCambioReal.getText().toString())? null :
+                                        Utils.retornarValorMonetario(etValorTaxaCambioReal.getText().toString(),Constantes.LOCALE_BRASIL).toString());
+
+        leilao.setValorFreteTransportadora(!Utils.isValorParaCalculoValido(etValorFreteTransportadora.getText().toString())? null :
+                                            Utils.retornarValorMonetario(etValorFreteTransportadora.getText().toString(),Constantes.LOCALE_BRASIL).toString());
+
+
+        leilao.setValorVendaUnidade(Utils.retornarValorMonetario(etValorVendaUnidade.getText().toString(),Constantes.LOCALE_BRASIL).toString());
+
+        leilao.setValorComissaoRevendedorUnidade(!Utils.isValorParaCalculoValido(etComissaoRevendedor.getText().toString())? null :
+                                                  Utils.retornarValorMonetario(etComissaoRevendedor.getText().toString(),Constantes.LOCALE_BRASIL).toString());
+
+        leilao.setValorFreteRevendedorUnidade(!Utils.isValorParaCalculoValido(etValorFreteRevendedor.getText().toString())? null :
+                                               Utils.retornarValorMonetario(etValorFreteRevendedor.getText().toString(),Constantes.LOCALE_BRASIL).toString());
+
+        leilao.setValorGastosExtras(!Utils.isValorParaCalculoValido(etGastosExtras.getText().toString())? null :
+                                     Utils.retornarValorMonetario(etGastosExtras.getText().toString(),Constantes.LOCALE_BRASIL).toString());
+
+        return leilao;
+    }
+
+
+    private BigDecimal retornarMedidaPesoKG(){
+
+        String tipoMedidaSelecionada = spnMedida.getSelectedItem().toString();
+        String medidaKG;
+
+        if(tipoMedidaSelecionada.equals(getString(R.string.medida_kg))){
+            medidaKG = etMedidaInicial.getText().toString();
+        }
+        else{
+            medidaKG = etMedidaFinal.getText().toString();
+        }
+
+        if(Utils.isBlank(medidaKG)){
+            return BigDecimal.ZERO;
+        }
+
+        medidaKG = medidaKG.replace(Constantes.VIRGULA, Constantes.PONTO);
+
+        if(medidaKG.endsWith(Constantes.PONTO)){
+            medidaKG = medidaKG.replace(Constantes.VIRGULA, Constantes.VAZIO);
+        }
+
+        return new BigDecimal(medidaKG).setScale(1, BigDecimal.ROUND_HALF_EVEN);
+
+    }
+
+
+
+
     private boolean validarCampos(){
 
         boolean retorno = true;
 
         retorno = FieldValidator.validarCampoMonetarioObrigatorio( tvCotacaoDolar, etCotacaoDolar, errorMsgCotacaoDolar);
-        retorno = FieldValidator.validarCampoMonetarioObrigatorio( tvBaseFreteDolar, etBaseFreteDolar, errorMsgFreteDolar);
         retorno = FieldValidator.validarCampoObrigatorio( tvProduto, etProduto, errorMsgProduto);
         retorno = FieldValidator.validarCampoObrigatorio( tvCondicoes, spnCondicoes, errorMsgCondicoes);
         retorno = FieldValidator.validarCampoObrigatorio( tvQtd, spnQtd, errorMsgQtd);

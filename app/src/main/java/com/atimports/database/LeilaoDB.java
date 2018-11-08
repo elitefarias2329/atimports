@@ -4,8 +4,11 @@ package com.atimports.database;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
+import com.atimports.converter.BigDecimalTypeConverter;
+import com.atimports.converter.DateTypeConverter;
 import com.atimports.dao.LeilaoDAO;
 import com.atimports.model.Leilao;
 
