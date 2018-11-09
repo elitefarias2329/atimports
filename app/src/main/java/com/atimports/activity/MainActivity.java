@@ -2,19 +2,18 @@ package com.atimports.activity;
 
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.atimports.R;
-import com.atimports.business.LeilaoBusinessImpl;
-import com.atimports.dao.LeilaoDAO;
-import com.atimports.database.LeilaoDB;
-import com.atimports.model.Leilao;
+import com.atimports.business.LoteBusinessImpl;
+import com.atimports.database.ATImportsDataBase;
+import com.atimports.model.Lote;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +30,11 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private ListView lvLeiloes;
 
-    List<Leilao> listaLeiloes;
+    List<Lote> listaLeiloes;
     ArrayAdapter adapter;
 
     private CompositeDisposable compositeDisposable;
-    private LeilaoBusinessImpl leilaoBusiness;
+    private LoteBusinessImpl loteBusiness;
 
 
     @Override
@@ -57,9 +56,8 @@ public class MainActivity extends AppCompatActivity {
         lvLeiloes.setAdapter(adapter);
 
         //DATABASE
-        LeilaoDB leilaoDB = LeilaoDB.getInstance(this);
-
-        leilaoBusiness = LeilaoBusinessImpl.getInstance(leilaoDB.leilaoDAO());
+        ATImportsDataBase aTImportsDataBase = ATImportsDataBase.getInstance(this);
+        loteBusiness = LoteBusinessImpl.getInstance(aTImportsDataBase.loteDAO());
 
         popularListViewLeiloes();
 
@@ -78,36 +76,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void popularListViewLeiloes(){
 
-        Disposable disposable = leilaoBusiness.getAllLeilao()
+        Disposable disposable = loteBusiness.getAllLote()
                                               .observeOn(AndroidSchedulers.mainThread())
                                               .subscribeOn(Schedulers.io())
-
                                               .subscribe(
-                                                        new Consumer<List<Leilao>>() {
+                                                      new Consumer<List<Lote>>() {
                                                             @Override
-                                                            public void accept(List<Leilao> leiloes) throws Exception {
-
-                                                                //TODO RETIRAR
-                                                                for(int i = 0; i<20; i++){
-                                                                    Leilao leilao = new Leilao();
-                                                                    leilao.setId(Long.valueOf(i));
-//                                                                    leilao.setNomeProduto("iphone 6");
-//                                                                    leilao.setCondicao("novo");
-//                                                                    leilao.setQtd(3);
-//                                                                    leilao.setValorCotacaoDolar(3.89);
-//                                                                    leilao.setValorFreteUsaDolar(30.0);
-//                                                                    leilao.setValorFreteUsaReal(117.0);
-                                                                    leiloes.add(leilao);
-                                                                }
-                                                                //TODO RETIRAR FIM
+                                                            public void accept(List<Lote> leiloes) throws Exception {
 
                                                                 listaLeiloes.clear();
                                                                 listaLeiloes.addAll(leiloes);
                                                                 adapter.notifyDataSetChanged();
-
                                                             }
                                                         },
-
                                                         new Consumer<Throwable>() {
                                                             @Override
                                                             public void accept(Throwable throwable) throws Exception {

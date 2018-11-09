@@ -20,8 +20,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atimports.R;
+import com.atimports.business.LoteBusinessImpl;
 import com.atimports.constantes.Constantes;
-import com.atimports.model.Leilao;
+import com.atimports.database.ATImportsDataBase;
+import com.atimports.model.Lote;
 import com.atimports.utils.Utils;
 import com.atimports.validator.FieldValidator;
 import com.bumptech.glide.Glide;
@@ -31,6 +33,16 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class AddActivity extends AppCompatActivity {
 
@@ -98,6 +110,11 @@ public class AddActivity extends AppCompatActivity {
     ImageView ivFotoProduto;
 
     Button btSalvar;
+
+
+    //DATABASE
+    private LoteBusinessImpl loteBusiness;
+    private ATImportsDataBase aTImportsDataBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -275,6 +292,10 @@ public class AddActivity extends AppCompatActivity {
         ivFotoProduto = findViewById(R.id.iv_foto_produto);
 
         btSalvar = findViewById(R.id.bt_salvar);
+
+        //DATABASE
+        aTImportsDataBase = ATImportsDataBase.getInstance(this);
+        loteBusiness = LoteBusinessImpl.getInstance(aTImportsDataBase.loteDAO());
     }
 
 
@@ -786,79 +807,103 @@ public class AddActivity extends AppCompatActivity {
 
                 if(validarCampos()){
 
-                    Leilao leilao = prepararDadosParaInclusao();
+                    try {
+
+                        Observable.create(
+
+                                new ObservableOnSubscribe<Object>() {
+
+                                    @Override
+                                    public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+
+                                        try {
+                                            Lote lote = prepararDadosParaInclusao();
+                                            loteBusiness.insertLote(lote);
+                                            emitter.onComplete();
+                                        }
+                                        catch (Exception e) {
+                                            emitter.onError(e);
+                                        }
+                                    }
+                                }).observeOn(AndroidSchedulers.mainThread())
+                                .subscribeOn(Schedulers.io())
+                                .subscribe();
 
 
-
+                        Toast.makeText(AddActivity.this, "Lote Salvo com sucesso.", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(AddActivity.this, MainActivity.class));
+                    }
+                    catch (Exception e){
+                        Toast.makeText(AddActivity.this, "Problema so salvar o lote." + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
 
                 }
                 else{
                     Toast.makeText(AddActivity.this, "Verifique os campos obrigatórios.", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
     }
 
 
 
-    private Leilao prepararDadosParaInclusao(){
+    private Lote prepararDadosParaInclusao(){
 
-        Leilao leilao = new Leilao();
+        Lote lote = new Lote();
 
         //TODO SALVAR PATH IMAGEM
         String pathFotoProduto = "";
-        leilao.setPathFotoProduto(pathFotoProduto);
+        lote.setPathFotoProduto(pathFotoProduto);
 
 
-        leilao.setValorCotacaoDolar(Utils.retornarValorMonetario(etCotacaoDolar.getText().toString(),Constantes.LOCALE_BRASIL).toString());
+        lote.setValorCotacaoDolar(Utils.retornarValorMonetario(etCotacaoDolar.getText().toString(),Constantes.LOCALE_BRASIL).toString());
 
 
-        leilao.setBaseFreteDolar(!Utils.isValorParaCalculoValido(etBaseFreteDolar.getText().toString())? null :
+        lote.setBaseFreteDolar(!Utils.isValorParaCalculoValido(etBaseFreteDolar.getText().toString())? null :
                                   Utils.retornarValorMonetario(etBaseFreteDolar.getText().toString(),Constantes.LOCALE_USA).toString());
 
-        leilao.setProduto(etProduto.getText().toString());
-        leilao.setCondicao(spnCondicoes.getSelectedItem().toString());
-        leilao.setQtd(Integer.valueOf(spnQtd.getSelectedItem().toString()));
+        lote.setProduto(etProduto.getText().toString());
+        lote.setCondicao(spnCondicoes.getSelectedItem().toString());
+        lote.setQtd(Integer.valueOf(spnQtd.getSelectedItem().toString()));
 
-        leilao.setValorLanceDolar(Utils.retornarValorMonetario(etValorLanceDolar.getText().toString(),Constantes.LOCALE_USA).toString());
+        lote.setValorLanceDolar(Utils.retornarValorMonetario(etValorLanceDolar.getText().toString(),Constantes.LOCALE_USA).toString());
 
         BigDecimal valorMedidaKg = retornarMedidaPesoKG();
-        leilao.setPesoLoteKg(valorMedidaKg.compareTo(BigDecimal.ZERO) == 0 ? null : valorMedidaKg.toString());
+        lote.setPesoLoteKg(valorMedidaKg.compareTo(BigDecimal.ZERO) == 0 ? null : valorMedidaKg.toString());
 
-        leilao.setOrdemCompra(Utils.isBlank(etOrdemCompra.getText().toString()) ? null : etOrdemCompra.getText().toString());
-        leilao.setDataOrdemCompra(Utils.isBlank(etDataOrdem.getText().toString()) ? null : etDataOrdem.getText().toString());
-        leilao.setStatusOrdemCompra(spnStatusOrdem.getSelectedItem().toString().equals(Constantes.SELECIONE) ? null : spnStatusOrdem.getSelectedItem().toString());
+        lote.setOrdemCompra(Utils.isBlank(etOrdemCompra.getText().toString()) ? null : etOrdemCompra.getText().toString());
+        lote.setDataOrdemCompra(Utils.isBlank(etDataOrdem.getText().toString()) ? null : etDataOrdem.getText().toString());
+        lote.setStatusOrdemCompra(spnStatusOrdem.getSelectedItem().toString().equals(Constantes.SELECIONE) ? null : spnStatusOrdem.getSelectedItem().toString());
 
-        leilao.setFornecedor(Utils.isBlank(etFornecedor.getText().toString()) ? null : etFornecedor.getText().toString() );
+        lote.setFornecedor(Utils.isBlank(etFornecedor.getText().toString()) ? null : etFornecedor.getText().toString() );
 
 
-        leilao.setValorComissaoFornecedorDolar(!Utils.isValorParaCalculoValido(etValorComissaoFornecedorDolar.getText().toString())? null :
+        lote.setValorComissaoFornecedorDolar(!Utils.isValorParaCalculoValido(etValorComissaoFornecedorDolar.getText().toString())? null :
                                                 Utils.retornarValorMonetario(etValorComissaoFornecedorDolar.getText().toString(),Constantes.LOCALE_USA).toString());
 
-        leilao.setValorFreteFornecedorDolar(!Utils.isValorParaCalculoValido(etValorFreteFornecedorDolar.getText().toString())? null :
+        lote.setValorFreteFornecedorDolar(!Utils.isValorParaCalculoValido(etValorFreteFornecedorDolar.getText().toString())? null :
                                              Utils.retornarValorMonetario(etValorFreteFornecedorDolar.getText().toString(),Constantes.LOCALE_USA).toString());
 
 
-        leilao.setValorTaxaCambioDolar(!Utils.isValorParaCalculoValido(etValorTaxaCambioReal.getText().toString())? null :
+        lote.setValorTaxaCambioDolar(!Utils.isValorParaCalculoValido(etValorTaxaCambioReal.getText().toString())? null :
                                         Utils.retornarValorMonetario(etValorTaxaCambioReal.getText().toString(),Constantes.LOCALE_BRASIL).toString());
 
-        leilao.setValorFreteTransportadora(!Utils.isValorParaCalculoValido(etValorFreteTransportadora.getText().toString())? null :
+        lote.setValorFreteTransportadora(!Utils.isValorParaCalculoValido(etValorFreteTransportadora.getText().toString())? null :
                                             Utils.retornarValorMonetario(etValorFreteTransportadora.getText().toString(),Constantes.LOCALE_BRASIL).toString());
 
 
-        leilao.setValorVendaUnidade(Utils.retornarValorMonetario(etValorVendaUnidade.getText().toString(),Constantes.LOCALE_BRASIL).toString());
+        lote.setValorVendaUnidade(Utils.retornarValorMonetario(etValorVendaUnidade.getText().toString(),Constantes.LOCALE_BRASIL).toString());
 
-        leilao.setValorComissaoRevendedorUnidade(!Utils.isValorParaCalculoValido(etComissaoRevendedor.getText().toString())? null :
+        lote.setValorComissaoRevendedorUnidade(!Utils.isValorParaCalculoValido(etComissaoRevendedor.getText().toString())? null :
                                                   Utils.retornarValorMonetario(etComissaoRevendedor.getText().toString(),Constantes.LOCALE_BRASIL).toString());
 
-        leilao.setValorFreteRevendedorUnidade(!Utils.isValorParaCalculoValido(etValorFreteRevendedor.getText().toString())? null :
+        lote.setValorFreteRevendedorUnidade(!Utils.isValorParaCalculoValido(etValorFreteRevendedor.getText().toString())? null :
                                                Utils.retornarValorMonetario(etValorFreteRevendedor.getText().toString(),Constantes.LOCALE_BRASIL).toString());
 
-        leilao.setValorGastosExtras(!Utils.isValorParaCalculoValido(etGastosExtras.getText().toString())? null :
+        lote.setValorGastosExtras(!Utils.isValorParaCalculoValido(etGastosExtras.getText().toString())? null :
                                      Utils.retornarValorMonetario(etGastosExtras.getText().toString(),Constantes.LOCALE_BRASIL).toString());
 
-        return leilao;
+        return lote;
     }
 
 

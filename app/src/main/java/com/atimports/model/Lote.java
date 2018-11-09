@@ -2,12 +2,13 @@ package com.atimports.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import io.reactivex.annotations.NonNull;
 
-@Entity(tableName = "LEILAO")
-public class Leilao {
+@Entity(tableName = "LOTE")
+public class Lote {
 
     @NonNull
     @PrimaryKey(autoGenerate = true)
@@ -22,7 +23,7 @@ public class Leilao {
     private String valorCotacaoDolar;
 
     @NonNull
-    @ColumnInfo(name = "BASE_FRETE_DOLAR")
+    @ColumnInfo(name = "VALOR_BASE_FRETE_DOLAR")
     private String baseFreteDolar;
 
     @NonNull
@@ -78,16 +79,16 @@ public class Leilao {
     @ColumnInfo(name = "VALOR_FRETE_REVENDEDOR_UNIDADE")
     private String valorFreteRevendedorUnidade;
 
-    public String getValorGastosExtras() {
-        return valorGastosExtras;
-    }
-
-    public void setValorGastosExtras(String valorGastosExtras) {
-        this.valorGastosExtras = valorGastosExtras;
-    }
-
     @ColumnInfo(name = "VALOR_GASTOS_EXTRAS")
     private String valorGastosExtras;
+
+
+
+
+    public String toString(){
+        return "Produto: " + this.produto + "\n" + "Quantidade: " + this.qtd + "\n" + "Condição: " + this.condicao;
+    }
+
 
     //GETTERS E SETTERS
 
@@ -248,5 +249,13 @@ public class Leilao {
 
     public void setPathFotoProduto(String pathFotoProduto) {
         this.pathFotoProduto = pathFotoProduto;
+    }
+
+    public String getValorGastosExtras() {
+        return valorGastosExtras;
+    }
+
+    public void setValorGastosExtras(String valorGastosExtras) {
+        this.valorGastosExtras = valorGastosExtras;
     }
 }
