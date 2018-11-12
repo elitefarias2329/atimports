@@ -21,9 +21,6 @@ public abstract class ATImportsDataBase extends RoomDatabase {
     public abstract LoteDAO loteDAO();
     private static ATImportsDataBase dbInstance;
 
-
-
-
     public static ATImportsDataBase getInstance(Context context){
 
         if(null == dbInstance){

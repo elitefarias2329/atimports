@@ -83,13 +83,6 @@ public class Lote {
     private String valorGastosExtras;
 
 
-
-
-    public String toString(){
-        return "Produto: " + this.produto + "\n" + "Quantidade: " + this.qtd + "\n" + "Condição: " + this.condicao;
-    }
-
-
     //GETTERS E SETTERS
 
     public Long getId() {

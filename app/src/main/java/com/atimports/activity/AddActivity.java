@@ -1,10 +1,16 @@
 package com.atimports.activity;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -20,10 +26,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atimports.R;
-import com.atimports.business.LoteBusinessImpl;
 import com.atimports.constantes.Constantes;
-import com.atimports.database.ATImportsDataBase;
 import com.atimports.model.Lote;
+import com.atimports.repository.LoteRepository;
+import com.atimports.utils.PhotoUtils;
 import com.atimports.utils.Utils;
 import com.atimports.validator.FieldValidator;
 import com.bumptech.glide.Glide;
@@ -37,11 +43,7 @@ import java.util.Locale;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class AddActivity extends AppCompatActivity {
@@ -111,10 +113,7 @@ public class AddActivity extends AppCompatActivity {
 
     Button btSalvar;
 
-
-    //DATABASE
-    private LoteBusinessImpl loteBusiness;
-    private ATImportsDataBase aTImportsDataBase;
+    private LoteRepository loteRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,8 +121,8 @@ public class AddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
+        concederPermissoes();
         inicializarViews();
-
         criarImagePicker();
 
         aplicarMascaraMoeda(etCotacaoDolar, Constantes.LOCALE_BRASIL);
@@ -293,9 +292,22 @@ public class AddActivity extends AppCompatActivity {
 
         btSalvar = findViewById(R.id.bt_salvar);
 
-        //DATABASE
-        aTImportsDataBase = ATImportsDataBase.getInstance(this);
-        loteBusiness = LoteBusinessImpl.getInstance(aTImportsDataBase.loteDAO());
+    }
+
+
+    private void concederPermissoes(){
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0);
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+        }
     }
 
 
@@ -818,7 +830,9 @@ public class AddActivity extends AppCompatActivity {
 
                                         try {
                                             Lote lote = prepararDadosParaInclusao();
-                                            loteBusiness.insertLote(lote);
+                                            //DATABASE
+                                            loteRepository = LoteRepository.getInstance(AddActivity.this);
+                                            loteRepository.insertLote(lote);
                                             emitter.onComplete();
                                         }
                                         catch (Exception e) {
@@ -851,10 +865,9 @@ public class AddActivity extends AppCompatActivity {
 
         Lote lote = new Lote();
 
-        //TODO SALVAR PATH IMAGEM
-        String pathFotoProduto = "";
+        Bitmap bitmap = ((BitmapDrawable)ivFotoProduto.getDrawable()).getBitmap();
+        String pathFotoProduto  = PhotoUtils.saveImage(bitmap, AddActivity.this);
         lote.setPathFotoProduto(pathFotoProduto);
-
 
         lote.setValorCotacaoDolar(Utils.retornarValorMonetario(etCotacaoDolar.getText().toString(),Constantes.LOCALE_BRASIL).toString());
 

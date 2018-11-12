@@ -1,54 +1,55 @@
-package com.atimports.business;
+package com.atimports.repository;
 
+
+import android.content.Context;
 
 import com.atimports.dao.LoteDAO;
+import com.atimports.database.ATImportsDataBase;
 import com.atimports.model.Lote;
 
 import java.util.List;
 
 import io.reactivex.Flowable;
 
-public class LoteBusinessImpl implements LoteBusiness {
-
+public class LoteRepository{
 
     private LoteDAO loteDAO;
+    private static LoteRepository dsInstance;
 
-    private static LoteBusinessImpl dsInstance;
 
-    public LoteBusinessImpl(LoteDAO loteDAO) {
-
-        this.loteDAO = loteDAO;
+    public LoteRepository(Context context) {
+        this.loteDAO = ATImportsDataBase.getInstance(context).loteDAO();
     }
 
-    public static LoteBusinessImpl getInstance(LoteDAO loteDAO){
+    public static LoteRepository getInstance(Context context){
         if(null == dsInstance){
-            dsInstance = new LoteBusinessImpl(loteDAO);
+            dsInstance = new LoteRepository(context);
         }
         return dsInstance;
     }
 
-    @Override
     public Flowable<Lote> getLoteById(Integer id) {
+
         return loteDAO.getLoteById(id);
     }
 
-    @Override
     public Flowable<List<Lote>> getAllLote() {
+
         return loteDAO.getAllLote();
     }
 
-    @Override
     public void insertLote(Lote... lote) {
+
         loteDAO.insertLote(lote);
     }
 
-    @Override
     public void updateLote(Lote... lote) {
+
         loteDAO.updateLote(lote);
     }
 
-    @Override
     public void deleteLote(Lote... lote) {
+
         loteDAO.deleteLote(lote);
     }
 
