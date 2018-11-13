@@ -15,6 +15,7 @@ import com.atimports.activity.AddActivity;
 import com.atimports.activity.MainActivity;
 import com.atimports.model.Lote;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
@@ -48,10 +49,13 @@ public class LoteAdapter extends RecyclerView.Adapter{
 
         Lote lote = lotes.get(itemPosition);
 
+
+
         Glide.with(context)
              .load(lote.getPathFotoProduto())
-             .apply(new RequestOptions().override(holder.ivFotoProduto.getWidth(), holder.ivFotoProduto.getHeight()))
-             .into(holder.ivFotoProduto);
+             .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).dontAnimate())
+             .into(holder.ivFotoProduto)
+             .waitForLayout();
 
         holder.tvItemProduto.setText(lote.getProduto());
         holder.tvItemQuantidade.setText(String.valueOf(lote.getQtd()));

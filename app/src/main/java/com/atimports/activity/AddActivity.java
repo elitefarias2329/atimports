@@ -121,7 +121,6 @@ public class AddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
-        concederPermissoes();
         inicializarViews();
         criarImagePicker();
 
@@ -295,20 +294,7 @@ public class AddActivity extends AppCompatActivity {
     }
 
 
-    private void concederPermissoes(){
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0);
-        }
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-        }
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-        }
-    }
 
 
     public static void aplicarMascaraMoeda(final EditText campo, final Locale locale){
@@ -821,6 +807,9 @@ public class AddActivity extends AppCompatActivity {
 
                     try {
 
+                        Bitmap bitmap = ((BitmapDrawable)ivFotoProduto.getDrawable()).getBitmap();
+                        final String pathFotoProduto  = PhotoUtils.saveImage(bitmap, AddActivity.this);
+
                         Observable.create(
 
                                 new ObservableOnSubscribe<Object>() {
@@ -830,7 +819,7 @@ public class AddActivity extends AppCompatActivity {
 
                                         try {
                                             Lote lote = prepararDadosParaInclusao();
-                                            //DATABASE
+                                            lote.setPathFotoProduto(pathFotoProduto);
                                             loteRepository = LoteRepository.getInstance(AddActivity.this);
                                             loteRepository.insertLote(lote);
                                             emitter.onComplete();
@@ -844,7 +833,7 @@ public class AddActivity extends AppCompatActivity {
                                 .subscribe();
 
 
-                        Toast.makeText(AddActivity.this, "Lote Salvo com sucesso.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(AddActivity.this, "Lote Salvo com sucesso.", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(AddActivity.this, MainActivity.class));
                     }
                     catch (Exception e){
@@ -863,11 +852,9 @@ public class AddActivity extends AppCompatActivity {
 
     private Lote prepararDadosParaInclusao(){
 
+
         Lote lote = new Lote();
 
-        Bitmap bitmap = ((BitmapDrawable)ivFotoProduto.getDrawable()).getBitmap();
-        String pathFotoProduto  = PhotoUtils.saveImage(bitmap, AddActivity.this);
-        lote.setPathFotoProduto(pathFotoProduto);
 
         lote.setValorCotacaoDolar(Utils.retornarValorMonetario(etCotacaoDolar.getText().toString(),Constantes.LOCALE_BRASIL).toString());
 

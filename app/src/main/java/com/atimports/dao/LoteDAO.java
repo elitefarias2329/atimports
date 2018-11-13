@@ -23,7 +23,7 @@ public interface LoteDAO {
     @Query("SELECT * FROM Lote")
     Flowable<List<Lote>> getAllLote();
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     void insertLote(Lote... lote);
 
     @Update

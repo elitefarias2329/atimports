@@ -6,6 +6,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.atimports.R;
 import com.atimports.constantes.Constantes;
@@ -19,7 +20,7 @@ import java.util.Calendar;
 public abstract class PhotoUtils {
 
 
-    public static String saveImage(Bitmap myBitmap, Context context) {
+    public static String saveImage(Bitmap myBitmap, Context context) throws Exception{
 
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         myBitmap.compress(Bitmap.CompressFormat.PNG, 90, bytes);
@@ -30,7 +31,6 @@ public abstract class PhotoUtils {
             wallpaperDirectory.mkdirs();
         }
 
-        try {
             File f = new File(wallpaperDirectory, Calendar.getInstance().getTimeInMillis() + ".png");
             f.createNewFile();
             FileOutputStream fo = new FileOutputStream(f);
@@ -40,11 +40,7 @@ public abstract class PhotoUtils {
             Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
 
             return f.getAbsolutePath();
-        }
-        catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        return "";
+
     }
 
 
