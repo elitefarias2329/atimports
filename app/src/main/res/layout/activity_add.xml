@@ -1154,7 +1154,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="32dp"
-                android:background="@color/material_green"
+                android:background="@color/icon_grey"
                 android:text="Salvar"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"

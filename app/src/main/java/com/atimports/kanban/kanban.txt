@@ -2,7 +2,7 @@
 
 ### IMPLEMENTAR FILTRO DE BUSCA PARA OS LOTES SALVOS E ATUALIZAR O RESULTADO NA LIST_VIEW
 
-### IMPLEMENTAR SPLASH SCREEN
+
 
 ---------------------------------------------------------------------------------------------------
 
