@@ -17,10 +17,10 @@ import io.reactivex.Flowable;
 public interface LoteDAO {
 
 
-    @Query("SELECT * FROM Lote WHERE ID = :id")
+    @Query("SELECT * FROM LOTE WHERE ID = :id")
     Flowable<Lote> getLoteById(Integer id);
 
-    @Query("SELECT * FROM Lote")
+    @Query("SELECT * FROM LOTE")
     Flowable<List<Lote>> getAllLote();
 
     @Insert

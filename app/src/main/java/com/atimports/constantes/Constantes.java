@@ -27,6 +27,7 @@ public abstract class Constantes {
     public static final int GALLERY = 1;
     public static final int CAMERA = 2;
 
+    public static final String DETALHE_LOTE = "DETALHE_LOTE";
 
 
 

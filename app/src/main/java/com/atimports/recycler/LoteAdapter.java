@@ -1,7 +1,11 @@
 package com.atimports.recycler;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,7 +104,17 @@ public class LoteAdapter extends RecyclerView.Adapter{
             this.tvItemStatusOrdem = view.findViewById(R.id.tv_item_status_ordem);
 
 
-            //Long Press
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MainActivity) v.getContext()).detalharLote(lotes.get(getAdapterPosition()));
+                }
+            });
+
+
+
+
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {

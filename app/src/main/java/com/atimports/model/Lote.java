@@ -5,10 +5,12 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.io.Serializable;
+
 import io.reactivex.annotations.NonNull;
 
 @Entity(tableName = "LOTE")
-public class Lote {
+public class Lote implements Serializable {
 
     @NonNull
     @PrimaryKey(autoGenerate = true)

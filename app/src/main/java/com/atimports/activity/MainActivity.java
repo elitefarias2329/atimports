@@ -13,11 +13,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
 import com.atimports.R;
+import com.atimports.constantes.Constantes;
 import com.atimports.model.Lote;
 import com.atimports.recycler.LoteAdapter;
 import com.atimports.repository.LoteRepository;
@@ -129,6 +131,19 @@ public class MainActivity extends AppCompatActivity {
         compositeDisposable.add(disposable);
 
     }
+
+
+
+
+
+    public void detalharLote(final Lote lote){
+        Intent intent = new Intent(MainActivity.this, AddActivity.class);
+        Bundle b = new Bundle();
+        b.putSerializable(Constantes.DETALHE_LOTE, lote);
+        intent.putExtras(b);
+        startActivity(intent);
+    }
+
 
 
     public void deleteLote(final Lote lote){
