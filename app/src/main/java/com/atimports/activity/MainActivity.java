@@ -23,6 +23,7 @@ import com.atimports.constantes.Constantes;
 import com.atimports.model.Lote;
 import com.atimports.recycler.LoteAdapter;
 import com.atimports.repository.LoteRepository;
+import com.atimports.utils.PhotoUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -170,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     //DATABASE
                                     loteRepository = LoteRepository.getInstance(MainActivity.this);
+                                    PhotoUtils.deleteImage(lote.getPathFotoProduto(), MainActivity.this);
                                     loteRepository.deleteLote(lote);
                                     emitter.onComplete();
                                 }

@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -107,6 +108,8 @@ public class AddActivity extends AppCompatActivity {
     TextView tvLucroUnidade;
 
     ImageView ivFotoProduto;
+    ImageButton ibPickPhoto;
+    ImageButton ibRemovePhoto;
 
     Button btSalvar;
 
@@ -121,7 +124,9 @@ public class AddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add);
 
         inicializarViews();
-        criarImagePicker();
+
+        removePhoto();
+        pickPhoto();
 
         aplicarMascaras();
 
@@ -279,6 +284,10 @@ public class AddActivity extends AppCompatActivity {
         etMedidaFinal.setText(Constantes.PESO_DEFAULT_1_KG_EM_LIBRA);
 
         ivFotoProduto = findViewById(R.id.iv_foto_produto);
+        ibPickPhoto = findViewById(R.id.ib_pick_photo);
+        ibRemovePhoto = findViewById(R.id.ib_remove_photo);
+
+
 
         btSalvar = findViewById(R.id.bt_salvar);
 
@@ -736,10 +745,20 @@ public class AddActivity extends AppCompatActivity {
 
 
 
+    private void removePhoto(){
 
-    private void criarImagePicker(){
+        ibRemovePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ivFotoProduto.setImageDrawable(null);
+            }
+        });
+    }
 
-        ivFotoProduto.setOnClickListener(new View.OnClickListener() {
+
+    private void pickPhoto(){
+
+        ibPickPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -835,8 +854,16 @@ public class AddActivity extends AppCompatActivity {
 
                     try {
 
-                        Bitmap bitmap = ((BitmapDrawable)ivFotoProduto.getDrawable()).getBitmap();
-                        final String pathFotoProduto  = PhotoUtils.saveImage(bitmap, AddActivity.this);
+                        final String pathFotoProduto;
+
+
+                        if(null != ivFotoProduto.getDrawable() && null != ((BitmapDrawable)ivFotoProduto.getDrawable()).getBitmap() ){
+                            Bitmap bitmap = ((BitmapDrawable)ivFotoProduto.getDrawable()).getBitmap();
+                            pathFotoProduto  = PhotoUtils.saveImage(bitmap, AddActivity.this);
+                        }
+                        else{
+                            pathFotoProduto = null;
+                        }
 
                         Observable.create(
 
@@ -857,7 +884,11 @@ public class AddActivity extends AppCompatActivity {
                                                 loteRepository.insertLote(lote);
                                             }
                                             else{
-                                                PhotoUtils.deleteImage(detalheLote.getPathFotoProduto(), AddActivity.this);
+
+                                                if(!Utils.isBlank(detalheLote.getPathFotoProduto())){
+                                                    PhotoUtils.deleteImage(detalheLote.getPathFotoProduto(), AddActivity.this);
+                                                }
+
                                                 lote.setId(detalheLote.getId());
                                                 loteRepository.updateLote(lote);
                                             }
@@ -896,52 +927,52 @@ public class AddActivity extends AppCompatActivity {
         Lote lote = new Lote();
 
 
-        lote.setValorCotacaoDolar(Utils.retornarValorMonetario(etCotacaoDolar.getText().toString(),Constantes.LOCALE_BRASIL).toString());
+        lote.setValorCotacaoDolar(Utils.retornarValorMonetario(etCotacaoDolar.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
 
 
-        lote.setBaseFreteDolar(!Utils.isValorParaCalculoValido(etBaseFreteDolar.getText().toString())? null :
-                                  Utils.retornarValorMonetario(etBaseFreteDolar.getText().toString(),Constantes.LOCALE_USA).toString());
+        lote.setBaseFreteDolar(!Utils.isValorParaCalculoValido(etBaseFreteDolar.getText().toString().trim())? null :
+                                  Utils.retornarValorMonetario(etBaseFreteDolar.getText().toString().trim(),Constantes.LOCALE_USA).toString().trim());
 
-        lote.setProduto(etProduto.getText().toString());
-        lote.setCondicao(spnCondicoes.getSelectedItem().toString());
-        lote.setQtd(Integer.valueOf(spnQtd.getSelectedItem().toString()));
+        lote.setProduto(etProduto.getText().toString().trim());
+        lote.setCondicao(spnCondicoes.getSelectedItem().toString().trim());
+        lote.setQtd(Integer.valueOf(spnQtd.getSelectedItem().toString().trim()));
 
-        lote.setValorLanceDolar(Utils.retornarValorMonetario(etValorLanceDolar.getText().toString(),Constantes.LOCALE_USA).toString());
+        lote.setValorLanceDolar(Utils.retornarValorMonetario(etValorLanceDolar.getText().toString().trim(),Constantes.LOCALE_USA).toString().trim());
 
         BigDecimal valorMedidaKg = retornarMedidaPesoKG();
-        lote.setPesoLoteKg(valorMedidaKg.compareTo(BigDecimal.ZERO) == 0 ? null : valorMedidaKg.toString());
+        lote.setPesoLoteKg(valorMedidaKg.compareTo(BigDecimal.ZERO) == 0 ? null : valorMedidaKg.toString().trim());
 
-        lote.setOrdemCompra(Utils.isBlank(etOrdemCompra.getText().toString()) ? null : etOrdemCompra.getText().toString());
-        lote.setDataOrdemCompra(Utils.isBlank(etDataOrdem.getText().toString()) ? null : etDataOrdem.getText().toString());
-        lote.setStatusOrdemCompra(spnStatusOrdem.getSelectedItem().toString().equals(Constantes.SELECIONE) ? null : spnStatusOrdem.getSelectedItem().toString());
+        lote.setOrdemCompra(Utils.isBlank(etOrdemCompra.getText().toString().trim()) ? null : etOrdemCompra.getText().toString().trim());
+        lote.setDataOrdemCompra(Utils.isBlank(etDataOrdem.getText().toString().trim()) ? null : etDataOrdem.getText().toString().trim());
+        lote.setStatusOrdemCompra(spnStatusOrdem.getSelectedItem().toString().trim().equals(Constantes.SELECIONE) ? null : spnStatusOrdem.getSelectedItem().toString().trim());
 
-        lote.setFornecedor(Utils.isBlank(etFornecedor.getText().toString()) ? null : etFornecedor.getText().toString() );
-
-
-        lote.setValorComissaoFornecedorDolar(!Utils.isValorParaCalculoValido(etValorComissaoFornecedorDolar.getText().toString())? null :
-                                                Utils.retornarValorMonetario(etValorComissaoFornecedorDolar.getText().toString(),Constantes.LOCALE_USA).toString());
-
-        lote.setValorFreteFornecedorDolar(!Utils.isValorParaCalculoValido(etValorFreteFornecedorDolar.getText().toString())? null :
-                                             Utils.retornarValorMonetario(etValorFreteFornecedorDolar.getText().toString(),Constantes.LOCALE_USA).toString());
+        lote.setFornecedor(Utils.isBlank(etFornecedor.getText().toString().trim()) ? null : etFornecedor.getText().toString().trim() );
 
 
-        lote.setValorTaxaCambioDolar(!Utils.isValorParaCalculoValido(etValorTaxaCambioReal.getText().toString())? null :
-                                        Utils.retornarValorMonetario(etValorTaxaCambioReal.getText().toString(),Constantes.LOCALE_BRASIL).toString());
+        lote.setValorComissaoFornecedorDolar(!Utils.isValorParaCalculoValido(etValorComissaoFornecedorDolar.getText().toString().trim())? null :
+                                                Utils.retornarValorMonetario(etValorComissaoFornecedorDolar.getText().toString().trim(),Constantes.LOCALE_USA).toString().trim());
 
-        lote.setValorFreteTransportadora(!Utils.isValorParaCalculoValido(etValorFreteTransportadora.getText().toString())? null :
-                                            Utils.retornarValorMonetario(etValorFreteTransportadora.getText().toString(),Constantes.LOCALE_BRASIL).toString());
+        lote.setValorFreteFornecedorDolar(!Utils.isValorParaCalculoValido(etValorFreteFornecedorDolar.getText().toString().trim())? null :
+                                             Utils.retornarValorMonetario(etValorFreteFornecedorDolar.getText().toString().trim(),Constantes.LOCALE_USA).toString().trim());
 
 
-        lote.setValorVendaUnidade(Utils.retornarValorMonetario(etValorVendaUnidade.getText().toString(),Constantes.LOCALE_BRASIL).toString());
+        lote.setValorTaxaCambioDolar(!Utils.isValorParaCalculoValido(etValorTaxaCambioReal.getText().toString().trim())? null :
+                                        Utils.retornarValorMonetario(etValorTaxaCambioReal.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
 
-        lote.setValorComissaoRevendedorUnidade(!Utils.isValorParaCalculoValido(etComissaoRevendedor.getText().toString())? null :
-                                                  Utils.retornarValorMonetario(etComissaoRevendedor.getText().toString(),Constantes.LOCALE_BRASIL).toString());
+        lote.setValorFreteTransportadora(!Utils.isValorParaCalculoValido(etValorFreteTransportadora.getText().toString().trim())? null :
+                                            Utils.retornarValorMonetario(etValorFreteTransportadora.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
 
-        lote.setValorFreteRevendedorUnidade(!Utils.isValorParaCalculoValido(etValorFreteRevendedor.getText().toString())? null :
-                                               Utils.retornarValorMonetario(etValorFreteRevendedor.getText().toString(),Constantes.LOCALE_BRASIL).toString());
 
-        lote.setValorGastosExtras(!Utils.isValorParaCalculoValido(etGastosExtras.getText().toString())? null :
-                                     Utils.retornarValorMonetario(etGastosExtras.getText().toString(),Constantes.LOCALE_BRASIL).toString());
+        lote.setValorVendaUnidade(Utils.retornarValorMonetario(etValorVendaUnidade.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
+
+        lote.setValorComissaoRevendedorUnidade(!Utils.isValorParaCalculoValido(etComissaoRevendedor.getText().toString().trim())? null :
+                                                  Utils.retornarValorMonetario(etComissaoRevendedor.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
+
+        lote.setValorFreteRevendedorUnidade(!Utils.isValorParaCalculoValido(etValorFreteRevendedor.getText().toString().trim())? null :
+                                               Utils.retornarValorMonetario(etValorFreteRevendedor.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
+
+        lote.setValorGastosExtras(!Utils.isValorParaCalculoValido(etGastosExtras.getText().toString().trim())? null :
+                                     Utils.retornarValorMonetario(etGastosExtras.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
 
         return lote;
     }
@@ -978,17 +1009,33 @@ public class AddActivity extends AppCompatActivity {
 
     private boolean validarCampos(){
 
-        boolean retorno = true;
+        int countErro = 0;
 
-        retorno = FieldValidator.validarCampoMonetarioObrigatorio( tvCotacaoDolar, etCotacaoDolar, errorMsgCotacaoDolar);
-        retorno = FieldValidator.validarCampoObrigatorio( tvProduto, etProduto, errorMsgProduto);
-        retorno = FieldValidator.validarCampoObrigatorio( tvCondicoes, spnCondicoes, errorMsgCondicoes);
-        retorno = FieldValidator.validarCampoObrigatorio( tvQtd, spnQtd, errorMsgQtd);
-        retorno = FieldValidator.validarCampoMonetarioObrigatorio( tvValorLanceDolar, etValorLanceDolar, errorMsgValorLanceDolar);
-        retorno = FieldValidator.validarCampoMonetarioObrigatorio( tvValorVendaUnidade, etValorVendaUnidade, errorMsgValorVendaUnidade);
+        if(!FieldValidator.validarCampoMonetarioObrigatorio( tvCotacaoDolar, etCotacaoDolar, errorMsgCotacaoDolar)){
+            countErro++;
+        }
 
-        return retorno;
+        if(!FieldValidator.validarCampoObrigatorio( tvProduto, etProduto, errorMsgProduto)){
+            countErro++;
+        }
 
+        if(!FieldValidator.validarCampoObrigatorio( tvCondicoes, spnCondicoes, errorMsgCondicoes)){
+            countErro++;
+        }
+
+        if(!FieldValidator.validarCampoObrigatorio( tvQtd, spnQtd, errorMsgQtd)){
+            countErro++;
+        }
+
+        if(!FieldValidator.validarCampoMonetarioObrigatorio( tvValorLanceDolar, etValorLanceDolar, errorMsgValorLanceDolar)){
+            countErro++;
+        }
+
+        if(!FieldValidator.validarCampoMonetarioObrigatorio( tvValorVendaUnidade, etValorVendaUnidade, errorMsgValorVendaUnidade)){
+            countErro++;
+        }
+
+        return countErro == 0;
     }
 
 

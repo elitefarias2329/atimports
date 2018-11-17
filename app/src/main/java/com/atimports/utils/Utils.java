@@ -2,10 +2,12 @@ package com.atimports.utils;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.atimports.R;
 import com.atimports.constantes.Constantes;
 
 import java.math.BigDecimal;
@@ -109,6 +111,15 @@ public abstract class Utils {
                                                                         );
 
                 dpDataOrdemDialog.show();
+
+                dpDataOrdemDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "CANCELAR", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == DialogInterface.BUTTON_NEGATIVE) {
+                            campoResultado.setText(Constantes.VAZIO);
+                        }
+                    }
+                });
+
 
             }
         });
