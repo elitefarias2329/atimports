@@ -18,6 +18,7 @@ import com.atimports.R;
 import com.atimports.activity.AddActivity;
 import com.atimports.activity.MainActivity;
 import com.atimports.model.Lote;
+import com.atimports.utils.Utils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -64,7 +65,7 @@ public class LoteAdapter extends RecyclerView.Adapter{
         holder.tvItemProduto.setText(lote.getProduto());
         holder.tvItemQuantidade.setText(String.valueOf(lote.getQtd()));
         holder.tvItemcondicao.setText(lote.getCondicao());
-        holder.tvItemDataOrdem.setText(lote.getDataOrdemCompra());
+        holder.tvItemDataOrdem.setText(null == lote.getDataOrdemCompra() ? null : Utils.retornarFormatedDate(lote.getDataOrdemCompra()));
         holder.tvItemStatusOrdem.setText(lote.getStatusOrdemCompra());
 
 

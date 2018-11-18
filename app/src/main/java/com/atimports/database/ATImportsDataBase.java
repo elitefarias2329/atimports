@@ -4,8 +4,10 @@ package com.atimports.database;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
+import com.atimports.converter.DateTypeConverter;
 import com.atimports.dao.LoteDAO;
 import com.atimports.model.Lote;
 
@@ -13,6 +15,7 @@ import static com.atimports.database.ATImportsDataBase.DATABASE_VERSION;
 
 
 @Database(entities = Lote.class, version = DATABASE_VERSION, exportSchema = false)
+@TypeConverters({DateTypeConverter.class})
 public abstract class ATImportsDataBase extends RoomDatabase {
 
     public static final int DATABASE_VERSION = 1;

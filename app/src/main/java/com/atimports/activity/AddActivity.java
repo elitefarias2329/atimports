@@ -943,7 +943,15 @@ public class AddActivity extends AppCompatActivity {
         lote.setPesoLoteKg(valorMedidaKg.compareTo(BigDecimal.ZERO) == 0 ? null : valorMedidaKg.toString().trim());
 
         lote.setOrdemCompra(Utils.isBlank(etOrdemCompra.getText().toString().trim()) ? null : etOrdemCompra.getText().toString().trim());
-        lote.setDataOrdemCompra(Utils.isBlank(etDataOrdem.getText().toString().trim()) ? null : etDataOrdem.getText().toString().trim());
+
+
+        lote.setDataOrdemCompra(Utils.isBlank(etDataOrdem.getText().toString().trim()) ? null : Utils.retornarDateFromString(etDataOrdem.getText().toString().trim()));
+
+
+
+
+
+
         lote.setStatusOrdemCompra(spnStatusOrdem.getSelectedItem().toString().trim().equals(Constantes.SELECIONE) ? null : spnStatusOrdem.getSelectedItem().toString().trim());
 
         lote.setFornecedor(Utils.isBlank(etFornecedor.getText().toString().trim()) ? null : etFornecedor.getText().toString().trim() );
@@ -1058,20 +1066,16 @@ public class AddActivity extends AppCompatActivity {
                     .into(ivFotoProduto);
         }
 
-        etCotacaoDolar.setText(String.valueOf(Double.parseDouble(this.detalheLote.getValorCotacaoDolar()) * 10));
 
-        if(!Utils.isBlank(this.detalheLote.getBaseFreteDolar())){
-            etBaseFreteDolar.setText(String.valueOf(Double.parseDouble(this.detalheLote.getBaseFreteDolar()) * 10));
-        }
+        tratarDetalhamentoValorMonetario(this.detalheLote.getValorCotacaoDolar(), etCotacaoDolar);
+        tratarDetalhamentoValorMonetario(this.detalheLote.getBaseFreteDolar(), etBaseFreteDolar);
 
         etProduto.setText(this.detalheLote.getProduto());
 
         spnCondicoes.setSelection(((ArrayAdapter)spnCondicoes.getAdapter()).getPosition(this.detalheLote.getCondicao()));
-
         spnQtd.setSelection(((ArrayAdapter)spnQtd.getAdapter()).getPosition(this.detalheLote.getQtd().toString()));
 
-
-        etValorLanceDolar.setText(String.valueOf(Double.parseDouble(this.detalheLote.getValorLanceDolar()) * 10));
+        tratarDetalhamentoValorMonetario(this.detalheLote.getValorLanceDolar(), etValorLanceDolar);
 
         if(!Utils.isBlank(this.detalheLote.getPesoLoteKg())){
             etMedidaInicial.setText(this.detalheLote.getPesoLoteKg().replace(Constantes.PONTO,Constantes.VIRGULA));
@@ -1081,8 +1085,8 @@ public class AddActivity extends AppCompatActivity {
             etOrdemCompra.setText(this.detalheLote.getOrdemCompra());
         }
 
-        if(!Utils.isBlank(this.detalheLote.getDataOrdemCompra())){
-            etDataOrdem.setText(this.detalheLote.getDataOrdemCompra());
+        if(null != this.detalheLote.getDataOrdemCompra()){
+            etDataOrdem.setText(Utils.retornarFormatedDate(this.detalheLote.getDataOrdemCompra()));
         }
 
         spnStatusOrdem.setSelection(((ArrayAdapter)spnStatusOrdem.getAdapter()).getPosition(this.detalheLote.getStatusOrdemCompra()));
@@ -1091,40 +1095,30 @@ public class AddActivity extends AppCompatActivity {
             etFornecedor.setText(this.detalheLote.getFornecedor());
         }
 
-        if(!Utils.isBlank(this.detalheLote.getValorComissaoFornecedorDolar())){
-            etValorComissaoFornecedorDolar.setText(String.valueOf(Double.parseDouble(this.detalheLote.getValorComissaoFornecedorDolar()) * 10));
-        }
-
-        if(!Utils.isBlank(this.detalheLote.getValorFreteFornecedorDolar())){
-            etValorFreteFornecedorDolar.setText(String.valueOf(Double.parseDouble(this.detalheLote.getValorFreteFornecedorDolar()) * 10));
-        }
-
-        if(!Utils.isBlank(this.detalheLote.getValorTaxaCambioDolar())){
-            etValorTaxaCambioReal.setText(String.valueOf(Double.parseDouble(this.detalheLote.getValorTaxaCambioDolar()) * 10));
-        }
-
-        if(!Utils.isBlank(this.detalheLote.getValorFreteTransportadora())){
-            etValorFreteTransportadora.setText(String.valueOf(Double.parseDouble(this.detalheLote.getValorFreteTransportadora()) * 10));
-        }
-
-        etValorVendaUnidade.setText(String.valueOf(Double.parseDouble(this.detalheLote.getValorVendaUnidade()) * 10));
-
-        if(!Utils.isBlank(this.detalheLote.getValorComissaoRevendedorUnidade())){
-            etComissaoRevendedor.setText(String.valueOf(Double.parseDouble(this.detalheLote.getValorComissaoRevendedorUnidade()) * 10));
-        }
-
-        if(!Utils.isBlank(this.detalheLote.getValorFreteRevendedorUnidade())){
-            etValorFreteRevendedor.setText(String.valueOf(Double.parseDouble(this.detalheLote.getValorFreteRevendedorUnidade()) * 10));
-        }
-
-        if(!Utils.isBlank(this.detalheLote.getValorGastosExtras())){
-            etGastosExtras.setText(String.valueOf(Double.parseDouble(this.detalheLote.getValorGastosExtras()) * 10));
-        }
-
-
+        tratarDetalhamentoValorMonetario(this.detalheLote.getValorComissaoFornecedorDolar(), etValorComissaoFornecedorDolar);
+        tratarDetalhamentoValorMonetario(this.detalheLote.getValorFreteFornecedorDolar(), etValorFreteFornecedorDolar);
+        tratarDetalhamentoValorMonetario(this.detalheLote.getValorTaxaCambioDolar(), etValorTaxaCambioReal);
+        tratarDetalhamentoValorMonetario(this.detalheLote.getValorFreteTransportadora(), etValorFreteTransportadora);
+        tratarDetalhamentoValorMonetario(this.detalheLote.getValorVendaUnidade(), etValorVendaUnidade);
+        tratarDetalhamentoValorMonetario(this.detalheLote.getValorComissaoRevendedorUnidade(), etComissaoRevendedor);
+        tratarDetalhamentoValorMonetario(this.detalheLote.getValorFreteRevendedorUnidade(), etValorFreteRevendedor);
+        tratarDetalhamentoValorMonetario(this.detalheLote.getValorGastosExtras(), etGastosExtras);
     }
 
+    private void tratarDetalhamentoValorMonetario(String valorTexto, EditText campo){
 
+        Double valor = 0.0;
+
+        try{
+            if(!Utils.isBlank(valorTexto)){
+                valor = Double.parseDouble(valorTexto);
+                campo.setText(String.format("%.2f", valor));
+            }
+        }
+        catch (Exception e){
+            Log.d("TAG", e.getMessage());
+        }
+    }
 
 
 

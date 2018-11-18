@@ -2,7 +2,6 @@ package com.atimports.converter;
 
 import android.arch.persistence.room.TypeConverter;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class DateTypeConverter {
