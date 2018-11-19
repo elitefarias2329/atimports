@@ -345,6 +345,9 @@ public class AddActivity extends AppCompatActivity {
                 }
                 catch (Exception e){
                     Log.d("TAG", e.getMessage());
+                    campo.removeTextChangedListener(this);
+                    campo.setText(Constantes.VAZIO);
+                    aplicarMascaraMoeda(campo, locale);
                 }
 
 
@@ -537,83 +540,83 @@ public class AddActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
 
-               try {
+                try {
 
-                   if(Utils.isValorParaCalculoValido(etValorLanceRealCalculado.getText().toString())){
+                    if(Utils.isValorParaCalculoValido(etValorLanceRealCalculado.getText().toString())){
 
-                       BigDecimal valorLance;
+                        BigDecimal valorLance;
 
-                       BigDecimal valorFreteUsaBrasil = BigDecimal.ZERO;
-                       BigDecimal valorComissaoFornecedor = BigDecimal.ZERO;
-                       BigDecimal valorFreteFornecedor = BigDecimal.ZERO;
-                       BigDecimal valorTaxaCambio = BigDecimal.ZERO;
-                       BigDecimal valorFreteTransportadora = BigDecimal.ZERO;
-                       BigDecimal valorComissaoRevendedor = BigDecimal.ZERO;
-                       BigDecimal valorFreteRevendedor = BigDecimal.ZERO;
-                       BigDecimal valorGastosExtras = BigDecimal.ZERO;
+                        BigDecimal valorFreteUsaBrasil = BigDecimal.ZERO;
+                        BigDecimal valorComissaoFornecedor = BigDecimal.ZERO;
+                        BigDecimal valorFreteFornecedor = BigDecimal.ZERO;
+                        BigDecimal valorTaxaCambio = BigDecimal.ZERO;
+                        BigDecimal valorFreteTransportadora = BigDecimal.ZERO;
+                        BigDecimal valorComissaoRevendedor = BigDecimal.ZERO;
+                        BigDecimal valorFreteRevendedor = BigDecimal.ZERO;
+                        BigDecimal valorGastosExtras = BigDecimal.ZERO;
 
-                       BigDecimal valorCustoTotal = BigDecimal.ZERO;
+                        BigDecimal valorCustoTotal = BigDecimal.ZERO;
 
-                       valorLance = Utils.retornarValorMonetario(etValorLanceRealCalculado.getText().toString(), Constantes.LOCALE_BRASIL);
+                        valorLance = Utils.retornarValorMonetario(etValorLanceRealCalculado.getText().toString(), Constantes.LOCALE_BRASIL);
 
-                       if(Utils.isValorParaCalculoValido(tvFreteUsaBrasil.getText().toString())){
-                           valorFreteUsaBrasil = Utils.retornarValorMonetario(tvFreteUsaBrasil.getText().toString(), Constantes.LOCALE_BRASIL);
-                       }
+                        if(Utils.isValorParaCalculoValido(tvFreteUsaBrasil.getText().toString())){
+                            valorFreteUsaBrasil = Utils.retornarValorMonetario(tvFreteUsaBrasil.getText().toString(), Constantes.LOCALE_BRASIL);
+                        }
 
-                       if(Utils.isValorParaCalculoValido(etValorComissaoFornecedorRealCalculado.getText().toString())){
-                           valorComissaoFornecedor = Utils.retornarValorMonetario(etValorComissaoFornecedorRealCalculado.getText().toString(), Constantes.LOCALE_BRASIL);
-                       }
+                        if(Utils.isValorParaCalculoValido(etValorComissaoFornecedorRealCalculado.getText().toString())){
+                            valorComissaoFornecedor = Utils.retornarValorMonetario(etValorComissaoFornecedorRealCalculado.getText().toString(), Constantes.LOCALE_BRASIL);
+                        }
 
-                       if(Utils.isValorParaCalculoValido(etValorFreteFornecedorRealCalculado.getText().toString())){
-                           valorFreteFornecedor = Utils.retornarValorMonetario(etValorFreteFornecedorRealCalculado.getText().toString(), Constantes.LOCALE_BRASIL);
-                       }
+                        if(Utils.isValorParaCalculoValido(etValorFreteFornecedorRealCalculado.getText().toString())){
+                            valorFreteFornecedor = Utils.retornarValorMonetario(etValorFreteFornecedorRealCalculado.getText().toString(), Constantes.LOCALE_BRASIL);
+                        }
 
-                       if(Utils.isValorParaCalculoValido(etValorTaxaCambioReal.getText().toString())){
-                           valorTaxaCambio = Utils.retornarValorMonetario(etValorTaxaCambioReal.getText().toString(), Constantes.LOCALE_BRASIL);
-                       }
+                        if(Utils.isValorParaCalculoValido(etValorTaxaCambioReal.getText().toString())){
+                            valorTaxaCambio = Utils.retornarValorMonetario(etValorTaxaCambioReal.getText().toString(), Constantes.LOCALE_BRASIL);
+                        }
 
-                       if(Utils.isValorParaCalculoValido(etValorFreteTransportadora.getText().toString())){
-                           valorFreteTransportadora = Utils.retornarValorMonetario(etValorFreteTransportadora.getText().toString(), Constantes.LOCALE_BRASIL);
-                       }
+                        if(Utils.isValorParaCalculoValido(etValorFreteTransportadora.getText().toString())){
+                            valorFreteTransportadora = Utils.retornarValorMonetario(etValorFreteTransportadora.getText().toString(), Constantes.LOCALE_BRASIL);
+                        }
 
-                       if(Utils.isValorParaCalculoValido(etGastosExtras.getText().toString())){
-                           valorGastosExtras = Utils.retornarValorMonetario(etGastosExtras.getText().toString(), Constantes.LOCALE_BRASIL);
-                       }
+                        if(Utils.isValorParaCalculoValido(etGastosExtras.getText().toString())){
+                            valorGastosExtras = Utils.retornarValorMonetario(etGastosExtras.getText().toString(), Constantes.LOCALE_BRASIL);
+                        }
 
-                       String qtd = spnQtd.getSelectedItem().toString();
+                        String qtd = spnQtd.getSelectedItem().toString();
 
-                       if(Utils.isValorParaCalculoValido(etComissaoRevendedor.getText().toString()) && !qtd.equals(getString(R.string.selecione)) ){
-                           valorComissaoRevendedor = Utils.retornarValorMonetario(etComissaoRevendedor.getText().toString(), Constantes.LOCALE_BRASIL);
-                           valorComissaoRevendedor = valorComissaoRevendedor.multiply(new BigDecimal(qtd)).setScale(2 ,BigDecimal.ROUND_HALF_UP);
-                       }
+                        if(Utils.isValorParaCalculoValido(etComissaoRevendedor.getText().toString()) && !qtd.equals(getString(R.string.selecione)) ){
+                            valorComissaoRevendedor = Utils.retornarValorMonetario(etComissaoRevendedor.getText().toString(), Constantes.LOCALE_BRASIL);
+                            valorComissaoRevendedor = valorComissaoRevendedor.multiply(new BigDecimal(qtd)).setScale(2 ,BigDecimal.ROUND_HALF_UP);
+                        }
 
-                       if(Utils.isValorParaCalculoValido(etValorFreteRevendedor.getText().toString()) && !qtd.equals(getString(R.string.selecione)) ){
-                           valorFreteRevendedor = Utils.retornarValorMonetario(etValorFreteRevendedor.getText().toString(), Constantes.LOCALE_BRASIL);
-                           valorFreteRevendedor = valorFreteRevendedor.multiply(new BigDecimal(qtd)).setScale(2 ,BigDecimal.ROUND_HALF_UP);
-                       }
+                        if(Utils.isValorParaCalculoValido(etValorFreteRevendedor.getText().toString()) && !qtd.equals(getString(R.string.selecione)) ){
+                            valorFreteRevendedor = Utils.retornarValorMonetario(etValorFreteRevendedor.getText().toString(), Constantes.LOCALE_BRASIL);
+                            valorFreteRevendedor = valorFreteRevendedor.multiply(new BigDecimal(qtd)).setScale(2 ,BigDecimal.ROUND_HALF_UP);
+                        }
 
-                       valorCustoTotal = valorCustoTotal.add(valorLance)
-                               .add(valorFreteUsaBrasil)
-                               .add(valorComissaoFornecedor)
-                               .add(valorFreteFornecedor)
-                               .add(valorTaxaCambio)
-                               .add(valorFreteTransportadora)
-                               .add(valorComissaoRevendedor)
-                               .add(valorFreteRevendedor)
-                               .add(valorGastosExtras);
+                        valorCustoTotal = valorCustoTotal.add(valorLance)
+                                .add(valorFreteUsaBrasil)
+                                .add(valorComissaoFornecedor)
+                                .add(valorFreteFornecedor)
+                                .add(valorTaxaCambio)
+                                .add(valorFreteTransportadora)
+                                .add(valorComissaoRevendedor)
+                                .add(valorFreteRevendedor)
+                                .add(valorGastosExtras);
 
 
-                       tvCustoTotal.setText(Utils.retornaValorMontarioComMascara(valorCustoTotal, Constantes.LOCALE_BRASIL));
+                        tvCustoTotal.setText(Utils.retornaValorMontarioComMascara(valorCustoTotal, Constantes.LOCALE_BRASIL));
 
-                   }
-                   else{
-                       tvCustoTotal.setText(Constantes.VAZIO);
-                   }
+                    }
+                    else{
+                        tvCustoTotal.setText(Constantes.VAZIO);
+                    }
 
-               }
-               catch(Exception e){
-                   Log.d("TAG" ,e.getMessage());
-               }
+                }
+                catch(Exception e){
+                    Log.d("TAG" ,e.getMessage());
+                }
 
 
             }
@@ -647,15 +650,22 @@ public class AddActivity extends AppCompatActivity {
 
         String qtd = spnQtd.getSelectedItem().toString();
 
-        if(Utils.isValorParaCalculoValido(tvCustoTotal.getText().toString()) && !qtd.equals(getString(R.string.selecione)) ){
+        try{
+            if(Utils.isValorParaCalculoValido(tvCustoTotal.getText().toString()) && !qtd.equals(getString(R.string.selecione)) ){
 
-            BigDecimal valorCusto = Utils.retornarValorMonetario(tvCustoTotal.getText().toString(), Constantes.LOCALE_BRASIL);
-            valorCusto = valorCusto.divide(new BigDecimal(qtd),2, BigDecimal.ROUND_HALF_UP);
-            tvCustoUnidade.setText(Utils.retornaValorMontarioComMascara(valorCusto, Constantes.LOCALE_BRASIL));
+                BigDecimal valorCusto = Utils.retornarValorMonetario(tvCustoTotal.getText().toString(), Constantes.LOCALE_BRASIL);
+                valorCusto = valorCusto.divide(new BigDecimal(qtd),2, BigDecimal.ROUND_HALF_UP);
+                tvCustoUnidade.setText(Utils.retornaValorMontarioComMascara(valorCusto, Constantes.LOCALE_BRASIL));
+            }
+            else{
+                tvCustoUnidade.setText(Constantes.VAZIO);
+            }
         }
-        else{
-            tvCustoUnidade.setText(Constantes.VAZIO);
+        catch(Exception e){
+            Log.d("TAG", e.getMessage());
         }
+
+
     }
 
 
@@ -670,25 +680,33 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if(Utils.isValorParaCalculoValido(tvCustoUnidade.getText().toString()) && Utils.isValorParaCalculoValido(etValorVendaUnidade.getText().toString() )){
+                try{
+                    if(Utils.isValorParaCalculoValido(tvCustoUnidade.getText().toString()) && Utils.isValorParaCalculoValido(etValorVendaUnidade.getText().toString() )){
 
-                    BigDecimal valorVendaUnidade = Utils.retornarValorMonetario(etValorVendaUnidade.getText().toString(), Constantes.LOCALE_BRASIL);
-                    BigDecimal valorCustoUnidade = Utils.retornarValorMonetario(tvCustoUnidade.getText().toString(), Constantes.LOCALE_BRASIL);
+                        BigDecimal valorVendaUnidade = Utils.retornarValorMonetario(etValorVendaUnidade.getText().toString(), Constantes.LOCALE_BRASIL);
+                        BigDecimal valorCustoUnidade = Utils.retornarValorMonetario(tvCustoUnidade.getText().toString(), Constantes.LOCALE_BRASIL);
 
-                    BigDecimal valorLucroUnidade = valorVendaUnidade.subtract(valorCustoUnidade);
+                        BigDecimal valorLucroUnidade = valorVendaUnidade.subtract(valorCustoUnidade);
 
-                    if(valorLucroUnidade.compareTo(BigDecimal.ZERO) < 0 ){
-                        tvLucroUnidade.setTextColor(getResources().getColor(R.color.dark_red));
+                        if(valorLucroUnidade.compareTo(BigDecimal.ZERO) < 0 ){
+                            tvLucroUnidade.setTextColor(getResources().getColor(R.color.dark_red));
+                        }
+                        else{
+                            tvLucroUnidade.setTextColor(getResources().getColor(R.color.material_green));
+                        }
+
+                        tvLucroUnidade.setText(Utils.retornaValorMontarioComMascara(valorLucroUnidade, Constantes.LOCALE_BRASIL));
                     }
                     else{
-                        tvLucroUnidade.setTextColor(getResources().getColor(R.color.material_green));
+                        tvLucroUnidade.setText(Constantes.VAZIO);
                     }
-
-                    tvLucroUnidade.setText(Utils.retornaValorMontarioComMascara(valorLucroUnidade, Constantes.LOCALE_BRASIL));
                 }
-                else{
+                catch(Exception e){
+                    Log.d("TAG", e.getMessage());
                     tvLucroUnidade.setText(Constantes.VAZIO);
                 }
+
+
             }
 
             @Override
@@ -931,7 +949,7 @@ public class AddActivity extends AppCompatActivity {
 
 
         lote.setBaseFreteDolar(!Utils.isValorParaCalculoValido(etBaseFreteDolar.getText().toString().trim())? null :
-                                  Utils.retornarValorMonetario(etBaseFreteDolar.getText().toString().trim(),Constantes.LOCALE_USA).toString().trim());
+                Utils.retornarValorMonetario(etBaseFreteDolar.getText().toString().trim(),Constantes.LOCALE_USA).toString().trim());
 
         lote.setProduto(etProduto.getText().toString().trim());
         lote.setCondicao(spnCondicoes.getSelectedItem().toString().trim());
@@ -958,29 +976,29 @@ public class AddActivity extends AppCompatActivity {
 
 
         lote.setValorComissaoFornecedorDolar(!Utils.isValorParaCalculoValido(etValorComissaoFornecedorDolar.getText().toString().trim())? null :
-                                                Utils.retornarValorMonetario(etValorComissaoFornecedorDolar.getText().toString().trim(),Constantes.LOCALE_USA).toString().trim());
+                Utils.retornarValorMonetario(etValorComissaoFornecedorDolar.getText().toString().trim(),Constantes.LOCALE_USA).toString().trim());
 
         lote.setValorFreteFornecedorDolar(!Utils.isValorParaCalculoValido(etValorFreteFornecedorDolar.getText().toString().trim())? null :
-                                             Utils.retornarValorMonetario(etValorFreteFornecedorDolar.getText().toString().trim(),Constantes.LOCALE_USA).toString().trim());
+                Utils.retornarValorMonetario(etValorFreteFornecedorDolar.getText().toString().trim(),Constantes.LOCALE_USA).toString().trim());
 
 
         lote.setValorTaxaCambioDolar(!Utils.isValorParaCalculoValido(etValorTaxaCambioReal.getText().toString().trim())? null :
-                                        Utils.retornarValorMonetario(etValorTaxaCambioReal.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
+                Utils.retornarValorMonetario(etValorTaxaCambioReal.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
 
         lote.setValorFreteTransportadora(!Utils.isValorParaCalculoValido(etValorFreteTransportadora.getText().toString().trim())? null :
-                                            Utils.retornarValorMonetario(etValorFreteTransportadora.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
+                Utils.retornarValorMonetario(etValorFreteTransportadora.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
 
 
         lote.setValorVendaUnidade(Utils.retornarValorMonetario(etValorVendaUnidade.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
 
         lote.setValorComissaoRevendedorUnidade(!Utils.isValorParaCalculoValido(etComissaoRevendedor.getText().toString().trim())? null :
-                                                  Utils.retornarValorMonetario(etComissaoRevendedor.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
+                Utils.retornarValorMonetario(etComissaoRevendedor.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
 
         lote.setValorFreteRevendedorUnidade(!Utils.isValorParaCalculoValido(etValorFreteRevendedor.getText().toString().trim())? null :
-                                               Utils.retornarValorMonetario(etValorFreteRevendedor.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
+                Utils.retornarValorMonetario(etValorFreteRevendedor.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
 
         lote.setValorGastosExtras(!Utils.isValorParaCalculoValido(etGastosExtras.getText().toString().trim())? null :
-                                     Utils.retornarValorMonetario(etGastosExtras.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
+                Utils.retornarValorMonetario(etGastosExtras.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
 
         return lote;
     }
