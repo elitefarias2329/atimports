@@ -20,6 +20,14 @@ import java.util.Calendar;
 public abstract class PhotoUtils {
 
 
+
+    public static String getURLForResource (int resourceId) {
+        return Uri.parse("android.resource://" + R.class.getPackage().getName() + "/" + resourceId).toString();
+    }
+
+
+
+
     public static String saveImage(Bitmap myBitmap, Context context) throws Exception{
 
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -45,8 +53,18 @@ public abstract class PhotoUtils {
 
 
 
-    public static String getURLForResource (int resourceId) {
-        return Uri.parse("android.resource://" + R.class.getPackage().getName() + "/" + resourceId).toString();
+    public static void deleteImage(String path, Context context) throws Exception{
+
+        try {
+            File f = new File(path);
+            f.delete();
+            MediaScannerConnection.scanFile(context, new String[]{f.getPath()}, new String[]{"image/png"}, null);
+        }
+        catch (Exception e){
+            Log.d("TAG" ,e.getMessage());
+        }
+
+
     }
 
 

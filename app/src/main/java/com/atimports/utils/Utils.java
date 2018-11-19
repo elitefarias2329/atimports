@@ -2,6 +2,8 @@ package com.atimports.utils;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -10,7 +12,9 @@ import com.atimports.constantes.Constantes;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public abstract class Utils {
@@ -110,6 +114,15 @@ public abstract class Utils {
 
                 dpDataOrdemDialog.show();
 
+                dpDataOrdemDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "CANCELAR", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == DialogInterface.BUTTON_NEGATIVE) {
+                            campoResultado.setText(Constantes.VAZIO);
+                        }
+                    }
+                });
+
+
             }
         });
 
@@ -117,10 +130,40 @@ public abstract class Utils {
     }
 
 
+    public static final String DATA_PATTERN = "dd/MM/yyyy";
 
 
+    public static Date retornarDateFromString(String data){
+
+        SimpleDateFormat fmt = new SimpleDateFormat(DATA_PATTERN);
+
+        try{
+            return fmt.parse(data);
+        }
+        catch(Exception e){
+            Log.d("TAG", e.getMessage());
+        }
+
+        return null;
+    }
 
 
+    public static String retornarFormatedDate(Date data){
+
+        SimpleDateFormat fmt = new SimpleDateFormat(DATA_PATTERN);
+
+        try{
+
+            String teste = fmt.format(data);
+
+            return teste;
+        }
+        catch(Exception e){
+            Log.d("TAG", e.getMessage());
+        }
+
+        return null;
+    }
 
 
 

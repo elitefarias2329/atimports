@@ -4,5 +4,9 @@
     <color name="dark_red">#CC0000</color>
     <color name="material_green">#018786</color>
     <color name="dark_grey">#7A7A7A</color>
+    <color name="icon_grey">#333333</color>
+
+
+
 
 </resources>

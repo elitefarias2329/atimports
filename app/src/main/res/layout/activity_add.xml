@@ -938,23 +938,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/divider" />
 
             <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:drawingCacheQuality="high"
-                android:gravity="center_horizontal"
-                android:text="Escolha a foto do produto"
-                android:textStyle="italic"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_foto_produto" />
-
-            <TextView
                 android:id="@+id/tv_base_frete_dolar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -1022,10 +1005,9 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:background="@android:color/transparent"
+                android:background="@drawable/camera_circle"
                 android:cropToPadding="false"
                 android:scaleType="centerInside"
-                android:src="@drawable/camera_circle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
@@ -1039,7 +1021,7 @@
                 android:background="@color/dark_grey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                app:layout_constraintTop_toBottomOf="@+id/iv_foto_produto" />
 
             <Spinner
                 android:id="@+id/spn_condicoes"
@@ -1154,7 +1136,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="32dp"
-                android:background="@color/material_green"
+                android:background="@color/icon_grey"
                 android:text="Salvar"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
@@ -1172,6 +1154,34 @@
                 app:layout_constraintEnd_toEndOf="@+id/et_medida_inicial"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_medida_inicial" />
+
+            <ImageButton
+                android:id="@+id/ib_pick_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@android:color/transparent"
+                app:layout_constraintBottom_toTopOf="@+id/divider"
+                app:layout_constraintStart_toEndOf="@+id/iv_foto_produto"
+                app:layout_constraintTop_toTopOf="@+id/guideline"
+                app:srcCompat="@drawable/mais" />
+
+            <ImageButton
+                android:id="@+id/ib_remove_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginBottom="8dp"
+                android:background="@android:color/transparent"
+                app:layout_constraintBottom_toTopOf="@+id/divider"
+                app:layout_constraintEnd_toStartOf="@+id/iv_foto_produto"
+                app:layout_constraintTop_toTopOf="@+id/guideline"
+                app:srcCompat="@drawable/menos" />
 
 
         </android.support.constraint.ConstraintLayout>

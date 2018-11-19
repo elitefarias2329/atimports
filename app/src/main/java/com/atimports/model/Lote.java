@@ -2,13 +2,18 @@ package com.atimports.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+
+import com.atimports.converter.DateTypeConverter;
+
+import java.io.Serializable;
+import java.util.Date;
 
 import io.reactivex.annotations.NonNull;
 
 @Entity(tableName = "LOTE")
-public class Lote {
+public class Lote implements Serializable {
 
     @NonNull
     @PrimaryKey(autoGenerate = true)
@@ -48,8 +53,9 @@ public class Lote {
     @ColumnInfo(name = "ORDEM_COMPRA")
     private String ordemCompra;
 
+    @TypeConverters(DateTypeConverter.class)
     @ColumnInfo(name = "DATA_ORDEM_COMPRA")
-    private String dataOrdemCompra;
+    private Date dataOrdemCompra;
 
     @ColumnInfo(name = "STATUS_ORDEM_COMPRA")
     private String statusOrdemCompra;
@@ -140,6 +146,14 @@ public class Lote {
         this.valorLanceDolar = valorLanceDolar;
     }
 
+    public Date getDataOrdemCompra() {
+        return dataOrdemCompra;
+    }
+
+    public void setDataOrdemCompra(Date dataOrdemCompra) {
+        this.dataOrdemCompra = dataOrdemCompra;
+    }
+
     public String getPesoLoteKg() {
         return pesoLoteKg;
     }
@@ -156,13 +170,6 @@ public class Lote {
         this.ordemCompra = ordemCompra;
     }
 
-    public String getDataOrdemCompra() {
-        return dataOrdemCompra;
-    }
-
-    public void setDataOrdemCompra(String dataOrdemCompra) {
-        this.dataOrdemCompra = dataOrdemCompra;
-    }
 
     public String getStatusOrdemCompra() {
         return statusOrdemCompra;
