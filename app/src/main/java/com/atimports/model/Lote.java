@@ -43,6 +43,9 @@ public class Lote implements Serializable {
     @ColumnInfo(name = "QUANTIDADE")
     private Integer qtd;
 
+    @ColumnInfo(name = "VENDIDOS")
+    private Integer vendidos;
+
     @NonNull
     @ColumnInfo(name = "VALOR_LANCE_DOLAR")
     private String valorLanceDolar;
@@ -59,6 +62,12 @@ public class Lote implements Serializable {
 
     @ColumnInfo(name = "STATUS_ORDEM_COMPRA")
     private String statusOrdemCompra;
+
+    @ColumnInfo(name = "VENDEDOR")
+    private String vendedor;
+
+    @ColumnInfo(name = "E-MAIL_VENDEDOR")
+    private String emailVendedor;
 
     @ColumnInfo(name = "FORNECEDOR")
     private String fornecedor;
@@ -257,5 +266,29 @@ public class Lote implements Serializable {
 
     public void setValorGastosExtras(String valorGastosExtras) {
         this.valorGastosExtras = valorGastosExtras;
+    }
+
+    public String getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(String vendedor) {
+        this.vendedor = vendedor;
+    }
+
+    public String getEmailVendedor() {
+        return emailVendedor;
+    }
+
+    public void setEmailVendedor(String emailVendedor) {
+        this.emailVendedor = emailVendedor;
+    }
+
+    public Integer getVendidos() {
+        return vendidos;
+    }
+
+    public void setVendidos(Integer vendidos) {
+        this.vendidos = vendidos;
     }
 }

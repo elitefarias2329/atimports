@@ -53,6 +53,7 @@ public class AddActivity extends AppCompatActivity {
 
     TextView tvQtd;
     Spinner spnQtd;
+    Spinner spnVendidos;
     TextView errorMsgQtd;
 
     Spinner spnMedida;
@@ -73,7 +74,10 @@ public class AddActivity extends AppCompatActivity {
 
     EditText etOrdemCompra;
 
+    EditText etVendedor;
+    EditText etEmailVendedor;
     EditText etFornecedor;
+
 
     EditText etMedidaInicial;
     EditText etMedidaFinal;
@@ -133,6 +137,7 @@ public class AddActivity extends AppCompatActivity {
         popularComboValorFixo(spnCondicoes, R.array.condicoes);
         popularComboValorFixo(spnMedida, R.array.medidas);
         popularComboValorFixo(spnStatusOrdem, R.array.status_ordem);
+        popularComboQuantidade(spnVendidos);
         popularComboQuantidade(spnQtd);
 
         calcularValorBaseadoNaCotacaoDolar(etCotacaoDolar, etBaseFreteDolar, Constantes.LOCALE_USA, etBaseFreteRealCalculado, Constantes.LOCALE_BRASIL);
@@ -223,6 +228,7 @@ public class AddActivity extends AppCompatActivity {
 
         tvQtd = findViewById(R.id.tv_qtd);
         spnQtd = findViewById(R.id.spn_qtd);
+        spnVendidos = findViewById(R.id.spn_vendidos);
         errorMsgQtd = findViewById(R.id.error_msg_qtd);
 
 
@@ -261,6 +267,8 @@ public class AddActivity extends AppCompatActivity {
 
         etOrdemCompra = findViewById(R.id.et_ordem_compra);
 
+        etVendedor = findViewById(R.id.et_vendedor);
+        etEmailVendedor = findViewById(R.id.et_email_vendedor);
         etFornecedor = findViewById(R.id.et_fornecedor);
 
         tvValorVendaUnidade = findViewById(R.id.tv_valor_venda_unidade);
@@ -954,6 +962,7 @@ public class AddActivity extends AppCompatActivity {
         lote.setProduto(etProduto.getText().toString().trim());
         lote.setCondicao(spnCondicoes.getSelectedItem().toString().trim());
         lote.setQtd(Integer.valueOf(spnQtd.getSelectedItem().toString().trim()));
+        lote.setVendidos(spnVendidos.getSelectedItem().toString().trim().equals(Constantes.SELECIONE) ? null : Integer.valueOf(spnVendidos.getSelectedItem().toString()));
 
         lote.setValorLanceDolar(Utils.retornarValorMonetario(etValorLanceDolar.getText().toString().trim(),Constantes.LOCALE_USA).toString().trim());
 
@@ -966,14 +975,12 @@ public class AddActivity extends AppCompatActivity {
         lote.setDataOrdemCompra(Utils.isBlank(etDataOrdem.getText().toString().trim()) ? null : Utils.retornarDateFromString(etDataOrdem.getText().toString().trim()));
 
 
-
-
-
-
         lote.setStatusOrdemCompra(spnStatusOrdem.getSelectedItem().toString().trim().equals(Constantes.SELECIONE) ? null : spnStatusOrdem.getSelectedItem().toString().trim());
 
-        lote.setFornecedor(Utils.isBlank(etFornecedor.getText().toString().trim()) ? null : etFornecedor.getText().toString().trim() );
 
+        lote.setVendedor(Utils.isBlank(etVendedor.getText().toString().trim()) ? null : etVendedor.getText().toString().trim() );
+        lote.setEmailVendedor(Utils.isBlank(etEmailVendedor.getText().toString().trim()) ? null : etEmailVendedor.getText().toString().trim() );
+        lote.setFornecedor(Utils.isBlank(etFornecedor.getText().toString().trim()) ? null : etFornecedor.getText().toString().trim() );
 
         lote.setValorComissaoFornecedorDolar(!Utils.isValorParaCalculoValido(etValorComissaoFornecedorDolar.getText().toString().trim())? null :
                 Utils.retornarValorMonetario(etValorComissaoFornecedorDolar.getText().toString().trim(),Constantes.LOCALE_USA).toString().trim());
@@ -1092,6 +1099,7 @@ public class AddActivity extends AppCompatActivity {
 
         spnCondicoes.setSelection(((ArrayAdapter)spnCondicoes.getAdapter()).getPosition(this.detalheLote.getCondicao()));
         spnQtd.setSelection(((ArrayAdapter)spnQtd.getAdapter()).getPosition(this.detalheLote.getQtd().toString()));
+        spnVendidos.setSelection(((ArrayAdapter)spnVendidos.getAdapter()).getPosition(this.detalheLote.getVendidos().toString()));
 
         tratarDetalhamentoValorMonetario(this.detalheLote.getValorLanceDolar(), etValorLanceDolar);
 
@@ -1108,6 +1116,14 @@ public class AddActivity extends AppCompatActivity {
         }
 
         spnStatusOrdem.setSelection(((ArrayAdapter)spnStatusOrdem.getAdapter()).getPosition(this.detalheLote.getStatusOrdemCompra()));
+
+        if(!Utils.isBlank(this.detalheLote.getVendedor())){
+            etVendedor.setText(this.detalheLote.getVendedor());
+        }
+
+        if(!Utils.isBlank(this.detalheLote.getEmailVendedor())){
+            etEmailVendedor.setText(this.detalheLote.getEmailVendedor());
+        }
 
         if(!Utils.isBlank(this.detalheLote.getFornecedor())){
             etFornecedor.setText(this.detalheLote.getFornecedor());

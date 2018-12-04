@@ -17,12 +17,14 @@ import android.widget.Toast;
 import com.atimports.R;
 import com.atimports.activity.AddActivity;
 import com.atimports.activity.MainActivity;
+import com.atimports.constantes.Constantes;
 import com.atimports.model.Lote;
 import com.atimports.utils.Utils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +65,7 @@ public class LoteAdapter extends RecyclerView.Adapter{
              .waitForLayout();
 
         holder.tvItemProduto.setText(lote.getProduto());
+        holder.tvValorVendaFmt.setText(Utils.retornaValorMontarioComMascara(new BigDecimal(lote.getValorVendaUnidade()), Constantes.LOCALE_BRASIL));
         holder.tvItemQuantidade.setText(String.valueOf(lote.getQtd()));
         holder.tvItemcondicao.setText(lote.getCondicao());
         holder.tvItemDataOrdem.setText(null == lote.getDataOrdemCompra() ? null : Utils.retornarFormatedDate(lote.getDataOrdemCompra()));
@@ -88,6 +91,7 @@ public class LoteAdapter extends RecyclerView.Adapter{
         public final View view;
         public final ImageView ivFotoProduto;
         public final TextView tvItemProduto;
+        public final TextView tvValorVendaFmt;
         public final TextView tvItemQuantidade;
         public final TextView tvItemcondicao;
         public final TextView tvItemDataOrdem;
@@ -99,6 +103,7 @@ public class LoteAdapter extends RecyclerView.Adapter{
             this.view = view;
             this.ivFotoProduto = view.findViewById(R.id.iv_foto_produto);
             this.tvItemProduto = view.findViewById(R.id.tv_item_produto);
+            this.tvValorVendaFmt = view.findViewById(R.id.tv_item_val_venda_fmt);
             this.tvItemQuantidade = view.findViewById(R.id.tv_item_qtd);
             this.tvItemcondicao = view.findViewById(R.id.tv_item_condicao);
             this.tvItemDataOrdem = view.findViewById(R.id.tv_item_data_ordem);

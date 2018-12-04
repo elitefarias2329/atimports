@@ -24,6 +24,81 @@
 
 
             <TextView
+                android:id="@+id/tv_vendidos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:drawableStart="@drawable/mais_menos"
+                android:drawablePadding="8dp"
+                android:drawingCacheQuality="high"
+                android:text="Vendidos"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_qtd"
+                app:layout_constraintTop_toBottomOf="@+id/spn_condicoes" />
+
+            <EditText
+                android:id="@+id/et_vendedor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:drawablePadding="@dimen/fab_margin"
+                android:drawingCacheQuality="high"
+                android:ems="10"
+                android:hint="Digite o nome do Vendedor"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLength="30"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView12"
+                tools:targetApi="o" />
+
+            <EditText
+                android:id="@+id/et_email_vendedor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:drawablePadding="@dimen/fab_margin"
+                android:drawingCacheQuality="high"
+                android:ems="10"
+                android:hint="Digite o e-mail do Vendedor"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress"
+                android:maxLength="30"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_vendedor"
+                tools:targetApi="o" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="32dp"
+                android:drawableStart="@drawable/fornecedor"
+                android:drawablePadding="8dp"
+                android:drawingCacheQuality="high"
+                android:text="Fornecedor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_email_vendedor" />
+
+            <TextView
                 android:id="@+id/error_msg_valor_venda_unidade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -579,7 +654,7 @@
                 android:drawableStart="@drawable/fornecedor"
                 android:drawablePadding="8dp"
                 android:drawingCacheQuality="high"
-                android:text="Fornecedor"
+                android:text="Vendedor"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
@@ -616,7 +691,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView12"
+                app:layout_constraintTop_toBottomOf="@+id/textView7"
                 tools:targetApi="o" />
 
             <TextView
@@ -983,7 +1058,7 @@
 
             <TextView
                 android:id="@+id/tv_qtd"
-                android:layout_width="0dp"
+                android:layout_width="190dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
@@ -1040,15 +1115,20 @@
             <Spinner
                 android:id="@+id/spn_qtd"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_height="27dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/tv_qtd"
+                app:layout_constraintStart_toStartOf="@+id/tv_qtd"
                 app:layout_constraintTop_toBottomOf="@+id/tv_qtd" />
+
+            <Spinner
+                android:id="@+id/spn_vendidos"
+                android:layout_width="0dp"
+                android:layout_height="27dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/tv_vendidos"
+                app:layout_constraintStart_toStartOf="@+id/tv_vendidos"
+                app:layout_constraintTop_toBottomOf="@+id/tv_vendidos" />
 
             <Spinner
                 android:id="@+id/spn_status_ordem"
@@ -1086,13 +1166,22 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="2dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
                 android:background="@color/dark_grey"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/spn_qtd"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spn_qtd" />
+
+            <View
+                android:id="@+id/divider6"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/dark_grey"
+                app:layout_constraintEnd_toEndOf="@+id/spn_vendidos"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/spn_vendidos"
+                app:layout_constraintTop_toBottomOf="@+id/spn_vendidos" />
 
             <View
                 android:id="@+id/divider3"
