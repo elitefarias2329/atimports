@@ -6,5 +6,6 @@
         <item>Enviada</item>
         <item>Entregue</item>
         <item>Recebida no Brasil</item>
+        <item>Vendida</item>
     </string-array>
 </resources>

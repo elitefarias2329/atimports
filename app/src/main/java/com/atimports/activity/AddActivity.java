@@ -102,6 +102,7 @@ public class AddActivity extends AppCompatActivity {
     EditText etValorFreteRevendedor;
     EditText etValorFreteTransportadora;
     EditText etGastosExtras;
+    EditText etPagamentosRecebidos;
     EditText etDataOrdem;
 
     TextView tvMedidaFinal;
@@ -279,6 +280,7 @@ public class AddActivity extends AppCompatActivity {
         etValorFreteRevendedor = findViewById(R.id.et_frete_revendedor);
         etValorFreteTransportadora = findViewById(R.id.et_valor_frete_transportadora);
         etGastosExtras = findViewById(R.id.et_gastos_extras);
+        etPagamentosRecebidos = findViewById(R.id.et_pagamentos_recebidos);
         etDataOrdem = findViewById(R.id.et_data_ordem);
 
         tvMedidaFinal = findViewById(R.id.tv_medida_final);
@@ -315,6 +317,7 @@ public class AddActivity extends AppCompatActivity {
         aplicarMascaraMoeda(etValorFreteRevendedor, Constantes.LOCALE_BRASIL);
         aplicarMascaraMoeda(etValorFreteTransportadora, Constantes.LOCALE_BRASIL);
         aplicarMascaraMoeda(etGastosExtras, Constantes.LOCALE_BRASIL);
+        aplicarMascaraMoeda(etPagamentosRecebidos, Constantes.LOCALE_BRASIL);
     }
 
 
@@ -1007,6 +1010,9 @@ public class AddActivity extends AppCompatActivity {
         lote.setValorGastosExtras(!Utils.isValorParaCalculoValido(etGastosExtras.getText().toString().trim())? null :
                 Utils.retornarValorMonetario(etGastosExtras.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
 
+        lote.setPagamentosRecebidos(!Utils.isValorParaCalculoValido(etPagamentosRecebidos.getText().toString().trim())? null :
+                Utils.retornarValorMonetario(etPagamentosRecebidos.getText().toString().trim(),Constantes.LOCALE_BRASIL).toString().trim());
+
         return lote;
     }
 
@@ -1137,6 +1143,7 @@ public class AddActivity extends AppCompatActivity {
         tratarDetalhamentoValorMonetario(this.detalheLote.getValorComissaoRevendedorUnidade(), etComissaoRevendedor);
         tratarDetalhamentoValorMonetario(this.detalheLote.getValorFreteRevendedorUnidade(), etValorFreteRevendedor);
         tratarDetalhamentoValorMonetario(this.detalheLote.getValorGastosExtras(), etGastosExtras);
+        tratarDetalhamentoValorMonetario(this.detalheLote.getPagamentosRecebidos(), etPagamentosRecebidos);
     }
 
     private void tratarDetalhamentoValorMonetario(String valorTexto, EditText campo){

@@ -97,6 +97,9 @@ public class Lote implements Serializable {
     @ColumnInfo(name = "VALOR_GASTOS_EXTRAS")
     private String valorGastosExtras;
 
+    @ColumnInfo(name = "PAGAMENTOS_RECEBIDOS")
+    private String pagamentosRecebidos;
+
 
     //GETTERS E SETTERS
 
@@ -290,5 +293,13 @@ public class Lote implements Serializable {
 
     public void setVendidos(Integer vendidos) {
         this.vendidos = vendidos;
+    }
+
+    public String getPagamentosRecebidos() {
+        return pagamentosRecebidos;
+    }
+
+    public void setPagamentosRecebidos(String pagamentosRecebidos) {
+        this.pagamentosRecebidos = pagamentosRecebidos;
     }
 }
