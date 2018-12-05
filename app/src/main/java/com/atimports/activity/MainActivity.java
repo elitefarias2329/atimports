@@ -2,6 +2,8 @@ package com.atimports.activity;
 
 
 import android.Manifest;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,9 +15,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.atimports.R;
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private CompositeDisposable compositeDisposable;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -75,17 +79,56 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         concederPermissoes();
 
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            public boolean onQueryTextChange(String newText) {
+
+                //Toast.makeText(MainActivity.this, newText, Toast.LENGTH_SHORT).show();
+
+                if(newText.length()>=3){
+                    filtrarListViewLeiloes(newText);
+                }
+                else if(newText.length()==0){
+                    popularListViewLeiloes();
+                }
+
+
+
+                return true;
+            }
+
+            public boolean onQueryTextSubmit(String query) {
+                //Here u can get the value "query" which is entered in the search box.
+                return true;
+            }
+
+        });
+
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(MainActivity.this, AboutActivity.class));
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     private void concederPermissoes(){
 
@@ -100,6 +143,45 @@ public class MainActivity extends AppCompatActivity {
                                                                         Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_ALL);
         }
     }
+
+
+
+    private void filtrarListViewLeiloes(String produto){
+
+        //DATABASE
+        loteRepository = LoteRepository.getInstance(MainActivity.this);
+
+        Disposable disposable = loteRepository.getLoteByProduto(produto)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                        new Consumer<List<Lote>>() {
+                            @Override
+                            public void accept(List<Lote> leiloes) throws Exception {
+
+                                listaLeiloes.clear();
+                                listaLeiloes.addAll(leiloes);
+                                rvAdapter = new LoteAdapter(MainActivity.this,listaLeiloes);
+                                rvLeiloes.setAdapter(rvAdapter);
+                                rvAdapter.notifyDataSetChanged();
+                            }
+                        },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Toast.makeText(MainActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+
+        compositeDisposable.add(disposable);
+
+    }
+
+
+
+
+
 
 
     private void popularListViewLeiloes(){

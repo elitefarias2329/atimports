@@ -33,6 +33,11 @@ public class LoteRepository{
         return loteDAO.getLoteById(id);
     }
 
+    public Flowable<List<Lote>> getLoteByProduto(String produto) {
+
+        return loteDAO.getLoteByProduto(produto);
+    }
+
     public Flowable<List<Lote>> getAllLote() {
 
         return loteDAO.getAllLote();

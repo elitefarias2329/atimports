@@ -20,6 +20,9 @@ public interface LoteDAO {
     @Query("SELECT * FROM LOTE WHERE ID = :id")
     Flowable<Lote> getLoteById(Integer id);
 
+    @Query("SELECT * FROM LOTE WHERE PRODUTO LIKE '%' || :produto || '%'")
+    Flowable<List<Lote>> getLoteByProduto(String produto);
+
     @Query("SELECT * FROM LOTE ORDER BY DATA_ORDEM_COMPRA DESC, PRODUTO ASC")
     Flowable<List<Lote>> getAllLote();
 
