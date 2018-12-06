@@ -4,8 +4,8 @@
         <item>Não Paga</item>
         <item>Paga</item>
         <item>Enviada</item>
-        <item>Entregue</item>
-        <item>Recebida no Brasil</item>
+        <item>No Armazém</item>
+        <item>No Brasil</item>
         <item>Vendida</item>
     </string-array>
 </resources>

@@ -1105,7 +1105,12 @@ public class AddActivity extends AppCompatActivity {
 
         spnCondicoes.setSelection(((ArrayAdapter)spnCondicoes.getAdapter()).getPosition(this.detalheLote.getCondicao()));
         spnQtd.setSelection(((ArrayAdapter)spnQtd.getAdapter()).getPosition(this.detalheLote.getQtd().toString()));
-        spnVendidos.setSelection(((ArrayAdapter)spnVendidos.getAdapter()).getPosition(this.detalheLote.getVendidos().toString()));
+
+
+        if(null != this.detalheLote.getVendidos()){
+            spnVendidos.setSelection(((ArrayAdapter)spnVendidos.getAdapter()).getPosition(this.detalheLote.getVendidos().toString()));
+        }
+
 
         tratarDetalhamentoValorMonetario(this.detalheLote.getValorLanceDolar(), etValorLanceDolar);
 
