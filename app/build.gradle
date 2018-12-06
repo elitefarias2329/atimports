@@ -6,9 +6,10 @@ android {
         applicationId "com.atimports"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionName '1.0.1'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        versionCode 2
+        versionNameSuffix '1.0.1'
     }
     buildTypes {
         release {
